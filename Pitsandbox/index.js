@@ -118,7 +118,7 @@ let nextminor = Date.now();
 let majorname = undefined;
 let laststreakchange = Date.now();
 let lastslot = undefined;
-let autogg = true;
+/* let autogg = true; */
 let rightclicking = false;
 let nols = false;
 let lasteggslot = 0;
@@ -1742,13 +1742,13 @@ register("actionBar", event => {
 
 
 
-register("command", () => {
+/* register("command", () => {
     if (!autogg) autogg = true, ChatLib.chat("&aEnabled AutoGG.")
     else autogg = undefined, ChatLib.chat("&cDisabled AutoGG.")
 }).setName("autogg")
-
+ */
 register("chat", (player, event) => {
-    if (!autogg) return
+    if (!Settings.prestigeAutoGG) return
     ChatLib.say(Settings.chatColor + player + ", gg on Prestige!")
 }).setChatCriteria("PRESTIGE! ${player} unlocked prestige ${*}, gg!")
 

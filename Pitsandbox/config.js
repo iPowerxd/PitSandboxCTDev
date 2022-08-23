@@ -83,6 +83,13 @@ class Settings {
         category: "!General"
     })
     eggEffectDisplay = true;
+    
+    @SwitchProperty({
+        name: "Prestige Auto GG",
+        description: "Says GG Whenever someone Prestiges.",
+        category: "!General"
+    })
+    prestigeAutoGG = true;
 
     @SwitchProperty({
         name: "Remove Particles In Middle",
