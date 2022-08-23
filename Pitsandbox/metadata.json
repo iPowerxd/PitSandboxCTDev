@@ -1,0 +1,9 @@
+{
+	"$schema": "../ctautocomplete/schema.json",
+	"name": "Pitsandbox",
+	"author": "Powie",
+	"description": "Pitsandbox Mod Edited Moment",
+	"entry": "index.js",
+	"version": "0.0.1",
+	"requires":[]
+  }
