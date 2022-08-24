@@ -238,7 +238,7 @@ register("worldUnload", () => {
     inMenu = undefined
 })
 
-register("postGuiRender", (screen, mouseY, mouseX) => {
+/* register("postGuiRender", (screen, mouseY, mouseX) => {
     if (!inMenu) return;
     if (!Client.isInChat()) {
         if (Client.isInGui()) {
@@ -248,13 +248,14 @@ register("postGuiRender", (screen, mouseY, mouseX) => {
             ver.setX(Renderer.screen.getWidth() - (Renderer.getStringWidth(ver.getString()) * 1.4) - 4);
             ver.setScale(1.35);
             ver.setShadow(true);
-            ver.setColor(Renderer.color(255, 255, 255));
+            ver.setColor(Renderer.color(255, 255, 255));``
             ver.draw();
         }
-        /* ver.setColor(Renderer.color(255, 255, 255)); */
-    } /* let ver = new Text("Pitsandbox " + version, 0, 0); */
-}).setPriority(Priority.HIGHEST);
-
+        
+    } 
+}) */
+/* ver.setColor(Renderer.color(255, 255, 255)); */
+/* let ver = new Text("Pitsandbox " + version, 0, 0); *
 /* const printChangelog = () => {
     for (let i = 0; i < 3; i++) {
         setTimeout(() => {

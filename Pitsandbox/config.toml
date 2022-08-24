@@ -48,6 +48,7 @@
 	auto_chat_color = "&3"
 	custom_passive_pitch = "1.5"
 	pre_alert = true
+	prestige_auto_gg = true
 	inventory_text = "&4&o&nPowie best WW"
 	"hide_low_/pays" = true
 	hud_colors = "&b"

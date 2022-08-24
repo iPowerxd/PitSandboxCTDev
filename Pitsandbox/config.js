@@ -32,14 +32,14 @@ class Settings {
     })
     clientBrand = "";
    
-    @TextProperty({
+    /* @TextProperty({
         name: "Inventory Text",
         description: "Change the Text Shown in the Inventory and some Menus.\n&3Also Accepts chat formatting color codes.\n&4Also works on all servers.",
         category: "?Customization",
         placeholder: "§8Example: &3Pitsandbox Mod"
     })
     inventoryText = ""; 
-   
+    */
     @TextProperty({
         name: "HUD Colors",
         description: "Change the color of the HUD.\n&3Also Accepts chat formatting color codes.",
