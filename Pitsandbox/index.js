@@ -6,10 +6,6 @@ import {
     addCustomCompletion
 } from "CustomTabCompletions";
 
-/* 
-let version = "b43"; */
-
-
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
