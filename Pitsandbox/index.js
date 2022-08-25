@@ -1333,14 +1333,14 @@ register("step", () => {
     }
 }).setFps(30);
 
-register("step", () => {
+/* register("step", () => {
     if (!pitsandbox) return;
     if (syncedTruce.filter(t => onlinePlayers.includes(t)).length > 0) {
         let allplayers = World.getAllPlayers();
         syncedTruce.filter(t => onlinePlayers.includes(t)).forEach(p => {
             if (allplayers.find(ap => ap.getName() == p)) allplayers.filter(ap => ap.getName() == p).map(ap => ap.setNametagName(new TextComponent("§a§l" + p)));
         });
-    }
+    } */
     if (Settings.showPingInXP) {
         Player.asPlayerMP().getPlayer().func_71013_b(Player.asPlayerMP().getPlayer().field_71068_ca);
         Player.asPlayerMP().getPlayer().func_82242_a(Player.asPlayerMP().getPing());
