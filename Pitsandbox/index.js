@@ -6,6 +6,10 @@ import {
     addCustomCompletion
 } from "CustomTabCompletions";
 
+/* 
+let version = "b43"; */
+
+
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
@@ -917,7 +921,7 @@ register("command", () => {
     });
 }).setName("pinglb");
 
-/* register("command", () => {
+register("command", () => {
     if (!pitsandbox) return;
     TabList.getUnformattedNames().filter(n => !n.startsWith("CIT-") && !n.includes("§") && balances[n] && balances[n].bal != undefined).sort((a, b) => balances[b].bal - balances[a].bal).forEach((n, i) => {
         ChatLib.chat("&e#" + (i + 1) + " &6" + n + "&e: &a$" + formatNumber(balances[n].bal) + " &8(" + msToTime(Date.now() - balances[n].lastfetch, false) + " ago)");
@@ -942,7 +946,7 @@ let setBalCMD = register("command", (p, bal) => {
     }, 500);
 }).setName("setbal");
 
-addCustomCompletion(setBalCMD, playerAutocomplete); */
+addCustomCompletion(setBalCMD, playerAutocomplete);
 
 new Thread(() => {
     register("tick", () => {
@@ -1579,7 +1583,7 @@ new Thread(() => {
                     y += 12;
                 });
             }
-        }/*  {
+        }; {
             if (balqueue.length > 0 && !Client.isInTab()) {
                 let text = new Text(`&eFetching balances of &6${balqueue.length} &eplayers...`);
                 let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.1 / 2);
@@ -1598,7 +1602,7 @@ new Thread(() => {
                 text.setShadow(true);
                 text.draw();
             }
-        } */ {
+        }; {
             if (!Client.isInTab()) {
                 let str = [];
                 if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
