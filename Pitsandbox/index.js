@@ -1333,9 +1333,9 @@ register("step", () => {
     }
 }).setFps(30);
 
-/* register("step", () => {
+register("step", () => {
     if (!pitsandbox) return;
-    if (syncedTruce.filter(t => onlinePlayers.includes(t)).length > 0) {
+    /* if (syncedTruce.filter(t => onlinePlayers.includes(t)).length > 0) {
         let allplayers = World.getAllPlayers();
         syncedTruce.filter(t => onlinePlayers.includes(t)).forEach(p => {
             if (allplayers.find(ap => ap.getName() == p)) allplayers.filter(ap => ap.getName() == p).map(ap => ap.setNametagName(new TextComponent("§a§l" + p)));
@@ -1583,7 +1583,7 @@ new Thread(() => {
                     y += 12;
                 });
             }
-        }; {
+        }/*  {
             if (balqueue.length > 0 && !Client.isInTab()) {
                 let text = new Text(`&eFetching balances of &6${balqueue.length} &eplayers...`);
                 let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.1 / 2);
@@ -1602,7 +1602,7 @@ new Thread(() => {
                 text.setShadow(true);
                 text.draw();
             }
-        }; {
+        } */ {
             if (!Client.isInTab()) {
                 let str = [];
                 if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
