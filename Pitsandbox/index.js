@@ -921,7 +921,7 @@ register("command", () => {
     });
 }).setName("pinglb");
 
-register("command", () => {
+/* register("command", () => {
     if (!pitsandbox) return;
     TabList.getUnformattedNames().filter(n => !n.startsWith("CIT-") && !n.includes("§") && balances[n] && balances[n].bal != undefined).sort((a, b) => balances[b].bal - balances[a].bal).forEach((n, i) => {
         ChatLib.chat("&e#" + (i + 1) + " &6" + n + "&e: &a$" + formatNumber(balances[n].bal) + " &8(" + msToTime(Date.now() - balances[n].lastfetch, false) + " ago)");
@@ -946,7 +946,7 @@ let setBalCMD = register("command", (p, bal) => {
     }, 500);
 }).setName("setbal");
 
-addCustomCompletion(setBalCMD, playerAutocomplete);
+addCustomCompletion(setBalCMD, playerAutocomplete); */
 
 new Thread(() => {
     register("tick", () => {
