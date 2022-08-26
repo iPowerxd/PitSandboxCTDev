@@ -1752,8 +1752,8 @@ register("chat", (player, event) => {
     ChatLib.say(Settings.chatColor + player + ", gg on Prestige!")
 }).setChatCriteria("PRESTIGE! ${player} unlocked prestige ${*}, gg!")
 
-register("chat", (player, event) => {
+/* register("chat", (player, event) => {
     if(!pitsandbox) return
     let message = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     cancel(event)
-})
+}) */
