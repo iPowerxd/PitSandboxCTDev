@@ -1757,3 +1757,8 @@ register("chat", (player, event) => {
     let message = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
     cancel(event)
 }) */
+
+register("command", () => {
+    ChatLib.chat(net.minecraft.client.gui.func_175181_h)
+
+}).setName("test")
