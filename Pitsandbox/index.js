@@ -1727,6 +1727,7 @@ register("worldLoad", () => {
 
 register("actionBar", event => {
     let msg = ChatLib.removeFormatting(ChatLib.getChatMessage(event));
+    if(!pitsandbox) return
     if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤")) {
         let player = msg.split(" ")[0];
         if (player.startsWith("~")) return;
