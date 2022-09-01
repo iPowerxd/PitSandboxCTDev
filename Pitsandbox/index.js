@@ -1727,7 +1727,7 @@ register("worldLoad", () => {
 
 register("actionBar", event => {
     let msg = ChatLib.removeFormatting(ChatLib.getChatMessage(event));
-    if(!pitsandbox) return
+    if (!pitsandbox) return
     if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤")) {
         let player = msg.split(" ")[0];
         if (player.startsWith("~")) return;
@@ -1763,4 +1763,11 @@ register("chat", (player, event) => {
 register("command", () => {
     ChatLib.chat(net.minecraft.client.gui.func_175181_h)
 
-}).setName("test") 
+}).setName("test")
+/* 
+register("chat", (player, event, equation) => {
+    if (!pitsandbox) return
+    if (!Settings.autoQuickMaths) return
+    let answer = eval("equation")
+    ChatLib.say(answer)
+}).setChatCriteria("QUICK MATHS! Solve: ${equation}") */

@@ -31,7 +31,7 @@ class Settings {
         placeholder: "§8Example: Forge/Lunar"
     })
     clientBrand = "";
-   
+
     /* @TextProperty({
         name: "Inventory Text",
         description: "Change the Text Shown in the Inventory and some Menus.\n&3Also Accepts chat formatting color codes.\n&4Also works on all servers.",
@@ -46,30 +46,30 @@ class Settings {
         category: "?Customization",
         placeholder: "§8Example: &3"
     })
-    hudTextColor = ""; 
-    
+    hudTextColor = "";
+
     @TextProperty({
         name: "HUD Group Colors",
         description: "Change the colors of the Group Titles in the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "?Customization",
         placeholder: "§8Example: &3"
     })
-    hudGroupColor = ""; 
-    
+    hudGroupColor = "";
+
     @SwitchProperty({
         name: "Toggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "!General"
     })
     toggleSandboxHUD = true;
-  
+
     @SwitchProperty({
         name: "Toggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "!General"
     })
-    toggleMajorandMinorEventHUD = true; 
-   
+    toggleMajorandMinorEventHUD = true;
+
     @SwitchProperty({
         name: "Target Info",
         description: "See a HUD that shows the mystics of the player you're fighting.",
@@ -83,7 +83,7 @@ class Settings {
         category: "!General"
     })
     eggEffectDisplay = true;
-    
+
     @SwitchProperty({
         name: "Prestige Auto GG",
         description: "Says GG Whenever someone Prestiges.",
@@ -146,7 +146,7 @@ class Settings {
         category: "!General"
     })
     removeMidHit = true;
-    
+
     @SwitchProperty({
         name: "Remove billionaire sounds in middle",
         description: "Remove the sounds of billionaire while you're in middle.",
@@ -168,7 +168,7 @@ class Settings {
         placeholder: "Example: &e"
     })
     chatColor = "";
-    
+
     @SwitchProperty({
         name: "Guild Passive Sound",
         description: "Play a sound when trying to hit someone in /g passive",
@@ -278,7 +278,7 @@ class Settings {
     })
     minPay = 5000;
 
-    
+
     @SliderProperty({
         name: "Mid Radius Amount",
         description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)\n§cNote: this affects the MID indicator in the Hunt HUD and Lifesteal swapping",
@@ -302,6 +302,13 @@ class Settings {
     })
     fishAlert = true;
 
+    @SwitchProperty({
+        name: "Auto Quick Maths",
+        description: "Does Quick Maths for you",
+        category: "!General"
+    })
+    autoQuickMaths = true;
+
     /*     @SwitchProperty({
             name: "Toggle Custom Guild Chat",
             description: "Toggle having another chat at the bottom right of the screen only including guild chat messages.",
@@ -309,12 +316,12 @@ class Settings {
         })
         toggleGuildChat = false; */
     @SwitchProperty({
-            name: "Toggle Hunger Bar Display",
-            description: "Toggle seeing the hunger bar",
-            category: "Vanilla HUD Hiding"
-        })
+        name: "Toggle Hunger Bar Display",
+        description: "Toggle seeing the hunger bar",
+        category: "Vanilla HUD Hiding"
+    })
     toggleHungerBar = false;
-     
+
     @SwitchProperty({
         name: "Toggle Armor Bar Display",
         description: "Toggle seeing the armor bar",
@@ -328,7 +335,7 @@ class Settings {
         category: "Vanilla HUD Hiding"
     })
     toggleXPBar = true;
-   
+
     @SwitchProperty({
         name: "Toggle Boss Bar Display",
         description: "Toggle seeing the Boss bar",
@@ -385,22 +392,22 @@ class Settings {
     })
     autoOOFHermit = false;
 
-   /*  @ColorProperty({
-        name: "Color Picker",
-        description: "Pick a color! (hopefully...)",
-        category: "!General"
-    })
-    myColor = Color.BLUE;
-
-    @ButtonProperty({
-        name: "Do action!!!",
-        description: "print some cool stuff :)",
-        category: "General",
-        placeholder: "Activate"
-    })
-    myButtonAction() {
-        console.log("wow i have a button?!?");
-    } */
+    /*  @ColorProperty({
+         name: "Color Picker",
+         description: "Pick a color! (hopefully...)",
+         category: "!General"
+     })
+     myColor = Color.BLUE;
+ 
+     @ButtonProperty({
+         name: "Do action!!!",
+         description: "print some cool stuff :)",
+         category: "General",
+         placeholder: "Activate"
+     })
+     myButtonAction() {
+         console.log("wow i have a button?!?");
+     } */
 
     constructor() {
         this.initialize(this);
