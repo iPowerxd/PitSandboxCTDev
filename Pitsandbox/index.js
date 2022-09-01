@@ -501,6 +501,7 @@ let sent = false;
 
 
 register("packetSent", (packet, event) => {
+    if (!pitsandbox) return
     if (packet instanceof C17 && !sent) {
 
         cancel(event);
@@ -1764,10 +1765,11 @@ register("command", () => {
     ChatLib.chat(net.minecraft.client.gui.func_175181_h)
 
 }).setName("test")
-/* 
-register("chat", (player, event, equation) => {
+
+/* register("chat", (player, event, equation) => {
     if (!pitsandbox) return
     if (!Settings.autoQuickMaths) return
-    let answer = eval("equation")
-    ChatLib.say(answer)
-}).setChatCriteria("QUICK MATHS! Solve: ${equation}") */
+    let answer = eval(equation)
+    ChatLib.chat(answer)
+}).setChatCriteria("QUICK MATHS! Solve: ${equation}")
+ */
