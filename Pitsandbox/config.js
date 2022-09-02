@@ -57,6 +57,14 @@ class Settings {
     hudGroupColor = "";
 
     @SwitchProperty({
+        name: "Custom Guild Messages",
+        description: "Enables/Disables the Customly Shortened Guild Messages",
+        category: "?Customization",
+    })
+    customGuildChat = true;
+
+
+    @SwitchProperty({
         name: "Toggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "!General"

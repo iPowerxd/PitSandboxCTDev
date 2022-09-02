@@ -523,7 +523,7 @@ register("packetReceived", (packet, event) => {
     if (!pitsandbox) return;
     if (packet instanceof S47) {
         cancel(event);
-        TabList.setFooter(packet.func_179701_b().func_150260_c().split("\n").map(line => ChatLib.removeFormatting(line).includes("Online Players") ? "§eOnline Players: §6§l§n" + onlinePlayers.length : line).join("\n"));
+        TabList.setFooter(packet.func_179701_b().func_150260_c().split("\n").map(line => ChatLib.removeFormatting(line).includes("Online Players") ? "§eOnline Players: §6§l§o" + onlinePlayers.length : line).join("\n"));
         TabList.setHeader(packet.func_179700_a().func_150260_c());
     }
 });
@@ -625,7 +625,8 @@ register("chat", event => {
     }
     if (Settings.toggleBDAlert && isPre()) {
         if (umsg == "DIVINE INTERVENTION! Lives kept!") {
-            setTimeout(() => {
+
+            (() => {
                 for (let i = 0; i < 3; i++) {
                     setTimeout(() => {
                         World.playSound("note.pling", 1, 1);
@@ -706,6 +707,7 @@ register("chat", (player, xp, gold, event) => {
 
 register("chat", (event) => {
     if (!pitsandbox) return;
+    if (!Settings.customGuildChat) return
     let regex = /Guild > \[([A-Z]*)\] ([A-z0-9]{3,16}): (.*)/g;
     if (regex.test(ChatLib.removeFormatting(ChatLib.getChatMessage(event)))) {
         let args = regex.exec(ChatLib.removeFormatting(ChatLib.getChatMessage(event)));
@@ -720,6 +722,7 @@ register("chat", (event) => {
 
 register("chat", (player, message, event) => {
     if (!pitsandbox) return;
+    if (!Settings.customGuildChat) return
     cancel(event);
     if (player.split(" ").length > 1 && player.startsWith("(â ")) {
         player = "&8" + player.split(" ")[0] + " " + player.split(" ")[1] + " &e" + player.split(" ").splice(2).join(" ");
