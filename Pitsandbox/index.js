@@ -1776,3 +1776,7 @@ register("command", () => {
     ChatLib.chat(answer)
 }).setChatCriteria("QUICK MATHS! Solve: ${equation}")
  */
+
+register("command", () => {
+    ChatLib.command("usefulbox")
+}).setName("box")
