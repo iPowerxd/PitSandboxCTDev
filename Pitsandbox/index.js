@@ -1752,7 +1752,8 @@ register("actionBar", event => {
  */
 register("chat", (player, event) => {
     if (!pitsandbox) return
-    if (!Settings.prestigeAutoGG) return
+    if (!Settings.prestigeAutoGG)
+    if (player = player.getName()) return
     ChatLib.say(Settings.chatColor + player + ", gg on Prestige!")
 }).setChatCriteria("PRESTIGE! ${player} unlocked prestige ${*}, gg!")
 
@@ -1762,11 +1763,6 @@ register("chat", (player, event) => {
     cancel(event)
 }) */
 
-register("command", () => {
-    if (!pitsandbox) return
-    ChatLib.chat(net.minecraft.client.gui.func_175181_h)
-
-}).setName("test")
 
 /* register("chat", (player, event, equation) => {
     if (!pitsandbox) return
