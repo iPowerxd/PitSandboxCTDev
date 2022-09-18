@@ -1753,8 +1753,8 @@ register("actionBar", event => {
 register("chat", (player, event) => {
     if (!pitsandbox) return
     if (!Settings.prestigeAutoGG) return
-    if (player = Player.getDisplayName()) return
-    ChatLib.chat(Settings.chatColor + player + ", gg on Prestige!")
+    if (player == Player.getName()) return
+    ChatLib.say(Settings.chatColor + player + ", gg on Prestige!")
 }).setChatCriteria("PRESTIGE! ${player} unlocked prestige ${*}, gg!")
 
 /* register("chat", (player, event) => {
