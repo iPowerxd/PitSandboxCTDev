@@ -199,6 +199,13 @@ class Settings {
     guildPassivePitch = "1.5";
 
     @SwitchProperty({
+        name: "Guild Message Sound",
+        description: "Play a sound when someone types in guild chat.",
+        category: "!General"
+    })
+    toggleGNotification = true;
+
+    @SwitchProperty({
         name: "Toggle Low Health Indicator",
         description: "Makes your screen red when you are low on health",
         category: "!General"

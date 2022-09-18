@@ -1776,3 +1776,10 @@ register("command", () => {
     if (!pitsandbox) return
     ChatLib.command("usefulbox")
 }).setName("box")
+
+register("chat", event => {
+    if (!pitsandbox) return
+    if (!Settings.toggleGNotification) return
+    let umsg = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
+    if (umsg.startsWith("Guild > ")) return World.playSound("random.orb", 1, 1)
+})
