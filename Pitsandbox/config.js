@@ -14,7 +14,7 @@ Color,
 @TextProperty,
 @Vigilant,
 } from 'Vigilance';
-@Vigilant("Pitsandbox")
+@Vigilant('Pitsandbox', 'Pit Sandbox',)
 class Settings {
     /* @TextProperty({
         name: "text",
@@ -24,13 +24,13 @@ class Settings {
     })
     textInput = ""; */
 
-    @TextProperty({
-        name: "Client Brand",
-        description: "Change the client brand the server sees when you login.\n&eForge default: Fml,forge\n&eApplies on all servers.\n&cRequires a relog to apply changes.",
-        category: "!General",
-        placeholder: "§8Example: Forge/Lunar"
-    })
-    clientBrand = "";
+    /*   @TextProperty({
+          name: "Client Brand",
+          description: "Change the client brand the server sees when you login.\n&eForge default: Fml,forge\n&eApplies on all servers.\n&cRequires a relog to apply changes.",
+          category: "!General",
+          placeholder: "§8Example: Forge/Lunar"
+      })
+      clientBrand = ""; */
 
     /* @TextProperty({
         name: "Inventory Text",
@@ -406,6 +406,14 @@ class Settings {
         category: "Auto OOF"
     })
     autoOOFHermit = false;
+
+    @SwitchProperty({
+        name: "Swap Mid Check (for kings)",
+        description: "Swaps the middle check to coords for Kings map",
+        category: "!General"
+    })
+    swapMid = true;
+
 
     /*  @ColorProperty({
          name: "Color Picker",

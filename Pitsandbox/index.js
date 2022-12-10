@@ -95,7 +95,7 @@ const getRoman = (num) => {
 };
 let pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")) && isInMainServer();
 const prestigeinfo = ["§7", "§9", "§9", "§9", "§9", "§e", "§e", "§e", "§e", "§e", "§6", "§6", "§6", "§6", "§6", "§c", "§c", "§c", "§c", "§c", "§5", "§5", "§5", "§5", "§5", "§d", "§d", "§d", "§d", "§d", "§f", "§f", "§f", "§f", "§f", "§b", "§b", "§b", "§b", "§b", "§a", "§a", "§a", "§a", "§a", "§4", "§4", "§4", "§4", "§4", "§3", "§3", "§3", "§3", "§3", "§8", "§8", "§8", "§8", "§8", "§9"];
-const prestigexp = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 45, 50, 75, 100, 101, 101, 101, 101, 101, 202, 303, 404, 505, 606, 707, 808, 909, 1010, 1111, 1212, 1313, 1414, 1515, 1616, 3231, 4847];
+const prestigexp = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 45, 50, 100, 101, 202, 303, 404, 505, 606, 707, 808, 909, 1010, 1111, 1212, 1313, 1414, 1515, 3030, 4545, 6060, 7575, 9090, 18180, 27270];
 let sidebar = [];
 let gems = undefined;
 let megacoins = undefined;
@@ -308,18 +308,26 @@ const hasEnchant = (enchant, nbt) => {
 };
 
 const inMid = entity => {
-    if (entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
-        if (entity.getY() > 80 && entity.getY() < 110) {
+    if (Settings.swapMid && entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
+        if (entity.getY() > 70 && entity.getY() < 110) {
             return true;
+        } else if (!Settings.swapMid && entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
+            if (entity.getY() > 70 && entity.getY() < 95) {
+                return true;
+            }
         }
     }
     return false;
 };
 
 const inSpawn = entity => {
-    if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+    if (Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
         if (entity.getY() > 108 && entity.getY() < 140) {
             return true;
+        } else if (!Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+            if (entity.getY() > 95 && entity.getY() < 120) {
+                return true;
+            }
         }
     }
     return false;
@@ -1688,7 +1696,8 @@ new Thread(() => {
 }).start();
 
 register("messageSent", (message, event) => {
-    if (!pitsandbox) return;
+    if (!pitsandbox) return
+    if (nomvp) return
     if (!message.startsWith("/")) {
 
         if (Settings.chatColor != "" && /^&.$/g.test(Settings.chatColor)) {
@@ -1741,6 +1750,7 @@ register("actionBar", event => {
     }
     if (!Settings.toggleGPassiveSound) return;
     if (ChatLib.removeFormatting(ChatLib.getChatMessage(event)).includes("Couldn't hit") && parseFloat(Settings.guildPassivePitch) && parseFloat(Settings.guildPassivePitch) != NaN ? World.playSound(Settings.guildPassiveSound, 1, parseFloat(Settings.guildPassivePitch)) : undefined);
+    console.log(msg)
 });
 
 
@@ -1781,5 +1791,10 @@ register("chat", event => {
     if (!pitsandbox) return
     if (!Settings.toggleGNotification) return
     let umsg = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (umsg.startsWith("Guild > ")) return World.playSound("random.orb", 1, 1)
+    if (umsg.startsWith("Guild > ")) return World.playSound("random.orb", 2, 1)
 })
+
+/* register("chat", event => {
+    let umsg = ChatLib.getChatMessage(event)
+    if (umsg.startsWith("PIT LEVEL UP")) return console.log(umsg)
+}) */
