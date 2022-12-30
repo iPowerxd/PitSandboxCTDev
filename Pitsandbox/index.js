@@ -94,14 +94,14 @@ const getRoman = (num) => {
     return Array(+digits.join("") + 1).join("M") + roman;
 };
 let pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")) && isInMainServer();
-const prestigeinfo = ["§7", "§9", "§9", "§9", "§9", "§e", "§e", "§e", "§e", "§e", "§6", "§6", "§6", "§6", "§6", "§c", "§c", "§c", "§c", "§c", "§5", "§5", "§5", "§5", "§5", "§d", "§d", "§d", "§d", "§d", "§f", "§f", "§f", "§f", "§f", "§b", "§b", "§b", "§b", "§b", "§a", "§a", "§a", "§a", "§a", "§4", "§4", "§4", "§4", "§4", "§3", "§3", "§3", "§3", "§3", "§8", "§8", "§8", "§8", "§8", "§9"];
-const prestigexp = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 45, 50, 100, 101, 202, 303, 404, 505, 606, 707, 808, 909, 1010, 1111, 1212, 1313, 1414, 1515, 3030, 4545, 6060, 7575, 9090, 18180, 27270];
+const prestigeinfo = ["§7", "§9", "§9", "§9", "§9", "§e", "§e", "§e", "§e", "§e", "§6", "§6", "§6", "§6", "§6", "§c", "§c", "§c", "§c", "§c", "§5", "§5", "§5", "§5", "§5", "§d", "§d", "§d", "§d", "§d", "§f", "§f", "§f", "§f", "§f", "§b", "§b", "§b", "§b", "§b", "§a", "§a", "§a", "§a", "§a", "§4", "§4", "§4", "§4", "§4", "§3", "§3", "§3", "§3", "§3", "§2", "§2", "§2", "§2", "§2", "§1"];
+const prestigexp = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 45, 50, 75, 100, 101, 202, 303, 404, 505, 606, 707, 808, 909, 1010, 1111, 1212, 1313, 1414, 1515, 3030, 4545, 6060, 7575, 9090, 18180, 27270, 36360, 45450, 54540, 109079]
 let sidebar = [];
 let gems = undefined;
 let megacoins = undefined;
 let streak = 0;
 let streakkills = 0;
-
+let autoSuperegg = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
@@ -143,7 +143,8 @@ let lastalert = 0;
 let streaking = false;
 let syncedKOS = [];
 let syncedTruce = [];
-let namecache = {};
+let namecache = {}
+let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
 /* request({
     url: "http://152.228.218.17:5001/syncedKOS.json",
     ssl: false
@@ -184,10 +185,9 @@ let currentstreak = {
     otherxp: 0,
     other: []
 };
-let huntingKey = new KeyBind("Toggle Hunting", Keyboard.KEY_X);
-let toggleBots = new KeyBind("Toggle Bots", Keyboard.KEY_Z);
-let useEggs = new KeyBind("Use All Super Eggs", Keyboard.KEY_H);
-let airBlock = new KeyBind("Create Ghost Air", Keyboard.KEY_U);
+let huntingKey = new KeyBind("Toggle Hunting", "", "!PitSandbox");
+let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox");
+let airBlock = new KeyBind("Create Ghost Air", "", "!PitSandbox");
 let huntedPlayers = JSON.parse(FileLib.read("Pitsandbox", "huntedPlayers.json"));
 let huntedGuilds = JSON.parse(FileLib.read("Pitsandbox", "huntedGuilds.json"));
 let ignoredPlayers = [];
@@ -308,27 +308,27 @@ const hasEnchant = (enchant, nbt) => {
 };
 
 const inMid = entity => {
-    if (Settings.swapMid && entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
-        if (entity.getY() > 70 && entity.getY() < 110) {
+    if (/* Settings.swapMid */  entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
+        if (entity.getY() > 70 && entity.getY() < 95) {
             return true;
-        } else if (!Settings.swapMid && entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
+        } /* else if (!Settings.swapMid && entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < Settings.midRadius) {
             if (entity.getY() > 70 && entity.getY() < 95) {
                 return true;
             }
-        }
+        } */
     }
     return false;
 };
 
 const inSpawn = entity => {
-    if (Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-        if (entity.getY() > 108 && entity.getY() < 140) {
+    if (/* !Settings.swapMid && */ Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+        if (entity.getY() > 90 && entity.getY() < 140) {
             return true;
-        } else if (!Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 95 && entity.getY() < 120) {
+        } /* else if (Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+            if (entity.getY() > 90 && entity.getY() < 100) {
                 return true;
             }
-        }
+        } */
     }
     return false;
 };
@@ -505,10 +505,34 @@ const endStreak = () => {
 
 let sent = false;
 
+/* const hasFirstaidegg = (NBT) => {
+    if (NBT.toString().split("firstaidegg:")[1]) {
+        if (NBT.toString().split("firstaidegg:")[1].split(",display:")) {
+            if (NBT.toString().split("firstaidegg:")[1].split(",display:")[0] == "1b") return true
+        }
+    } else return false
+}
 
-register("packetSent", (packet, event) => {
+const whereFirstaidegg = () => {
+    for (let i = 0; i < 9; i++) {
+        if (Player.getInventory()) slot = Player.getInventory().getStackInSlot(i)
+        if (slot && slot.getID() != 1 && slot.getNBT() && hasFirstaidegg(slot.getNBT())) return i
+    } return false
+}
+
+const isFirstaideggUsed = () => {
+    if (whereFirstaidegg()) {
+        let item = Player.getInventory().getStackInSlot(whereFirstaidegg()).toString().split("@")
+        if (item[1] == 60) return true
+        else if (item[1] == 96) return false
+        else return undefined
+    }
+}
+
+ */
+/* register("packetSent", (packet, event) => {
     if (!pitsandbox) return
-    if (packet instanceof C17 && !sent) {
+    if (packet instanceof C17 && !sent) {w
 
         cancel(event);
         sent = true;
@@ -524,7 +548,7 @@ register("packetSent", (packet, event) => {
         ChatLib.chat("Sent C17 " + new PacketBuffer(message));
     }
 });
-
+ */
 register("packetReceived", (packet, event) => {
     if (!pitsandbox) return;
     if (packet instanceof S47) {
@@ -613,7 +637,7 @@ register("chat", event => {
     }
     if (Settings.eggEffectDisplay) {
         switch (umsg) {
-            case "SUPEREGG! +6x coins (00:10)":
+            case "SUPEREGG! +2.5x coins and XP (00:10)":
                 if (Date.now() > sixtimescoins) sixtimescoins = Date.now() + 10000;
                 else sixtimescoins += 10000;
                 break;
@@ -776,6 +800,11 @@ register("chat", (xp, event) => {
     xp = xp.replace(/[,]/g, "");
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp);
 }).setChatCriteria("PLETHORA! +${xp}XP");
+
+register("chat", (event) => {
+    cancel(event)
+
+}).setChatCriteria("PLETHORA! +0XP (maxed!)")
 
 register("chat", (xp, event) => {
     if (!pitsandbox || !streaking) return;
@@ -1057,35 +1086,6 @@ new Thread(() => {
             } else {
                 hunting = !hunting;
                 ChatLib.chat("§7Hunting: " + (hunting ? "§aEnabled" : "§cDisabled"));
-            }
-        }
-        if (useEggs.isPressed()) {
-            let slots = [];
-            for (let i = 0; i < 9; i++) {
-                if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
-                    if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
-                        if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
-                            slots.push(i);
-                        }
-                    }
-                }
-            }
-            if (slots.length > 0) {
-                lasteggslot = Player.getHeldItemIndex();
-                rightclicking = true;
-                slots.forEach((slot, i) => {
-                    setTimeout(() => {
-                        if (Player.getHeldItemIndex() != slot) {
-                            Player.setHeldItemIndex(slot);
-                        }
-                        if (i == slots.length - 1) {
-                            setTimeout(() => {
-                                rightclicking = false;
-                                if (Player.getHeldItemIndex() != lasteggslot) Player.setHeldItemIndex(lasteggslot);
-                            }, 100);
-                        }
-                    }, i * 50);
-                });
             }
         }
         if (toggleBots.isPressed()) {
@@ -1390,31 +1390,6 @@ register("step", () => {
     if (nextmajor - Date.now() < 180000) ChatLib.command("event");
 }).setDelay(5);
 
-/* register("step", () => {
-    if (!pitsandbox) return;
-    request({
-        url: "http://152.228.218.17:5001/syncedKOS.json",
-        ssl: false
-    }).then(res => {
-        syncedKOS = JSON.parse(res);
-        FileLib.write("Pitsandbox", "syncedKOS.json", JSON.stringify(syncedKOS));
-    }).catch(err => ChatLib.chat("&cAn error occured while downloading syncedKOS.json: " + err));
-    request({
-        url: "http://152.228.218.17:5001/namecache.json",
-        ssl: false
-    }).then(res => {
-        namecache = JSON.parse(res);
-        FileLib.write("Pitsandbox", "namecache.json", JSON.stringify(namecache));
-    }).catch(err => ChatLib.chat("&cAn error occured while downloading namecache.json: " + err));
-    request({
-        url: "http://152.228.218.17:5001/syncedTruce.json",
-        ssl: false
-    }).then(res => {
-        syncedTruce = JSON.parse(res);
-        FileLib.write("Pitsandbox", "syncedTruce.json", JSON.stringify(syncedTruce));
-    }).catch(err => ChatLib.chat("&cAn error occured while downloading syncedTruce.json: " + err));
-}).setDelay(60); */
-
 register("step", () => {
     if (!pitsandbox || !Settings.toggleMajorandMinorEventHUD || nomvp) return;
     if (Settings.toggleSandboxHUD) ChatLib.command("event");
@@ -1635,13 +1610,13 @@ new Thread(() => {
             if (Settings.eggEffectDisplay) {
                 let lines = [];
                 if (Date.now() < sixtimescoins) {
-                    lines.push("&6+6x coins &8" + msToTime(sixtimescoins - Date.now()));
+                    lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
                 }
                 if (Date.now() < onetapbots) {
-                    lines.push("&cOne tap bots &8" + msToTime(onetapbots - Date.now()));
+                    lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
                 }
                 if (Date.now() < halfhitdelay) {
-                    lines.push("&eHalf hit delay &8" + msToTime(halfhitdelay - Date.now()));
+                    lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
                 }
                 let y = Renderer.screen.getHeight() / 2.2;
                 lines.forEach(line => {
@@ -1729,7 +1704,7 @@ register("worldLoad", () => {
     if (!Settings.toggleSandboxHUD) return Scoreboard.setShouldRender(true);
     setTimeout(() => {
         nomvp = false;
-        pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")) && isInMainServer();
+        pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io") || Server.getIP().includes("harrys.gg")) && isInMainServer();
         if (pitsandbox) Scoreboard.setShouldRender(false);
         else Scoreboard.setShouldRender(true);
         //checkChangelog();
@@ -1798,3 +1773,76 @@ register("chat", event => {
     let umsg = ChatLib.getChatMessage(event)
     if (umsg.startsWith("PIT LEVEL UP")) return console.log(umsg)
 }) */
+register("chat", (event) => {
+    let umsg = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
+    if (umsg.startsWith("CLOAK!")) return cancel(event)
+})
+register("command", () => {
+    ChatLib.chat(inSpawn(Player.asPlayerMP()))
+    ChatLib.chat(inMid(Player.asPlayerMP()))
+}).setName("location")
+/* 
+register("step", () => {
+    if (!pitsandbox() || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
+    let lastSlot = Player.getHeldItemIndex()
+    if (!isFirstaideggUsed() && Player.getHP() < 28) {
+        Player.setHeldItemIndex(whereFirstaidegg())
+        KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
+        setTimeout(() => {
+            Player.setHeldItemIndex(lastSlot)
+        }, 2)
+    }
+}).setFps(10) */
+/* if (useEggs.isPressed()) {
+    let slots = [];
+    for (let i = 0; i < 9; i++) {
+        if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
+            if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
+                if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
+                    slots.push(i);
+                }
+            }
+        }
+    } */
+register("step", () => {
+    if (pitsandbox && autoSuperegg) {
+        let slots = [];
+        for (let i = 0; i < 9; i++) {
+            if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
+                if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
+                    if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
+                        slots.push(i);
+                    }
+                }
+            }
+        }
+        if (slots.length > 0) {
+            lasteggslot = Player.getHeldItemIndex();
+            rightclicking = true;
+            slots.forEach((slot, i) => {
+                setTimeout(() => {
+                    if (Player.getHeldItemIndex() != slot) {
+                        Player.setHeldItemIndex(slot);
+                    }
+                    if (i == slots.length - 1) {
+                        setTimeout(() => {
+                            rightclicking = false;
+                            if (Player.getHeldItemIndex() != lasteggslot) Player.setHeldItemIndex(lasteggslot);
+                        }, 100);
+                    }
+                }, i * 50);
+            });
+        }
+    }
+}).setFps(3)
+register("tick", () => {
+    if (toggleSuperegg.isPressed()) {
+        if (autoSuperegg) {
+            autoSuperegg = false
+            ChatLib.chat("&cDisabled auto SuperEgg!")
+        } else {
+            autoSuperegg = true
+            ChatLib.chat("&aEnabled auto SuperEgg!")
+        }
+    }
+})

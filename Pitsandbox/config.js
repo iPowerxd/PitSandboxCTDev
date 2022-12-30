@@ -406,14 +406,20 @@ class Settings {
         category: "Auto OOF"
     })
     autoOOFHermit = false;
-
-    @SwitchProperty({
-        name: "Swap Mid Check (for kings)",
-        description: "Swaps the middle check to coords for Kings map",
-        category: "!General"
-    })
-    swapMid = true;
-
+    /*    @SwitchProperty({
+           name: "Auto egg",
+           description: "Automatically uses SuperEggs",
+           category: "Egg."
+       })
+       autoEgg = true;
+    */
+    /*  @SwitchProperty({
+         name: "Swap Mid Check (for kings)",
+         description: "Swaps the middle check to coords for Kings map",
+         category: "!General"
+     })
+     swapMid = true;
+  */
 
     /*  @ColorProperty({
          name: "Color Picker",

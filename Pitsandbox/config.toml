@@ -1,3 +1,4 @@
+egg = {}
 
 [auto_oof]
 	auto_oof_on_nightmare = true
@@ -10,7 +11,7 @@
 
 [vanilla_hud_hiding]
 	toggle_armor_bar_display = false
-	toggle_boss_bar_display = true
+	toggle_boss_bar_display = false
 	toggle_hunger_bar_display = false
 	toggle_xp_bar_display = true
 
@@ -20,36 +21,34 @@
 	remove_player_damage_sounds_in_middle = true
 	guild_message_sound = false
 	custom_passive_sound = "mob.endermen.hit"
-	client_brand = ""
 	guild_passive_sound = true
-	mid_radius_amount = 9
-	remove_particles_in_middle = false
+	mid_radius_amount = 15
+	remove_particles_in_middle = true
 	show_ping_in_experience_bar = true
-	pre_oof = true
+	pre_oof = false
 	toggle_major_and_minor_events = true
 	egg_effect_display = true
 	toggle_low_health_indicator = false
 	megastreak_sounds = false
-	"minimum_/pay_amount" = 5001
+	"minimum_/pay_amount" = 5000
 	toggle_blitz_queue_messages = true
+	auto_ls_swap = true
 	eradicate_blitz = false
 	bounty_bumps = false
 	fish_alert = true
-	auto_ls_swap = true
 	remove_billionaire_sounds_in_middle = true
 	anti_cf = true
 	target_info = true
 	lower_render_distance_in_middle = true
 	"beacon_&_divine_alert" = true
 	only_personal_bounty_claims = true
-	auto_chat_color = "&6"
-	"swap_mid_check_(for_kings)" = true
+	auto_chat_color = "&2"
 	custom_passive_pitch = "1.5"
-	prestige_auto_gg = true
+	prestige_auto_gg = false
 	pre_alert = true
 	"hide_low_/pays" = true
 	toggle_hud = true
-	low_health_threshold = 10
+	low_health_threshold = 8
 	hide_bot_nametags = true
 	auto_quick_maths = true
 
