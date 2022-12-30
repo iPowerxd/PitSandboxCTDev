@@ -172,7 +172,7 @@ class Settings {
     @TextProperty({
         name: "Auto chat color",
         description: "Automatically apply a color to your chat messages.\n§eTemporarily disables when unscramble or quick maths is active.\n§cMVP rank is required for this to work, leave blank to disable.\n§cStart a message with \\ to not apply the color.",
-        category: "!General",
+        category: "?Customization",
         placeholder: "Example: &e"
     })
     chatColor = "";

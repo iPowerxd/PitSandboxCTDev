@@ -174,7 +174,6 @@ let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") 
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
 let onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1]));
-let onlineHuntKOS = syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k)));
 const BlockPos1 = Java.type("net.minecraft.util.BlockPos");
 const C08 = Java.type("net.minecraft.network.play.client.C08PacketPlayerBlockPlacement");
 const S01 = Java.type("net.minecraft.network.play.server.S01PacketJoinGame");
@@ -1001,7 +1000,6 @@ new Thread(() => {
 
         onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
         onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n));
-        onlineHuntKOS = syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k))).map(o => (o.uuid ? namecache[o.uuid].name : o));
         if (huntingKey.isPressed()) {
             if (onlineHunt.length < 1 && onlineHuntGuild.length < 1 && onlineHuntKOS.length < 1) {
                 hunting = false, ChatLib.chat("§7Hunting: §cNo players online!");
@@ -1205,26 +1203,6 @@ new Thread(() => {
                         else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
                         if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
                         huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
-                    });
-                }
-                if (syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).length > 0) {
-                    huntinfo.push("&c&nSynced KOS");
-                    syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).forEach(p => {
-                        let name = p;
-                        if (p.uuid) name = namecache[p.uuid].name;
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == name);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == name);
-                        if (!entity) suffix = " &cUnknown";
-                        else if (inMid(entity)) suffix = " &4MID";
-                        else if (inSpawn(entity)) suffix = " &aSpawn";
-                        else suffix = " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : name) + suffix);
                     });
                 }
                 huntinglines = huntinfo;
@@ -1449,25 +1427,6 @@ new Thread(() => {
                     text.draw();
                     y += 12;
                 });
-            }
-        }; {
-            if (balqueue.length > 0 && !Client.isInTab()) {
-                let text = new Text(`&eFetching balances of &6${balqueue.length} &eplayers...`);
-                let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.1 / 2);
-                let y = 4;
-                let prevheight = text.getHeight() * 1.1;
-                text.setShadow(true);
-                text.setScale(1.1);
-                text.setX(x);
-                text.setY(y);
-                text.draw();
-                text = new Text(`&cDo not spam commands/chat during this operation.`);
-                x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) / 2);
-                y = 6 + prevheight;
-                text.setX(x);
-                text.setY(y);
-                text.setShadow(true);
-                text.draw();
             }
         }; {
             if (!Client.isInTab()) {
