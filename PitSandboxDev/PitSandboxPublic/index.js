@@ -1,12 +1,4 @@
-import Settings from './Config';
-/* import {
-    request
-} from "RequestV2"; */
-
-/* 
-let version = "b43"; */
-
-
+import Settings from './config';
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
@@ -18,20 +10,6 @@ const isInMainServer = () => {
         else return false;
     } else return true;
 };
-
-
-const playerAutocomplete = args =>
-    TabList.getUnformattedNames()
-        .filter(n =>
-            n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "") && !n.includes("§") && !n.startsWith("CIT-")
-        ).sort();
-
-const huntCmdAutocomplete = args =>
-    args.length && args.length > 1 ?
-        TabList.getUnformattedNames()
-            .filter(n =>
-                n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "") && !n.includes("§") && !n.startsWith("CIT-")
-            ).sort() : ["add", "remove", "addguild", "removeguild", "ignore", "list", "clear"].filter(n => n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "")).sort();
 
 const msToTime = (s, showms = false) => {
     var ms = s % 1000;
@@ -105,7 +83,6 @@ let autoSuperegg = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
-let hunting = undefined;
 let rawstreak = undefined;
 let blitzmsg = Date.now();
 let shark = 0;
@@ -114,14 +91,11 @@ let nextmajor = Date.now();
 let nextminor = Date.now();
 let majorname = undefined;
 let laststreakchange = Date.now();
-let lastslot = undefined;
 /* let autogg = true; */
 let rightclicking = false;
 let nols = false;
-let lasteggslot = 0;
 let generallines = [];
 let streakinglines = [];
-let huntinglines = [];
 let sixtimescoins = 0;
 let lastrenderdistance = Client.settings.getSettings().field_151451_c;
 let worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e);
@@ -141,31 +115,6 @@ let lastsplashsound = 0;
 let lasthookmotion = 0;
 let lastalert = 0;
 let streaking = false;
-let syncedKOS = [];
-let syncedTruce = [];
-let namecache = {}
-let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
-/* request({
-    url: "http://152.228.218.17:5001/syncedKOS.json",
-    ssl: false
-}).then(res => {
-    syncedKOS = JSON.parse(res);
-    FileLib.write("Pitsandbox", "syncedKOS.json", JSON.stringify(syncedKOS));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading syncedKOS.json: " + err));
-request({
-    url: "http://152.228.218.17:5001/namecache.json",
-    ssl: false
-}).then(res => {
-    namecache = JSON.parse(res);
-    FileLib.write("Pitsandbox", "namecache.json", JSON.stringify(namecache));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading namecache.json: " + err));
-request({
-    url: "http://152.228.218.17:5001/syncedTruce.json",
-    ssl: false
-}).then(res => {
-    syncedTruce = JSON.parse(res);
-    FileLib.write("Pitsandbox", "syncedTruce.json", JSON.stringify(syncedTruce));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading syncedTruce.json: " + err)); */
 let target = undefined;
 let targetexpire = undefined;
 let lsticks = 0;
@@ -175,7 +124,6 @@ let pantenchants = "";
 let pdamage = [];
 let tdamage = [];
 let lasthealth = Player.getHP() || 0;
-let airblockcd = 0;
 let currentstreak = {
     killgold: 0,
     assgold: 0,
@@ -185,47 +133,14 @@ let currentstreak = {
     otherxp: 0,
     other: []
 };
-let huntingKey = new KeyBind("Toggle Hunting", "", "!PitSandbox");
+
 let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox");
-let airBlock = new KeyBind("Create Ghost Air", "", "!PitSandbox");
-let huntedPlayers = JSON.parse(FileLib.read("Pitsandbox", "huntedPlayers.json"));
-let huntedGuilds = JSON.parse(FileLib.read("Pitsandbox", "huntedGuilds.json"));
-let ignoredPlayers = [];
-if (!FileLib.exists("Pitsandbox", "ignoredPlayers.json")) FileLib.write("Pitsandbox", "ignoredPlayers.json", "[]");
-else ignoredPlayers = JSON.parse(FileLib.read("Pitsandbox", "ignoredPlayers.json"));
-let balances = {};
-let balqueue = [];
-if (!FileLib.exists("Pitsandbox", "balances.json")) FileLib.write("Pitsandbox", "balances.json", "{}"), balances = JSON.parse(FileLib.read("Pitsandbox", "balances.json"));
-else balances = JSON.parse(FileLib.read("Pitsandbox", "balances.json"));
 let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
-let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
-let onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1]));
-let onlineHuntKOS = syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k)));
 const BlockPos1 = Java.type("net.minecraft.util.BlockPos");
-const C08 = Java.type("net.minecraft.network.play.client.C08PacketPlayerBlockPlacement");
-const S01 = Java.type("net.minecraft.network.play.server.S01PacketJoinGame");
 const S47 = Java.type("net.minecraft.network.play.server.S47PacketPlayerListHeaderFooter");
-const C17 = Java.type("net.minecraft.network.play.client.C17PacketCustomPayload");
-const PacketBuffer = Java.type("net.minecraft.network.PacketBuffer");
-let Unpooled = Java.type("io.netty.buffer.Unpooled");
-
-/* import {
-    request
-} from "RequestV2"; */
-
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString");
 let KeyBinding = Java.type("net.minecraft.client.settings.KeyBinding");
-
-/* if (/^function injectMain\(inject\) {/gm.test(FileLib.read("Pitsandbox", "index.js"))) {
-    ChatLib.chat("&aUpdating loader...");
-    request({
-        url: "http://152.228.218.17:5001/loader",
-        ssl: false
-    }).then(res => {
-        ChatLib.chat("&aUpdated loader"), FileLib.write("Pitsandbox", "index.js", decodeURIComponent(res));
-    }).catch(err => ChatLib.chat("&cAn error occured while updating loader: " + err));
-} */
 
 register("worldLoad", () => {
     inMenu = true
@@ -235,46 +150,6 @@ register("worldUnload", () => {
     inMenu = undefined
 })
 
-/* register("postGuiRender", (screen, mouseY, mouseX) => {
-    if (!inMenu) return;
-    if (!Client.isInChat()) {
-        if (Client.isInGui()) {
-            let Y = Renderer.screen.getHeight();
-            let ver = new Text(Settings.inventoryText, 0, 0);
-            ver.setY(Y - (ver.getHeight() * 1.2) - 4);
-            ver.setX(Renderer.screen.getWidth() - (Renderer.getStringWidth(ver.getString()) * 1.4) - 4);
-            ver.setScale(1.35);
-            ver.setShadow(true);
-            ver.setColor(Renderer.color(255, 255, 255));``
-            ver.draw();
-        }
-        
-    } 
-}) */
-/* ver.setColor(Renderer.color(255, 255, 255)); */
-/* let ver = new Text("Pitsandbox " + version, 0, 0); *
-/* const printChangelog = () => {
-    for (let i = 0; i < 3; i++) {
-        setTimeout(() => {
-            World.playSound("note.pling", 1, 2);
-            World.playSound("random.orb", 1, 2);
-        }, i * 100);
-    }
-    Client.showTitle("&e&l&nNEW&r &e&l&nPITSANDBOX&r &e&l&nMODULE&r &e&l&nVERSION!", "&6Check your chat!", 0, 60, 0);
-    ChatLib.chat("&r &r &r &r");
-    ChatLib.chat("&6&m-----------------------------------------------");
-    ChatLib.chat("&6&m-&r &6&lPitsandbox " + version + " Module Changelogs &r&6&m-\n&r");
-    ChatLib.chat("&6&m-&r&e longer waiting when joining pitsandbox so that it actually detects correctly");
-    ChatLib.chat("&6&m-----------------------------------------------");
-    ChatLib.chat("&r &r &r &r");
-};
-
-const checkChangelog = () => {
-    if (pitsandbox) {
-        if (!FileLib.exists("Pitsandbox", "version")) FileLib.write("Pitsandbox", "version", version), printChangelog();
-        else if (FileLib.read("Pitsandbox", "version") != version) FileLib.write("Pitsandbox", "version", version), printChangelog();
-    }
-}; */
 let inMenu = undefined
 const isPre = () => {
     let nametag = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0]);
@@ -503,52 +378,7 @@ const endStreak = () => {
 };
 
 
-let sent = false;
 
-/* const hasFirstaidegg = (NBT) => {
-    if (NBT.toString().split("firstaidegg:")[1]) {
-        if (NBT.toString().split("firstaidegg:")[1].split(",display:")) {
-            if (NBT.toString().split("firstaidegg:")[1].split(",display:")[0] == "1b") return true
-        }
-    } else return false
-}
-
-const whereFirstaidegg = () => {
-    for (let i = 0; i < 9; i++) {
-        if (Player.getInventory()) slot = Player.getInventory().getStackInSlot(i)
-        if (slot && slot.getID() != 1 && slot.getNBT() && hasFirstaidegg(slot.getNBT())) return i
-    } return false
-}
-
-const isFirstaideggUsed = () => {
-    if (whereFirstaidegg()) {
-        let item = Player.getInventory().getStackInSlot(whereFirstaidegg()).toString().split("@")
-        if (item[1] == 60) return true
-        else if (item[1] == 96) return false
-        else return undefined
-    }
-}
-
- */
-/* register("packetSent", (packet, event) => {
-    if (!pitsandbox) return
-    if (packet instanceof C17 && !sent) {w
-
-        cancel(event);
-        sent = true;
-        let message = Unpooled.buffer();
-        var b = new (Java.type("java.io.ByteArrayOutputStream"))();
-        var bytes = strToUtf8Bytes(Settings.clientBrand.length ? Settings.clientBrand : "Feather Forge");
-        b.write(9);
-        bytes.map(byte => b.write(byte));
-        message.writeBytes(b.toByteArray());
-
-        Client.sendPacket(new C17("MC|Brand", new PacketBuffer(message)));
-
-        ChatLib.chat("Sent C17 " + new PacketBuffer(message));
-    }
-});
- */
 register("packetReceived", (packet, event) => {
     if (!pitsandbox) return;
     if (packet instanceof S47) {
@@ -557,8 +387,6 @@ register("packetReceived", (packet, event) => {
         TabList.setHeader(packet.func_179700_a().func_150260_c());
     }
 });
-
-
 
 register("chat", event => {
     if (!pitsandbox) return;
@@ -889,66 +717,6 @@ register("chat", (time, event) => {
     }
     cancel(event);
 }).setChatCriteria("EVENTS! The next Minor Event is in ${time}");
-
-const huntCommand = register("command", (arg1, arg2) => {
-    switch (arg1) {
-        case "add":
-            if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
-            if (huntedPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) return ChatLib.chat("&cPlayer already hunted.");
-            huntedPlayers.push(ChatLib.removeFormatting(arg2));
-            ChatLib.chat("&aAdded " + ChatLib.removeFormatting(arg2) + " to hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
-            break;
-        case "remove":
-            if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
-            if (!huntedPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) return ChatLib.chat("&cPlayer not hunted.");
-            huntedPlayers.splice(huntedPlayers.findIndex(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase())), 1);
-            ChatLib.chat("&aRemoved " + ChatLib.removeFormatting(arg2) + " from hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
-            break;
-        case "addguild":
-            if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
-            if (huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild already hunted.");
-            huntedGuilds.push(arg2.toUpperCase());
-            ChatLib.chat("&aAdded " + arg2.toUpperCase() + " to hunted guild list.");
-            FileLib.write("Pitsandbox", "huntedGuilds.json", JSON.stringify(huntedGuilds));
-            break;
-        case "removeguild":
-            if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
-            if (!huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild not hunted.");
-            huntedGuilds.splice(huntedGuilds.findIndex(g => g.toLowerCase() == arg2.toLowerCase()), 1);
-            ChatLib.chat("&aRemoved " + arg2.toUpperCase() + " from hunted guild list.");
-            FileLib.write("Pitsandbox", "huntedGuilds.json", JSON.stringify(huntedGuilds));
-            break;
-        case "ignore":
-            if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
-
-            if (ignoredPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) {
-                ignoredPlayers.splice(ignoredPlayers.findIndex(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase())), 1);
-                ChatLib.chat("&cRemoved " + ChatLib.removeFormatting(arg2) + " from ignore list.");
-            } else {
-                ignoredPlayers.push(ChatLib.removeFormatting(arg2));
-                ChatLib.chat("&aAdded " + ChatLib.removeFormatting(arg2) + " to ignore list.");
-            }
-            FileLib.write("Pitsandbox", "ignoredPlayers.json", JSON.stringify(ignoredPlayers));
-            break;
-        case "clear":
-            huntedPlayers = [];
-            ChatLib.chat("&aCleared hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
-            break;
-        case "list":
-            ChatLib.chat("&aHunted players: " + (huntedPlayers.length > 0 ? huntedPlayers.map(p => "&b" + p).join("&a, ") : "&cNone"));
-            ChatLib.chat("&aHunted guild tags: " + (huntedGuilds.length > 0 ? huntedGuilds.map(g => "&b" + g).join("&a, ") : "&cNone"));
-            ChatLib.chat("&aIgnored players: " + (ignoredPlayers.length > 0 ? ignoredPlayers.map(g => "&b" + g).join("&a, ") : "&cNone"));
-            break;
-        default:
-            ChatLib.chat("\n&e/hunt add <player> - Add a player to your hunt list\n&e/hunt remove <player> - Remove a player from your hunt list\n&e/hunt addguild <tag> - Add a guild tag to your hunt list\n&e/hunt removeguild <tag> - Remove a guild tag from your hunt list\n&e/hunt ignore - Hide a player in your hunted tags\n&e/hunt clear - Clear the hunted players list\n&e/hunt list - See all the players/guilds in your hunt list\n&e/hunt help - Show this help menu\n");
-            break;
-    }
-}).setName("hunt");
-/* addCustomCompletion(huntCommand, huntCmdAutocomplete); */
-
 register("command", () => {
     const NetHandlerPlayClient = Client.getConnection();
     let PlayerMap = NetHandlerPlayClient.func_175106_d();
@@ -989,18 +757,6 @@ let setBalCMD = register("command", (p, bal) => {
 
 new Thread(() => {
     register("tick", () => {
-        if (airBlock.isKeyDown()) {
-            if (Date.now() - airblockcd > 50) {
-                try {
-                    World.getWorld().func_175698_g(new BlockPos1(Player.lookingAt().x, Player.lookingAt().y, Player.lookingAt().z));
-                } catch (err) {
-
-                }
-                airblockcd = Date.now();
-            }
-        } else {
-            airblockcd = 0;
-        }
         if (!pitsandbox) return worldentities = [], worldotherplayers = [];
         if (lasthealth > Player.getHP() && target) {
             pdamage.push((Player.getHP() - lasthealth));
@@ -1043,27 +799,6 @@ new Thread(() => {
                 }
             }
         }
-        if (Settings.toggleAutoLS && inMid(Player.asPlayerMP())) {
-            let lsslot = undefined;
-            for (let i = 0; i < 9; i++) {
-                let slot = undefined;
-                if (Player.getInventory()) slot = Player.getInventory().getStackInSlot(i);
-                if (slot && slot.getID() != 1 && slot.getNBT() && hasEnchant("billionaire", slot.getNBT()) && hasEnchant("lifesteal", slot.getNBT())) {
-                    lsslot = i;
-                    break;
-                }
-            }
-            if (lsslot != undefined) {
-                nols = false;
-                if (Player.getHP() < Settings.autoLSHealth * 2 && Player.getHeldItemIndex() != lsslot) {
-                    lastslot = Player.getHeldItemIndex();
-                    Player.setHeldItemIndex(lsslot);
-                } else if (Player.getHP() >= Settings.autoLSHealth * 2 && lastslot != undefined) {
-                    Player.setHeldItemIndex(lastslot);
-                    lastslot = undefined;
-                }
-            } else nols = true;
-        } else nols = false;
         if (Settings.toggleSandboxHUD) {
             storeSidebar();
             let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l));
@@ -1076,18 +811,6 @@ new Thread(() => {
         }
         onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
         onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
-
-        onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
-        onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n));
-        onlineHuntKOS = syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k))).map(o => (o.uuid ? namecache[o.uuid].name : o));
-        if (huntingKey.isPressed()) {
-            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1 && onlineHuntKOS.length < 1) {
-                hunting = false, ChatLib.chat("§7Hunting: §cNo players online!");
-            } else {
-                hunting = !hunting;
-                ChatLib.chat("§7Hunting: " + (hunting ? "§aEnabled" : "§cDisabled"));
-            }
-        }
         if (toggleBots.isPressed()) {
             ChatLib.command("togglebots");
         }
@@ -1245,68 +968,6 @@ new Thread(() => {
                 streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"]);
                 streakinglines = streakinfo;
             }
-            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1 && syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).length < 1) huntinglines = [];
-            else {
-                let huntinfo = [];
-                if (onlineHunt.length > 0) {
-                    huntinfo.push(Settings.hudGroupColor + "&nHunted Players");
-                    onlineHunt.forEach(p => {
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
-                        if (!entity) suffix = " &cUnknown";
-                        else if (inMid(entity)) suffix = " &4MID";
-                        else if (inSpawn(entity)) suffix = " &aSpawn";
-                        else suffix = " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
-                    });
-                }
-                if (onlineHuntGuild.filter(h => !onlineHunt.includes(h)).length > 0) {
-                    huntinfo.push(Settings.hudGroupColor + "&nHunted Tags");
-                    onlineHuntGuild.filter(h => !onlineHunt.includes(h)).forEach(p => {
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
-                        if (tabp && tabp.split(" ")[2].includes("[")) suffix = " " + tabp.split(" ")[2];
-                        if (!entity) suffix += " &cUnknown";
-                        else if (inMid(entity)) suffix += " &4MID";
-                        else if (inSpawn(entity)) suffix += " &aSpawn";
-                        else suffix += " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
-                    });
-                }
-                if (syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).length > 0) {
-                    huntinfo.push("&c&nSynced KOS");
-                    syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).forEach(p => {
-                        let name = p;
-                        if (p.uuid) name = namecache[p.uuid].name;
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == name);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == name);
-                        if (!entity) suffix = " &cUnknown";
-                        else if (inMid(entity)) suffix = " &4MID";
-                        else if (inSpawn(entity)) suffix = " &aSpawn";
-                        else suffix = " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : name) + suffix);
-                    });
-                }
-                huntinglines = huntinfo;
-            }
         }, 0);
         setTimeout(() => {
             if (target && targetexpire && Date.now() >= targetexpire) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = [];
@@ -1345,12 +1006,6 @@ register("step", () => {
 
 register("step", () => {
     if (!pitsandbox) return;
-    /* if (syncedTruce.filter(t => onlinePlayers.includes(t)).length > 0) {
-        let allplayers = World.getAllPlayers();
-        syncedTruce.filter(t => onlinePlayers.includes(t)).forEach(p => {
-            if (allplayers.find(ap => ap.getName() == p)) allplayers.filter(ap => ap.getName() == p).map(ap => ap.setNametagName(new TextComponent("§a§l" + p)));
-        });
-    } */
     if (Settings.showPingInXP) {
         Player.asPlayerMP().getPlayer().func_71013_b(Player.asPlayerMP().getPlayer().field_71068_ca);
         Player.asPlayerMP().getPlayer().func_82242_a(Player.asPlayerMP().getPing());
@@ -1413,46 +1068,6 @@ register("step", () => {
         });
     }
 }).setFps(2);
-
-/* register("step", () => {
-    if (!pitsandbox || !Settings.autoBal) return;
-    TabList.getUnformattedNames().filter(n => !n.startsWith("CIT-") && !n.includes("§")).forEach(n => {
-        if (!balances[n] || balances[n].bal == undefined) balances[n] = {
-            bal: 0,
-            lastfetch: Date.now() - 600000
-        };
-        if (Date.now() - balances[n].lastfetch >= 600000) {
-            if (balqueue.includes(n)) return;
-            console.log("Pushed " + n + " to fetch queue, last fetch was " + msToTime(Date.now() - balances[n].lastfetch, false) + " ago");
-            balqueue.push(n);
-        }
-    });
-}).setDelay(10);
-
-register("step", () => {
-    if (!pitsandbox) return;
-    if (balqueue.length > 0) {
-        console.log("Fetching bal of " + balqueue[0] + ", " + (balqueue.length - 1) + " left");
-        console.log("Last fetch " + msToTime(Date.now() - balances[balqueue[0]].lastfetch, false) + " ago");
-        let p = balqueue.shift();
-        ChatLib.command("bal " + p);
-        let event = register("chat", (player, balance, event) => {
-            if (player == p || player.startsWith("~")) {
-                cancel(event);
-                balance = parseFloat(balance.replace(/,/g, ""));
-                if (balance != undefined && balance != NaN) {
-                    balances[p].bal = balance;
-                    balances[p].lastfetch = Date.now();
-                    console.log("Fetched balance of " + p + ": " + formatNumber(balance));
-                    FileLib.write("Pitsandbox", "balances.json", JSON.stringify(balances));
-                }
-            }
-        }).Criteria("Balance of ${player}: $${balance}");
-        setTimeout(() => {
-            event.unregister();
-        }, 1000);
-    }
-}).setDelay(2); */
 
 register("step", () => {
     if (pitsandbox && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
@@ -1569,24 +1184,6 @@ new Thread(() => {
                 });
             }
         }; {
-            if (balqueue.length > 0 && !Client.isInTab()) {
-                let text = new Text(`&eFetching balances of &6${balqueue.length} &eplayers...`);
-                let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.1 / 2);
-                let y = 4;
-                let prevheight = text.getHeight() * 1.1;
-                text.setShadow(true);
-                text.setScale(1.1);
-                text.setX(x);
-                text.setY(y);
-                text.draw();
-                text = new Text(`&cDo not spam commands/chat during this operation.`);
-                x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) / 2);
-                y = 6 + prevheight;
-                text.setX(x);
-                text.setY(y);
-                text.setShadow(true);
-                text.draw();
-            }
         }; {
             if (!Client.isInTab()) {
                 let str = [];
@@ -1653,18 +1250,6 @@ new Thread(() => {
                         y += 12;
                     });
                 }
-
-                if (huntinglines.length > 0) {
-                    y += 24;
-                    let huntinfo = huntinglines;
-                    huntinfo.forEach(line => {
-                        const text = new Text(line, 0, y);
-                        text.setX(Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) - 4);
-                        text.setShadow(true);
-                        text.draw();
-                        y += 12;
-                    });
-                }
             }
         };
     });
@@ -1692,14 +1277,12 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHuntKOS.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName()) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
     pitsandbox = false;
     endStreak();
 });
-//checkChangelog();
 register("worldLoad", () => {
     if (!Settings.toggleSandboxHUD) return Scoreboard.setShouldRender(true);
     setTimeout(() => {
@@ -1707,7 +1290,6 @@ register("worldLoad", () => {
         pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io") || Server.getIP().includes("harrys.gg")) && isInMainServer();
         if (pitsandbox) Scoreboard.setShouldRender(false);
         else Scoreboard.setShouldRender(true);
-        //checkChangelog();
     }, 1500);
 });
 
@@ -1726,123 +1308,4 @@ register("actionBar", event => {
     if (!Settings.toggleGPassiveSound) return;
     if (ChatLib.removeFormatting(ChatLib.getChatMessage(event)).includes("Couldn't hit") && parseFloat(Settings.guildPassivePitch) && parseFloat(Settings.guildPassivePitch) != NaN ? World.playSound(Settings.guildPassiveSound, 1, parseFloat(Settings.guildPassivePitch)) : undefined);
     console.log(msg)
-});
-
-
-
-/* register("command", () => {
-    if (!autogg) autogg = true, ChatLib.chat("&aEnabled AutoGG.")
-    else autogg = undefined, ChatLib.chat("&cDisabled AutoGG.")
-}).setName("autogg")
- */
-register("chat", (player, event) => {
-    if (!pitsandbox) return
-    if (!Settings.prestigeAutoGG) return
-    if (player == Player.getName()) return
-    ChatLib.say(Settings.chatColor + player + ", gg on Prestige!")
-}).setChatCriteria("PRESTIGE! ${player} unlocked prestige ${*}, gg!")
-
-/* register("chat", (player, event) => {
-    if(!pitsandbox) return
-    let message = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    cancel(event)
-}) */
-
-
-/* register("chat", (player, event, equation) => {
-    if (!pitsandbox) return
-    if (!Settings.autoQuickMaths) return
-    let answer = eval(equation)
-    ChatLib.chat(answer)
-}).setChatCriteria("QUICK MATHS! Solve:${equation}")
- */
-
-register("command", () => {
-    if (!pitsandbox) return
-    ChatLib.command("usefulbox")
-}).setName("box")
-
-register("chat", event => {
-    if (!pitsandbox) return
-    if (!Settings.toggleGNotification) return
-    let umsg = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (umsg.startsWith("Guild > ")) return World.playSound("random.orb", 2, 1)
-})
-
-/* register("chat", event => {
-    let umsg = ChatLib.getChatMessage(event)
-    if (umsg.startsWith("PIT LEVEL UP")) return console.log(umsg)
-}) */
-register("chat", (event) => {
-    let umsg = ChatLib.removeFormatting(ChatLib.getChatMessage(event))
-    if (umsg.startsWith("CLOAK!")) return cancel(event)
-})
-register("command", () => {
-    ChatLib.chat(inSpawn(Player.asPlayerMP()))
-    ChatLib.chat(inMid(Player.asPlayerMP()))
-}).setName("location")
-/* 
-register("step", () => {
-    if (!pitsandbox() || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
-    let lastSlot = Player.getHeldItemIndex()
-    if (!isFirstaideggUsed() && Player.getHP() < 28) {
-        Player.setHeldItemIndex(whereFirstaidegg())
-        KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
-        setTimeout(() => {
-            Player.setHeldItemIndex(lastSlot)
-        }, 2)
-    }
-}).setFps(10) */
-/* if (useEggs.isPressed()) {
-    let slots = [];
-    for (let i = 0; i < 9; i++) {
-        if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
-            if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
-                if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
-                    slots.push(i);
-                }
-            }
-        }
-    } */
-register("step", () => {
-    if (pitsandbox && autoSuperegg) {
-        let slots = [];
-        for (let i = 0; i < 9; i++) {
-            if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
-                if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
-                    if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
-                        slots.push(i);
-                    }
-                }
-            }
-        }
-        if (slots.length > 0) {
-            lasteggslot = Player.getHeldItemIndex();
-            rightclicking = true;
-            slots.forEach((slot, i) => {
-                setTimeout(() => {
-                    if (Player.getHeldItemIndex() != slot) {
-                        Player.setHeldItemIndex(slot);
-                    }
-                    if (i == slots.length - 1) {
-                        setTimeout(() => {
-                            rightclicking = false;
-                            if (Player.getHeldItemIndex() != lasteggslot) Player.setHeldItemIndex(lasteggslot);
-                        }, 100);
-                    }
-                }, i * 50);
-            });
-        }
-    }
-}).setFps(3)
-register("tick", () => {
-    if (toggleSuperegg.isPressed()) {
-        if (autoSuperegg) {
-            autoSuperegg = false
-            ChatLib.chat("&cDisabled auto SuperEgg!")
-        } else {
-            autoSuperegg = true
-            ChatLib.chat("&aEnabled auto SuperEgg!")
-        }
-    }
 })
