@@ -141,31 +141,8 @@ let lastsplashsound = 0;
 let lasthookmotion = 0;
 let lastalert = 0;
 let streaking = false;
-let syncedKOS = [];
-let syncedTruce = [];
 let namecache = {}
 let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
-/* request({
-    url: "http://152.228.218.17:5001/syncedKOS.json",
-    ssl: false
-}).then(res => {
-    syncedKOS = JSON.parse(res);
-    FileLib.write("Pitsandbox", "syncedKOS.json", JSON.stringify(syncedKOS));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading syncedKOS.json: " + err));
-request({
-    url: "http://152.228.218.17:5001/namecache.json",
-    ssl: false
-}).then(res => {
-    namecache = JSON.parse(res);
-    FileLib.write("Pitsandbox", "namecache.json", JSON.stringify(namecache));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading namecache.json: " + err));
-request({
-    url: "http://152.228.218.17:5001/syncedTruce.json",
-    ssl: false
-}).then(res => {
-    syncedTruce = JSON.parse(res);
-    FileLib.write("Pitsandbox", "syncedTruce.json", JSON.stringify(syncedTruce));
-}).catch(err => ChatLib.chat("&cAn error occured while downloading syncedTruce.json: " + err)); */
 let target = undefined;
 let targetexpire = undefined;
 let lsticks = 0;
@@ -188,15 +165,11 @@ let currentstreak = {
 let huntingKey = new KeyBind("Toggle Hunting", "", "!PitSandbox");
 let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox");
 let airBlock = new KeyBind("Create Ghost Air", "", "!PitSandbox");
-let huntedPlayers = JSON.parse(FileLib.read("Pitsandbox", "huntedPlayers.json"));
-let huntedGuilds = JSON.parse(FileLib.read("Pitsandbox", "huntedGuilds.json"));
+let huntedPlayers = JSON.parse(FileLib.read("PitSandboxDev", "huntedPlayers.json"));
+let huntedGuilds = JSON.parse(FileLib.read("PitSandboxDev", "huntedGuilds.json"));
 let ignoredPlayers = [];
-if (!FileLib.exists("Pitsandbox", "ignoredPlayers.json")) FileLib.write("Pitsandbox", "ignoredPlayers.json", "[]");
-else ignoredPlayers = JSON.parse(FileLib.read("Pitsandbox", "ignoredPlayers.json"));
-let balances = {};
-let balqueue = [];
-if (!FileLib.exists("Pitsandbox", "balances.json")) FileLib.write("Pitsandbox", "balances.json", "{}"), balances = JSON.parse(FileLib.read("Pitsandbox", "balances.json"));
-else balances = JSON.parse(FileLib.read("Pitsandbox", "balances.json"));
+if (!FileLib.exists("PitSandboxDev", "ignoredPlayers.json")) FileLib.write("PitSandboxDev", "ignoredPlayers.json", "[]");
+else ignoredPlayers = JSON.parse(FileLib.read("PitSandBoxDev", "ignoredPlayers.json"));
 let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
@@ -210,22 +183,12 @@ const C17 = Java.type("net.minecraft.network.play.client.C17PacketCustomPayload"
 const PacketBuffer = Java.type("net.minecraft.network.PacketBuffer");
 let Unpooled = Java.type("io.netty.buffer.Unpooled");
 
-/* import {
-    request
-} from "RequestV2"; */
+
 
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString");
 let KeyBinding = Java.type("net.minecraft.client.settings.KeyBinding");
 
-/* if (/^function injectMain\(inject\) {/gm.test(FileLib.read("Pitsandbox", "index.js"))) {
-    ChatLib.chat("&aUpdating loader...");
-    request({
-        url: "http://152.228.218.17:5001/loader",
-        ssl: false
-    }).then(res => {
-        ChatLib.chat("&aUpdated loader"), FileLib.write("Pitsandbox", "index.js", decodeURIComponent(res));
-    }).catch(err => ChatLib.chat("&cAn error occured while updating loader: " + err));
-} */
+
 
 register("worldLoad", () => {
     inMenu = true
@@ -234,47 +197,6 @@ register("worldLoad", () => {
 register("worldUnload", () => {
     inMenu = undefined
 })
-
-/* register("postGuiRender", (screen, mouseY, mouseX) => {
-    if (!inMenu) return;
-    if (!Client.isInChat()) {
-        if (Client.isInGui()) {
-            let Y = Renderer.screen.getHeight();
-            let ver = new Text(Settings.inventoryText, 0, 0);
-            ver.setY(Y - (ver.getHeight() * 1.2) - 4);
-            ver.setX(Renderer.screen.getWidth() - (Renderer.getStringWidth(ver.getString()) * 1.4) - 4);
-            ver.setScale(1.35);
-            ver.setShadow(true);
-            ver.setColor(Renderer.color(255, 255, 255));``
-            ver.draw();
-        }
-        
-    } 
-}) */
-/* ver.setColor(Renderer.color(255, 255, 255)); */
-/* let ver = new Text("Pitsandbox " + version, 0, 0); *
-/* const printChangelog = () => {
-    for (let i = 0; i < 3; i++) {
-        setTimeout(() => {
-            World.playSound("note.pling", 1, 2);
-            World.playSound("random.orb", 1, 2);
-        }, i * 100);
-    }
-    Client.showTitle("&e&l&nNEW&r &e&l&nPITSANDBOX&r &e&l&nMODULE&r &e&l&nVERSION!", "&6Check your chat!", 0, 60, 0);
-    ChatLib.chat("&r &r &r &r");
-    ChatLib.chat("&6&m-----------------------------------------------");
-    ChatLib.chat("&6&m-&r &6&lPitsandbox " + version + " Module Changelogs &r&6&m-\n&r");
-    ChatLib.chat("&6&m-&r&e longer waiting when joining pitsandbox so that it actually detects correctly");
-    ChatLib.chat("&6&m-----------------------------------------------");
-    ChatLib.chat("&r &r &r &r");
-};
-
-const checkChangelog = () => {
-    if (pitsandbox) {
-        if (!FileLib.exists("Pitsandbox", "version")) FileLib.write("Pitsandbox", "version", version), printChangelog();
-        else if (FileLib.read("Pitsandbox", "version") != version) FileLib.write("Pitsandbox", "version", version), printChangelog();
-    }
-}; */
 let inMenu = undefined
 const isPre = () => {
     let nametag = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0]);
@@ -322,7 +244,7 @@ const inMid = entity => {
 
 const inSpawn = entity => {
     if (/* !Settings.swapMid && */ Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-        if (entity.getY() > 90 && entity.getY() < 140) {
+        if (entity.getY() > 94 && entity.getY() < 140) {
             return true;
         } /* else if (Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
             if (entity.getY() > 90 && entity.getY() < 100) {
@@ -897,28 +819,28 @@ const huntCommand = register("command", (arg1, arg2) => {
             if (huntedPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) return ChatLib.chat("&cPlayer already hunted.");
             huntedPlayers.push(ChatLib.removeFormatting(arg2));
             ChatLib.chat("&aAdded " + ChatLib.removeFormatting(arg2) + " to hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
+            FileLib.write("PitSandboxDev", "huntedPlayers.json", JSON.stringify(huntedPlayers));
             break;
         case "remove":
             if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
             if (!huntedPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) return ChatLib.chat("&cPlayer not hunted.");
             huntedPlayers.splice(huntedPlayers.findIndex(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase())), 1);
             ChatLib.chat("&aRemoved " + ChatLib.removeFormatting(arg2) + " from hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
+            FileLib.write("PitSandboxDev", "huntedPlayers.json", JSON.stringify(huntedPlayers));
             break;
         case "addguild":
             if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
             if (huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild already hunted.");
             huntedGuilds.push(arg2.toUpperCase());
             ChatLib.chat("&aAdded " + arg2.toUpperCase() + " to hunted guild list.");
-            FileLib.write("Pitsandbox", "huntedGuilds.json", JSON.stringify(huntedGuilds));
+            FileLib.write("PitSandboxDev", "huntedGuilds.json", JSON.stringify(huntedGuilds));
             break;
         case "removeguild":
             if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
             if (!huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild not hunted.");
             huntedGuilds.splice(huntedGuilds.findIndex(g => g.toLowerCase() == arg2.toLowerCase()), 1);
             ChatLib.chat("&aRemoved " + arg2.toUpperCase() + " from hunted guild list.");
-            FileLib.write("Pitsandbox", "huntedGuilds.json", JSON.stringify(huntedGuilds));
+            FileLib.write("PitSandboxDev", "huntedGuilds.json", JSON.stringify(huntedGuilds));
             break;
         case "ignore":
             if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
@@ -930,12 +852,12 @@ const huntCommand = register("command", (arg1, arg2) => {
                 ignoredPlayers.push(ChatLib.removeFormatting(arg2));
                 ChatLib.chat("&aAdded " + ChatLib.removeFormatting(arg2) + " to ignore list.");
             }
-            FileLib.write("Pitsandbox", "ignoredPlayers.json", JSON.stringify(ignoredPlayers));
+            FileLib.write("PitSandboxDev", "ignoredPlayers.json", JSON.stringify(ignoredPlayers));
             break;
         case "clear":
             huntedPlayers = [];
             ChatLib.chat("&aCleared hunted list.");
-            FileLib.write("Pitsandbox", "huntedPlayers.json", JSON.stringify(huntedPlayers));
+            FileLib.write("PitSandboxDev", "huntedPlayers.json", JSON.stringify(huntedPlayers));
             break;
         case "list":
             ChatLib.chat("&aHunted players: " + (huntedPlayers.length > 0 ? huntedPlayers.map(p => "&b" + p).join("&a, ") : "&cNone"));
@@ -1414,46 +1336,6 @@ register("step", () => {
     }
 }).setFps(2);
 
-/* register("step", () => {
-    if (!pitsandbox || !Settings.autoBal) return;
-    TabList.getUnformattedNames().filter(n => !n.startsWith("CIT-") && !n.includes("§")).forEach(n => {
-        if (!balances[n] || balances[n].bal == undefined) balances[n] = {
-            bal: 0,
-            lastfetch: Date.now() - 600000
-        };
-        if (Date.now() - balances[n].lastfetch >= 600000) {
-            if (balqueue.includes(n)) return;
-            console.log("Pushed " + n + " to fetch queue, last fetch was " + msToTime(Date.now() - balances[n].lastfetch, false) + " ago");
-            balqueue.push(n);
-        }
-    });
-}).setDelay(10);
-
-register("step", () => {
-    if (!pitsandbox) return;
-    if (balqueue.length > 0) {
-        console.log("Fetching bal of " + balqueue[0] + ", " + (balqueue.length - 1) + " left");
-        console.log("Last fetch " + msToTime(Date.now() - balances[balqueue[0]].lastfetch, false) + " ago");
-        let p = balqueue.shift();
-        ChatLib.command("bal " + p);
-        let event = register("chat", (player, balance, event) => {
-            if (player == p || player.startsWith("~")) {
-                cancel(event);
-                balance = parseFloat(balance.replace(/,/g, ""));
-                if (balance != undefined && balance != NaN) {
-                    balances[p].bal = balance;
-                    balances[p].lastfetch = Date.now();
-                    console.log("Fetched balance of " + p + ": " + formatNumber(balance));
-                    FileLib.write("Pitsandbox", "balances.json", JSON.stringify(balances));
-                }
-            }
-        }).Criteria("Balance of ${player}: $${balance}");
-        setTimeout(() => {
-            event.unregister();
-        }, 1000);
-    }
-}).setDelay(2); */
-
 register("step", () => {
     if (pitsandbox && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
     else Scoreboard.setShouldRender(true);
@@ -1725,7 +1607,6 @@ register("actionBar", event => {
     }
     if (!Settings.toggleGPassiveSound) return;
     if (ChatLib.removeFormatting(ChatLib.getChatMessage(event)).includes("Couldn't hit") && parseFloat(Settings.guildPassivePitch) && parseFloat(Settings.guildPassivePitch) != NaN ? World.playSound(Settings.guildPassiveSound, 1, parseFloat(Settings.guildPassivePitch)) : undefined);
-    console.log(msg)
 });
 
 
