@@ -211,16 +211,6 @@ class Settings {
         category: "!General"
     })
     toggleLowHealthHUD = true;
-
-    @SliderProperty({
-        name: "Low Health Threshold",
-        description: "Set the health you want to be at before swapping to bill lifesteal",
-        category: "!General",
-        min: 1,
-        max: 12
-    })
-    autoLSHealth = 8;
-
     @SwitchProperty({
         name: "Pre OOF",
         description: "Prevent /oofing when you are premega",
@@ -285,11 +275,9 @@ class Settings {
         max: 50000
     })
     minPay = 5000;
-
-
     @SliderProperty({
         name: "Mid Radius Amount",
-        description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)\n§,
+        description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)",
         category: "!General",
         min: 9,
         max: 20
