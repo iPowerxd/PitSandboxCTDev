@@ -263,7 +263,7 @@ const getBlessing = () => {
             }
         }
     } else blessing = "None", level = "None"
-    return [blessing, levels]
+    return [blessing, level]
 }
 
 const hasPerk = (perk) => {
