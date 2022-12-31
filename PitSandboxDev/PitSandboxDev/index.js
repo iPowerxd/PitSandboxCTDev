@@ -298,8 +298,9 @@ register("tick", () => {
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
-    info.splice(0, 0, "&b" + perks[2][0])
-    info.splice(1, 0, "&b" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + " " + perks[0][0][1] + " ") + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + " " + perks[0][1][1] + " ") + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + " " + perks[0][2][1] + " "))
+    info.splice(0, 0, "&c" + perks[2][0])
+    info.splice(1, 0, "&b" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&c " + perks[0][0][1] + " ") + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&c " + perks[0][1][1] + " ") + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&c " + perks[0][2][1] + " "))
+    info.splice(2, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]) + (perks[1][1] == "Nothing" ? "" : perks[1][1]) + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
     let y = 90
     info.forEach(line => {
         const text = new Text(line, 0, y)
