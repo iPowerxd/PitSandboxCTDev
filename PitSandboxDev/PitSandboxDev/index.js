@@ -299,7 +299,7 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     info.splice(0, 0, "&b" + perks[2][0])
-    info.splice(1, 0, "&b" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + " " + perks[0][0][1]) + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + " " + perks[0][1][1]) + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + " " + perks[0][2][1]))
+    info.splice(1, 0, "&b" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + " " + perks[0][0][1] + " ") + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + " " + perks[0][1][1] + " ") + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + " " + perks[0][2][1] + " "))
     let y = 90
     info.forEach(line => {
         const text = new Text(line, 0, y)
