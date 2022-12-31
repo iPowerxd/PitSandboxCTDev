@@ -250,6 +250,11 @@ const getMegastreak = () => {
     }
 }
 
+const getBlessing = () => {
+    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
+    ChatLib.chat(ChatLib.removeFormatting(Player.getContainer().getStackInSlot(23).getNBT().toString()))
+}
+
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (perks[0][i].includes(perk)) return perks[0][i][1]
@@ -270,7 +275,9 @@ register("command", () => {
 
 register("worldLoad", () => {
     if (pitsandbox) ChatLib.command("syncperks", true)
-    syncperks = true
+    setTimeout(() => {
+        syncperks = true
+    }, 500)
 })
 
 register("guiOpened", event => {
@@ -282,6 +289,7 @@ register("guiOpened", event => {
             let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
             let killstreaks = getKillStreaks()
             let megastreak = getMegastreak()
+            let blessing = getBlessing()
             perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.getCurrentGui().close()
@@ -317,6 +325,7 @@ register("renderOverlay", () => {
     info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
     info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
     info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
+    info.splice(8, 0, "&a")
     let y = 80
     info.forEach(line => {
         const text = new Text(line, 0, y)
