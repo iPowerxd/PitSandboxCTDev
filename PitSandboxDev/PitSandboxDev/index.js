@@ -193,6 +193,7 @@ const getMegaColor = (mega) => {
     else if (mega == "Highlander") return "&6"
     else if (mega == "To the Moon") return "&b"
     else if (mega == "Uberstreak") return "&d"
+    else if (mega == "Grand Finale") return "&e"
     else if (mega == "Nightmare") return "&1"
     else if (mega == "Hermit") return "&9"
     else return "&7"
@@ -309,7 +310,7 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     info.splice(0, 0, (getMegaColor(perks[2][0])) + perks[2][0])
-    info.splice(1, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&4 " + perks[0][0][1] + "&c ") + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&4 " + perks[0][1][1] + "&c ") + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&4 " + perks[0][2][1]))
+    info.splice(1, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&e " + perks[0][0][1] + "&c ") + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&e " + perks[0][1][1] + "&c ") + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&e " + perks[0][2][1]))
     info.splice(2, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]) + (perks[1][1] == "Nothing" ? "" : perks[1][1]) + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
     let y = 90
     info.forEach(line => {
