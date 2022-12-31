@@ -309,7 +309,7 @@ register("tick", () => {
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
-    info.splice(0, 0, "&f&nUpdrades")
+    info.splice(0, 0, Settings.hudGroupColor + "&nUpgrades")
     info.splice(1, 0, getMegaColor(perks[2][0]) + perks[2][0])
     info.splice(2, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
     info.splice(3, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
