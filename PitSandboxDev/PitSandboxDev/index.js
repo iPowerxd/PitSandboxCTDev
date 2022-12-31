@@ -269,7 +269,6 @@ register("command", () => {
 }).setName("perks")
 
 register("worldLoad", () => {
-    pitsandbox = Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")
     if (pitsandbox) ChatLib.command("syncperks", true)
 })
 
