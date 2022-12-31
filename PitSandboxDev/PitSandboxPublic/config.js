@@ -14,7 +14,7 @@ Color,
 @TextProperty,
 @Vigilant,
     } from 'Vigilance';
-@Vigilant('Pitsandbox', 'Pit Sandbox',)
+@Vigilant('PitSandboxPublic', 'Pit Sandbox',)
 class Settings {
     /* @TextProperty({
         name: "text",
