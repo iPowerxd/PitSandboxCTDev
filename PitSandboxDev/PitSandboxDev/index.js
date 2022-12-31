@@ -214,16 +214,16 @@ const getKillStreaks = () => {
     let killstreak2
     let killstreak3
     if (ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1].split('",2:'))) {
-            killstreak1 = ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1].split('",2:"')[0])
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #1: ")[1].split('",2:'))) {
+            killstreak1 = ChatLib.removeFormatting(NBT.split("Killstreak #1: ")[1].split('",2:"')[0])
         }
     } if (ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1].split('",3:'))) {
-            killstreak2 = ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1].split('",3:"')[0])
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #2: ")[1].split('",3:'))) {
+            killstreak2 = ChatLib.removeFormatting(NBT.split("Killstreak #2: ")[1].split('",3:"')[0])
         }
     } if (ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1].split('",2:'))) {
-            killstreak3 = ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1].split('"],')[0])
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #3: ")[1].split('",2:'))) {
+            killstreak3 = ChatLib.removeFormatting(NBT.split("Killstreak #3: ")[1].split('"],')[0])
             return ([killstreak1, killstreak2, killstreak3])
         }
     }
