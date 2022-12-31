@@ -189,7 +189,7 @@ let perks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
 
 
 function getMegaColor(mega) {
-    ChatLib.chat(mega)
+    mega.toString
     if (mega == "Overdrive") return "&c"
     else if (mega == "Highlander") return "&6"
     else if (mega == "To the Moon") return "&b"
