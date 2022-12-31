@@ -1,12 +1,4 @@
-import Settings from './Config';
-/* import {
-    request
-} from "RequestV2"; */
-
-/* 
-let version = "b43"; */
-
-
+import Settings from './config';
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
