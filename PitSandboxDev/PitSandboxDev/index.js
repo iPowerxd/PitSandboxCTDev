@@ -270,7 +270,7 @@ register("command", () => {
 
 register("worldLoad", () => {
     pitsandbox = Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")
-    syncperks = true
+    if (pitsandbox) ChatLib.command("syncperks", true)
 })
 
 register("guiOpened", event => {
