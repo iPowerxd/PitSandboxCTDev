@@ -256,7 +256,7 @@ const getBlessing = () => {
     let level
     if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1])) {
         if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')) {
-            blessing = ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')
+            blessing = ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')[0]
         } if (ChatLib.removeFormatting(NBT.split("Level: ")[1])) {
             if (ChatLib.removeFormatting(NBT.split("Level: ")[1]).split('"],Name')) {
                 level = ChatLib.removeFormatting(NBT.split("Level: ")[1]).split('"],Name')[0]
@@ -336,7 +336,7 @@ register("renderOverlay", () => {
     info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
     info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
     info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
-    info.splice(8, 0, "&a")
+    info.splice(8, 0, "&a" + perks[2][0] + (perks[2][1] == "None" ? "" : "&7" + perk[2][1]))
     let y = 80
     info.forEach(line => {
         const text = new Text(line, 0, y)
