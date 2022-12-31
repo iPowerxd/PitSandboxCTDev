@@ -309,13 +309,14 @@ register("tick", () => {
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
-    info.splice(0, 0, (getMegaColor(perks[2][0])) + perks[2][0])
-    info.splice(1, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
-    info.splice(2, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
-    info.splice(3, 0, "&c" + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&7 " + perks[0][2][1]))
-    info.splice(4, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
-    info.splice(5, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
-    info.splice(6, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
+    info.splice(0, 0, "&f&nUpdrades")
+    info.splice(1, 0, getMegaColor(perks[2][0]) + perks[2][0])
+    info.splice(2, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
+    info.splice(3, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
+    info.splice(4, 0, "&c" + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&7 " + perks[0][2][1]))
+    info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
+    info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
+    info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
     let y = 80
     info.forEach(line => {
         const text = new Text(line, 0, y)
