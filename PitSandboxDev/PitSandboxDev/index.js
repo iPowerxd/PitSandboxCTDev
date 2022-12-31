@@ -270,6 +270,7 @@ register("command", () => {
 
 register("worldLoad", () => {
     if (pitsandbox) ChatLib.command("syncperks", true)
+    syncperks = true
 })
 
 register("guiOpened", event => {
