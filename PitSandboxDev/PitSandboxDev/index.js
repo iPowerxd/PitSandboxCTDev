@@ -251,8 +251,8 @@ const getMegastreak = () => {
 }
 
 const getBlessing = () => {
-    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
-    ChatLib.chat(ChatLib.removeFormatting(Player.getContainer().getStackInSlot(23).getNBT().toString()))
+    let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
+    ChatLib.chat(ChatLib.removeFormatting(Player.getContainer().getStackInSlot(22).getNBT().toString()))
 }
 
 const hasPerk = (perk) => {
@@ -290,7 +290,7 @@ register("guiOpened", event => {
             let killstreaks = getKillStreaks()
             let megastreak = getMegastreak()
             let blessing = getBlessing()
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak], blessing]
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.getCurrentGui().close()
             ChatLib.chat("&aPerks synced.")
