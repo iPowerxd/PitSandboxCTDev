@@ -252,7 +252,18 @@ const getMegastreak = () => {
 
 const getBlessing = () => {
     let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
-    ChatLib.chat(ChatLib.removeFormatting(Player.getContainer().getStackInSlot(22).getNBT().toString()))
+    let blessing
+    let level
+    if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')) {
+            blessing = ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')
+        } if (ChatLib.removeFormatting(NBT.split("Level: ")[1])) {
+            if (ChatLib.removeFormatting(NBT.split("Level: ")[1]).split('"],Name')) {
+                level = ChatLib.removeFormatting(NBT.split("Level: ")[1]).split('"],Name')[0]
+            }
+        }
+    } else blessing = "None", level = "None"
+    return [blessing, levels]
 }
 
 const hasPerk = (perk) => {
