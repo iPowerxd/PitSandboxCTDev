@@ -189,6 +189,118 @@ let KeyBinding = Java.type("net.minecraft.client.settings.KeyBinding");
 
 
 
+let syncperks
+let autoSyncCooldown
+let spawn
+let autoSyncperks = false
+let perks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
+
+
+const getPerk = (NBT) => {
+    if (ChatLib.removeFormatting(NBT.split("Selected: ")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Selected: ")[1].split('"]'))) {
+            let perk = ChatLib.removeFormatting(NBT.split("Selected: ")[1].split('"]')[0]).split(" I")
+            if (perk == "Nothing") return ["Nothing", 0]
+            switch (perk[1]) {
+                case "":
+                    perk[1] = 1
+                    return perk
+                case "I":
+                    perk[1] = 2
+                    return perk
+                case "II":
+                    perk[1] = 3
+                    return perk
+            }
+        }
+    } else return false
+}
+
+const getKillStreaks = () => {
+    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
+    let killstreak1
+    let killstreak2
+    let killstreak3
+    if (ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1].split('",2:'))) {
+            killstreak1 = ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1].split('",2:"')[0])
+        }
+    } if (ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1].split('",3:'))) {
+            killstreak2 = ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1].split('",3:"')[0])
+        }
+    } if (ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1].split('",2:'))) {
+            killstreak3 = ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1].split('"],')[0])
+            return ([killstreak1, killstreak2, killstreak3])
+        }
+    }
+    return undefined
+}
+
+const getMegastreak = () => {
+    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
+    if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')) {
+            return ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')[0]
+        }
+    }
+}
+
+const hasPerk = (perk) => {
+    for (let i = 0; i < 3; i++) {
+        if (perks[0][i].includes(perk)) return perks[0][i][1]
+    } return false
+}
+
+register("command", () => {
+    ChatLib.command("view " + Player.getName())
+    syncperks = true
+}).setName("syncperks")
+
+register("command", () => {
+    ChatLib.chat("\n&c&lMegastreak: &b" + perks[2][0] + "\n\n&cPerks: &b" + perks[1][0][0] + " " + perks[1][0][1] + ", " + perks[1][1][0] + " " + perks[1][1][1] + ", " + perks[1][2][0] + " " + perks[1][2][1] + "\n\n&cKillstreaks:&b" + perks[0][0] + "," + perks[0][1] + "," + perks[0][2] + "\n")
+}).setName("perks")
+
+register("worldLoad", () => {
+    pitsandbox = Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io")
+    syncperks = true
+})
+
+register("guiOpened", event => {
+    if (!pitsandbox || !syncperks) return
+    setTimeout(() => {
+        if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
+            let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
+            let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
+            let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
+            let killstreaks = getKillStreaks()
+            let megastreak = getMegastreak()
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
+            FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
+            Client.getCurrentGui().close()
+            ChatLib.chat("&aPerks synced.")
+            syncperks = undefined
+        }
+    }, 100)
+})
+
+register("tick", () => {
+    if (inSpawn(Player.asPlayerMP()) && !spawn) {
+        spawn = true
+    } else if (!inSpawn(Player.asPlayerMP()) && spawn) {
+        spawn = undefined
+        if ((!autoSyncCooldown || Date.now() - autoSyncCooldown > 3000) && autoSyncperks) {
+            autoSyncCooldown = Date.now()
+            ChatLib.command("view " + Player.getName())
+            syncperks = true
+            autoSyncperks = false
+        }
+    }
+})
+
+
+
 register("worldLoad", () => {
     inMenu = true
 })
