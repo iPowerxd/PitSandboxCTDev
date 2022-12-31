@@ -251,7 +251,7 @@ register("command", () => {
 }).setName("syncperks")
 
 register("command", () => {
-    ChatLib.chat("\n&c&lMegastreak: &b" + perks[2][0] + "\n\n&cPerks: &b" + perks[1][0][0] + " " + perks[1][0][1] + ", " + perks[1][1][0] + " " + perks[1][1][1] + ", " + perks[1][2][0] + " " + perks[1][2][1] + "\n\n&cKillstreaks:&b" + perks[0][0] + "," + perks[0][1] + "," + perks[0][2] + "\n")
+    ChatLib.chat("\n&c&lMegastreak: &b" + perks[2][0] + "\n\n&cPerks: &b" + perks[0][0][0] + " " + perks[0][0][1] + ", " + perks[0][1][0] + " " + perks[0][1][1] + ", " + perks[0][2][0] + " " + perks[0][2][1] + "\n\n&cKillstreaks:&b" + perks[2][0] + "," + perks[2][1] + "," + perks[2][2] + "\n")
 }).setName("perks")
 
 register("worldLoad", () => {
