@@ -1287,48 +1287,45 @@ new Thread(() => {
                 streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"]);
                 streakinglines = streakinfo;
             }
-            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1 && syncedKOS.filter(k => k.uuid ? (namecache[k.uuid] ? (onlinePlayers.includes(namecache[k.uuid].name) && !onlineHunt.includes(namecache[k.uuid].name) && !onlineHuntGuild.includes(namecache[k.uuid].name)) : false) : (onlinePlayers.includes(k) && !onlineHunt.includes(k) && !onlineHuntGuild.includes(k))).length < 1) huntinglines = [];
-            else {
-                let huntinfo = [];
-                if (onlineHunt.length > 0) {
-                    huntinfo.push(Settings.hudGroupColor + "&nHunted Players");
-                    onlineHunt.forEach(p => {
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
-                        if (!entity) suffix = " &cUnknown";
-                        else if (inMid(entity)) suffix = " &4MID";
-                        else if (inSpawn(entity)) suffix = " &aSpawn";
-                        else suffix = " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
-                    });
-                }
-                if (onlineHuntGuild.filter(h => !onlineHunt.includes(h)).length > 0) {
-                    huntinfo.push(Settings.hudGroupColor + "&nHunted Tags");
-                    onlineHuntGuild.filter(h => !onlineHunt.includes(h)).forEach(p => {
-                        let suffix = "";
-                        let prefix = "";
-                        let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
-                        let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
-                        if (tabp && tabp.split(" ")[2].includes("[")) suffix = " " + tabp.split(" ")[2];
-                        if (!entity) suffix += " &cUnknown";
-                        else if (inMid(entity)) suffix += " &4MID";
-                        else if (inSpawn(entity)) suffix += " &aSpawn";
-                        else suffix += " &6Outskirts";
-                        if (!tabp) prefix += "&cNotInTab &c";
-                        else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
-                        else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
-                        if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
-                        huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
-                    });
-                }
-                huntinglines = huntinfo;
+            let huntinfo = [];
+            if (onlineHunt.length > 0) {
+                huntinfo.push(Settings.hudGroupColor + "&nHunted Players");
+                onlineHunt.forEach(p => {
+                    let suffix = "";
+                    let prefix = "";
+                    let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
+                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
+                    if (!entity) suffix = " &cUnknown";
+                    else if (inMid(entity)) suffix = " &4MID";
+                    else if (inSpawn(entity)) suffix = " &aSpawn";
+                    else suffix = " &6Outskirts";
+                    if (!tabp) prefix += "&cNotInTab &c";
+                    else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
+                    else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
+                    if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
+                    huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
+                });
             }
+            if (onlineHuntGuild.filter(h => !onlineHunt.includes(h)).length > 0) {
+                huntinfo.push(Settings.hudGroupColor + "&nHunted Tags");
+                onlineHuntGuild.filter(h => !onlineHunt.includes(h)).forEach(p => {
+                    let suffix = "";
+                    let prefix = "";
+                    let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
+                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
+                    if (tabp && tabp.split(" ")[2].includes("[")) suffix = " " + tabp.split(" ")[2];
+                    if (!entity) suffix += " &cUnknown";
+                    else if (inMid(entity)) suffix += " &4MID";
+                    else if (inSpawn(entity)) suffix += " &aSpawn";
+                    else suffix += " &6Outskirts";
+                    if (!tabp) prefix += "&cNotInTab &c";
+                    else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
+                    else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
+                    if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
+                    huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
+                });
+            }
+            huntinglines = huntinfo;
         }, 0);
         setTimeout(() => {
             if (target && targetexpire && Date.now() >= targetexpire) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = [];
@@ -1649,7 +1646,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHuntKOS.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName()) && !onlineHunt.includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHuntKOS.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName()) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
