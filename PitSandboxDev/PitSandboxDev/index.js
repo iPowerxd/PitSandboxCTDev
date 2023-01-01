@@ -1376,7 +1376,7 @@ new Thread(() => {
             if (player.getItemInSlot(0) && player.getItemInSlot(0).getNBT() && (player.getItemInSlot(0).getID() == 283 || player.getItemInSlot(0).getID() == 261) && getEnchants(player.getItemInSlot(0).getNBT())) {
                 swordenchants = "§9" + getEnchants(player.getItemInSlot(0).getNBT()).join(" ");
                 if (player.getItemInSlot(0).getID() == 283) {
-                    if (hasEnchant("lifesteal", player.getItemInSlot(0).getNBT()) /* && hasEnchant("billionaire", player.getItemInSlot(0).getNBT()) */) {
+                    if (hasEnchant("lifesteal", player.getItemInSlot(0).getNBT()) && hasEnchant("billionaire", player.getItemInSlot(0).getNBT())) {
                         lsticks++;
                         allticks++;
                     } else {
