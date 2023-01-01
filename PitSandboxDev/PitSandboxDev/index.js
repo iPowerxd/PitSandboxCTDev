@@ -1160,7 +1160,7 @@ new Thread(() => {
         onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
         onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n));
         if (huntingKey.isPressed()) {
-            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1 && onlineHuntKOS.length < 1) {
+            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1) {
                 hunting = false, ChatLib.chat("§7Hunting: §cNo players online!");
             } else {
                 hunting = !hunting;
@@ -1683,7 +1683,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHuntKOS.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName()) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
