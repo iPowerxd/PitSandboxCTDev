@@ -1,6 +1,6 @@
 {
     "$schema": "../ctautocomplete/schema.json",
-    "name": "PitSandboxPublic",
+    "name": "PitSandbox",
     "author": "PitSandbox Developers",
     "description": "Pit Sandbox ChatTriggers",
     "entry": "index.js",
