@@ -1856,18 +1856,18 @@ register("chat", (booster, event) => {
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
 register("tick", () => {
-    if (coinBooster != undefined) coinBooster--
-    //if (coinBooster == 0) coinBooster = undefined
-    if (xpBooster != undefined) xpBooster--
-    //if (xpBooster == 0) xpBooster = undefined
-    if (botsBooster != undefined) botsBooster--
-    //if (botsBooster == 0) botsBooster = undefined
-    if (overflowBooster != undefined) overflowBooster--
-    //if (overflowBooster == 0) overflowBooster = undefined
-    if (fishingBooster != undefined) fishingBooster--
-    //if (fishingBooster == 0) fishingBooster = undefined
-    if (miningBooster != undefined) miningBooster--
-    //if (miningBooster == 0) miningBooster = undefined
+    if (coinBooster != undefined) coinBooster - 10
+    if (coinBooster == 0) coinBooster = undefined
+    if (xpBooster != undefined) xpBooster - 10
+    if (xpBooster == 0) xpBooster = undefined
+    if (botsBooster != undefined) botsBooster - 10
+    if (botsBooster == 0) botsBooster = undefined
+    if (overflowBooster != undefined) overflowBooster - 10
+    if (overflowBooster == 0) overflowBooster = undefined
+    if (fishingBooster != undefined) fishingBooster - 10
+    if (fishingBooster == 0) fishingBooster = undefined
+    if (miningBooster != undefined) miningBooster - 10
+    if (miningBooster == 0) miningBooster = undefined
 })
 
 register("renderOverlay", () => {
