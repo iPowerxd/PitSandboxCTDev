@@ -1855,7 +1855,7 @@ register("chat", (booster, event) => {
     else if (booster == "Mining xp") miningBooster = 3600
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
-register("tick", () => {
+register("step", () => {
     if (coinBooster != undefined) coinBooster--
     if (coinBooster == 0) coinBooster = undefined
     if (xpBooster != undefined) xpBooster--
@@ -1868,7 +1868,7 @@ register("tick", () => {
     if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
     if (miningBooster == 0) miningBooster = undefined
-})
+}).setFps(1)
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
