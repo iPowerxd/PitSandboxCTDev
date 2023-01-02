@@ -1846,7 +1846,7 @@ let overflowBooster
 let fishingBooster
 let miningBooster
 
-register("chat", event => {
+register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 3600
     else if (booster == "XP") xpBooster = 3600
     else if (booster == "bots") botsBooster = 3600
