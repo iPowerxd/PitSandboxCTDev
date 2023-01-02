@@ -81,7 +81,6 @@ let gems = undefined;
 let megacoins = undefined;
 let streak = 0;
 let streakkills = 0;
-let autoSuperegg = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
