@@ -1685,7 +1685,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
@@ -1846,7 +1846,7 @@ let overflowBooster
 let fishingBooster
 let miningBooster
 
-register("chat", (booster, event) => {
+register("chat", event => {
     if (booster == "coin") coinBooster = 3600
     else if (booster == "XP") xpBooster = 3600
     else if (booster == "bots") botsBooster = 3600
@@ -1857,34 +1857,34 @@ register("chat", (booster, event) => {
 
 register("step", () => {
     if (coinBooster != undefined) coinBooster--
-    if (coinBooster == 0) coinBooster = undefined
+    else if (coinBooster == 0) coinBooster = undefined
     if (xpBooster != undefined) xpBooster--
-    if (xpBooster == 0) xpBooster = undefined
+    else if (xpBooster == 0) xpBooster = undefined
     if (botsBooster != undefined) botsBooster--
-    if (botsBooster == 0) botsBooster = undefined
+    else if (botsBooster == 0) botsBooster = undefined
     if (overflowBooster != undefined) overflowBooster--
-    if (overflowBooster == 0) overflowBooster = undefined
+    else if (overflowBooster == 0) overflowBooster = undefined
     if (fishingBooster != undefined) fishingBooster--
-    if (fishingBooster == 0) fishingBooster = undefined
+    else if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
-    if (miningBooster == 0) miningBooster = undefined
-}).setFps(1)
+    else if (miningBooster == 0) miningBooster = undefined
+})
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     if (coinBooster != undefined) {
-        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
+        info.splice(0, 0, "&6Coin Booster&7: " + coinBooster)
     } if (xpBooster != undefined) {
-        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
+        info.splice(0, 0, "&bXP Booster&7: " + xpBooster)
     } if (botsBooster != undefined) {
-        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
+        info.splice(0, 0, "&3Bots Booster&7: " + botsBooster)
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
+        info.splice(0, 0, "&cOverflow Booster&7: " + overflowBooster)
     } if (fishingBooster != undefined) {
-        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
+        info.splice(0, 0, "&dFishing Booster&7: " + fishingBooster)
     } if (miningBooster != undefined) {
-        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
+        info.splice(0, 0, "&8Mining Booster&7: " + miningBooster)
     }
     let y = 4
     info.forEach(line => {
