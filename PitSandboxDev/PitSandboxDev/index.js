@@ -1857,17 +1857,17 @@ register("chat", (booster, event) => {
 
 register("tick", () => {
     if (coinBooster != undefined) coinBooster--
-    if (coinBooster == 0) coinBooster = undefined
+    //if (coinBooster == 0) coinBooster = undefined
     if (xpBooster != undefined) xpBooster--
-    if (xpBooster == 0) xpBooster = undefined
+    //if (xpBooster == 0) xpBooster = undefined
     if (botsBooster != undefined) botsBooster--
-    if (botsBooster == 0) botsBooster = undefined
+    //if (botsBooster == 0) botsBooster = undefined
     if (overflowBooster != undefined) overflowBooster--
-    if (overflowBooster == 0) overflowBooster = undefined
+    //if (overflowBooster == 0) overflowBooster = undefined
     if (fishingBooster != undefined) fishingBooster--
-    if (fishingBooster == 0) fishingBooster = undefined
+    //if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
-    if (miningBooster == 0) miningBooster = undefined
+    //if (miningBooster == 0) miningBooster = undefined
 })
 
 register("renderOverlay", () => {
