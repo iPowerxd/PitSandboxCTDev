@@ -1874,17 +1874,17 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     if (coinBooster != undefined) {
-        info.splice(0, 0, "&6Coin Booster&7: " + coinBooster)
+        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster))
     } if (xpBooster != undefined) {
-        info.splice(0, 0, "&bXP Booster&7: " + xpBooster)
+        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster))
     } if (botsBooster != undefined) {
-        info.splice(0, 0, "&3Bots Booster&7: " + botsBooster)
+        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster))
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + overflowBooster)
+        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime))
     } if (fishingBooster != undefined) {
-        info.splice(0, 0, "&dFishing Booster&7: " + fishingBooster)
+        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster))
     } if (miningBooster != undefined) {
-        info.splice(0, 0, "&8Mining Booster&7: " + miningBooster)
+        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster))
     }
     let y = 4
     info.forEach(line => {
