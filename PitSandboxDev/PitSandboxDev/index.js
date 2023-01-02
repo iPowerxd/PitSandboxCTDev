@@ -1838,3 +1838,60 @@ register("tick", () => {
         }
     }
 })
+
+let coinBooster
+let xpBooster
+let botsBooster
+let overflowBooster
+let fishingBooster
+let miningBooster
+
+register("chat", event => {
+    if (booster == "coin") coinBooster = 3600
+    else if (booster == "XP") xpBooster = 3600
+    else if (booster == "bots") botsBooster = 3600
+    else if (booster == "Overflow") overflowBooster = 3600
+    else if (booster == "fishing xp") fishingBooster = 3600
+    else if (booster == "Mining xp") miningBooster = 3600
+}).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
+
+register("step", () => {
+    if (coinBooster != undefined) coinBooster--
+    else if (coinBooster == 0) coinBooster = undefined
+    if (xpBooster != undefined) xpBooster--
+    else if (xpBooster == 0) xpBooster = undefined
+    if (botsBooster != undefined) botsBooster--
+    else if (botsBooster == 0) botsBooster = undefined
+    if (overflowBooster != undefined) overflowBooster--
+    else if (overflowBooster == 0) overflowBooster = undefined
+    if (fishingBooster != undefined) fishingBooster--
+    else if (fishingBooster == 0) fishingBooster = undefined
+    if (miningBooster != undefined) miningBooster--
+    else if (miningBooster == 0) miningBooster = undefined
+})
+
+register("renderOverlay", () => {
+    if (!pitsandbox) return
+    let info = []
+    if (coinBooster != undefined) {
+        info.splice(0, 0, "&6Coin Booster&7: " + coinBooster)
+    } if (xpBooster != undefined) {
+        info.splice(0, 0, "&bXP Booster&7: " + xpBooster)
+    } if (botsBooster != undefined) {
+        info.splice(0, 0, "&3Bots Booster&7: " + botsBooster)
+    } if (overflowBooster != undefined) {
+        info.splice(0, 0, "&cOverflow Booster&7: " + overflowBooster)
+    } if (fishingBooster != undefined) {
+        info.splice(0, 0, "&dFishing Booster&7: " + fishingBooster)
+    } if (miningBooster != undefined) {
+        info.splice(0, 0, "&8Mining Booster&7: " + miningBooster)
+    }
+    let y = 4
+    info.forEach(line => {
+        const text = new Text(line, 0, y)
+        text.setX(Renderer.screen.getWidth() / 2)
+        text.setShadow(true)
+        text.draw()
+        y += 11
+    })
+})
