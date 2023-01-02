@@ -1847,26 +1847,26 @@ let fishingBooster
 let miningBooster
 
 register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 3600000
-    else if (booster == "XP") xpBooster = 3600000
-    else if (booster == "bots") botsBooster = 3600000
-    else if (booster == "Overflow") overflowBooster = 3600000
-    else if (booster == "fishing xp") fishingBooster = 3600000
-    else if (booster == "Mining xp") miningBooster = 3600000
+    if (booster == "coin") coinBooster = 36000
+    else if (booster == "XP") xpBooster = 36000
+    else if (booster == "bots") botsBooster = 36000
+    else if (booster == "Overflow") overflowBooster = 36000
+    else if (booster == "fishing xp") fishingBooster = 36000
+    else if (booster == "Mining xp") miningBooster = 36000
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
 register("tick", () => {
-    if (coinBooster != undefined) coinBooster - 10
+    if (coinBooster != undefined) coinBooster--
     if (coinBooster == 0) coinBooster = undefined
-    if (xpBooster != undefined) xpBooster - 10
+    if (xpBooster != undefined) xpBooster--
     if (xpBooster == 0) xpBooster = undefined
-    if (botsBooster != undefined) botsBooster - 10
+    if (botsBooster != undefined) botsBooster--
     if (botsBooster == 0) botsBooster = undefined
-    if (overflowBooster != undefined) overflowBooster - 10
+    if (overflowBooster != undefined) overflowBooster--
     if (overflowBooster == 0) overflowBooster = undefined
-    if (fishingBooster != undefined) fishingBooster - 10
+    if (fishingBooster != undefined) fishingBooster--
     if (fishingBooster == 0) fishingBooster = undefined
-    if (miningBooster != undefined) miningBooster - 10
+    if (miningBooster != undefined) miningBooster--
     if (miningBooster == 0) miningBooster = undefined
 })
 
@@ -1874,17 +1874,17 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     if (coinBooster != undefined) {
-        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster))
+        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 10))
     } if (xpBooster != undefined) {
-        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster))
+        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster * 10))
     } if (botsBooster != undefined) {
-        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster))
+        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 10))
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime))
+        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime * 10))
     } if (fishingBooster != undefined) {
-        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster))
+        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 10))
     } if (miningBooster != undefined) {
-        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster))
+        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 10))
     }
     let y = 4
     info.forEach(line => {
