@@ -1847,12 +1847,12 @@ let fishingBooster
 let miningBooster
 
 register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 36000
-    else if (booster == "XP") xpBooster = 36000
-    else if (booster == "bots") botsBooster = 36000
-    else if (booster == "Overflow") overflowBooster = 36000
-    else if (booster == "fishing xp") fishingBooster = 36000
-    else if (booster == "Mining xp") miningBooster = 36000
+    if (booster == "coin") coinBooster = 3600
+    else if (booster == "XP") xpBooster = 3600
+    else if (booster == "bots") botsBooster = 3600
+    else if (booster == "Overflow") overflowBooster = 3600
+    else if (booster == "fishing xp") fishingBooster = 3600
+    else if (booster == "Mining xp") miningBooster = 3600
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
 register("tick", () => {
@@ -1874,17 +1874,17 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     if (coinBooster != undefined) {
-        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 10))
+        info.splice(0, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
     } if (xpBooster != undefined) {
-        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster * 10))
+        info.splice(0, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
     } if (botsBooster != undefined) {
-        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 10))
+        info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime * 10))
+        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime * 1000))
     } if (fishingBooster != undefined) {
-        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 10))
+        info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
     } if (miningBooster != undefined) {
-        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 10))
+        info.splice(0, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
     }
     let y = 4
     info.forEach(line => {
