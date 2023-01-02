@@ -1683,7 +1683,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName()) && !syncedKOS.filter(k => onlinePlayers.includes(k)).includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
