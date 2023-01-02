@@ -287,8 +287,10 @@ register("command", () => {
 }).setName("perks")
 
 register("worldLoad", () => {
-    if (pitsandbox) ChatLib.command("syncperks", true)
-    syncperks = true
+    setTimeout(() => {
+        if (pitsandbox) ChatLib.command("syncperks", true)
+        syncperks = true
+    }, 400)
 })
 
 register("guiOpened", event => {
