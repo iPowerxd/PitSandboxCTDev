@@ -1847,12 +1847,12 @@ let fishingBooster
 let miningBooster
 
 register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 3600
-    else if (booster == "XP") xpBooster = 3600
-    else if (booster == "bots") botsBooster = 3600
-    else if (booster == "Overflow") overflowBooster = 3600
-    else if (booster == "fishing xp") fishingBooster = 3600
-    else if (booster == "Mining xp") miningBooster = 3600
+    if (booster == "coin") coinBooster = 360000
+    else if (booster == "XP") xpBooster = 360000
+    else if (booster == "bots") botsBooster = 360000
+    else if (booster == "Overflow") overflowBooster = 360000
+    else if (booster == "fishing xp") fishingBooster = 360000
+    else if (booster == "Mining xp") miningBooster = 360000
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
 register("step", () => {
@@ -1868,7 +1868,7 @@ register("step", () => {
     if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
     if (miningBooster == 0) miningBooster = undefined
-}).setFps(1)
+})
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
