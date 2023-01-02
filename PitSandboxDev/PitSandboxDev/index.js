@@ -166,7 +166,6 @@ else ignoredPlayers = JSON.parse(FileLib.read("PitSandBoxDev", "ignoredPlayers.j
 let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
-let onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1]));
 const BlockPos1 = Java.type("net.minecraft.util.BlockPos");
 const C08 = Java.type("net.minecraft.network.play.client.C08PacketPlayerBlockPlacement");
 const S01 = Java.type("net.minecraft.network.play.server.S01PacketJoinGame");
