@@ -160,9 +160,14 @@ let huntingKey = new KeyBind("Toggle Hunting", "", "!PitSandbox");
 let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox");
 let airBlock = new KeyBind("Create Ghost Air", "", "!PitSandbox");
 let huntedPlayers = JSON.parse(FileLib.read("PitSandboxDev", "huntedPlayers.json"));
+let huntedGuilds = JSON.parse(FileLib.read("PitSandboxDev", "huntedGuilds.json"));
+let ignoredPlayers = [];
+if (!FileLib.exists("PitSandboxDev", "ignoredPlayers.json")) FileLib.write("PitSandboxDev", "ignoredPlayers.json", "[]");
+else ignoredPlayers = JSON.parse(FileLib.read("PitSandboxDev", "ignoredPlayers.json"));
 let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
+let onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1]));
 const BlockPos1 = Java.type("net.minecraft.util.BlockPos");
 const C08 = Java.type("net.minecraft.network.play.client.C08PacketPlayerBlockPlacement");
 const S01 = Java.type("net.minecraft.network.play.server.S01PacketJoinGame");
@@ -983,6 +988,32 @@ const huntCommand = register("command", (arg1, arg2) => {
             ChatLib.chat("&aRemoved " + ChatLib.removeFormatting(arg2) + " from hunted list.");
             FileLib.write("PitSandboxDev", "huntedPlayers.json", JSON.stringify(huntedPlayers));
             break;
+        case "addguild":
+            if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
+            if (huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild already hunted.");
+            huntedGuilds.push(arg2.toUpperCase());
+            ChatLib.chat("&aAdded " + arg2.toUpperCase() + " to hunted guild list.");
+            FileLib.write("PitSandboxDev", "huntedGuilds.json", JSON.stringify(huntedGuilds));
+            break;
+        case "removeguild":
+            if (!arg2 || arg2.length > 4) return ChatLib.chat("&cInvalid name.");
+            if (!huntedGuilds.find(g => g.toLowerCase() == arg2.toLowerCase())) return ChatLib.chat("&cGuild not hunted.");
+            huntedGuilds.splice(huntedGuilds.findIndex(g => g.toLowerCase() == arg2.toLowerCase()), 1);
+            ChatLib.chat("&aRemoved " + arg2.toUpperCase() + " from hunted guild list.");
+            FileLib.write("PitSandboxDev", "huntedGuilds.json", JSON.stringify(huntedGuilds));
+            break;
+        case "ignore":
+            if (!arg2 || arg2.length < 3 || arg2.length > 16) return ChatLib.chat("&cInvalid name.");
+
+            if (ignoredPlayers.find(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase()))) {
+                ignoredPlayers.splice(ignoredPlayers.findIndex(p => ChatLib.removeFormatting(p.toLowerCase()) == ChatLib.removeFormatting(arg2.toLowerCase())), 1);
+                ChatLib.chat("&cRemoved " + ChatLib.removeFormatting(arg2) + " from ignore list.");
+            } else {
+                ignoredPlayers.push(ChatLib.removeFormatting(arg2));
+                ChatLib.chat("&aAdded " + ChatLib.removeFormatting(arg2) + " to ignore list.");
+            }
+            FileLib.write("PitSandboxDev", "ignoredPlayers.json", JSON.stringify(ignoredPlayers));
+            break;
         case "clear":
             huntedPlayers = [];
             ChatLib.chat("&aCleared hunted list.");
@@ -990,8 +1021,11 @@ const huntCommand = register("command", (arg1, arg2) => {
             break;
         case "list":
             ChatLib.chat("&aHunted players: " + (huntedPlayers.length > 0 ? huntedPlayers.map(p => "&b" + p).join("&a, ") : "&cNone"));
+            ChatLib.chat("&aHunted guild tags: " + (huntedGuilds.length > 0 ? huntedGuilds.map(g => "&b" + g).join("&a, ") : "&cNone"));
+            ChatLib.chat("&aIgnored players: " + (ignoredPlayers.length > 0 ? ignoredPlayers.map(g => "&b" + g).join("&a, ") : "&cNone"));
+            break;
         default:
-            ChatLib.chat("\n&e/hunt add <player> - Add a player to your hunt list\n&e/hunt remove <player> - Remove a player from your hunt list\n&e/hunt clear - Clear the hunted players list\n&e/hunt list - See all the players/guilds in your hunt list\n&e/hunt help - Show this help menu\n");
+            ChatLib.chat("\n&e/hunt add <player> - Add a player to your hunt list\n&e/hunt remove <player> - Remove a player from your hunt list\n&e/hunt addguild <tag> - Add a guild tag to your hunt list\n&e/hunt removeguild <tag> - Remove a guild tag from your hunt list\n&e/hunt ignore - Hide a player in your hunted tags\n&e/hunt clear - Clear the hunted players list\n&e/hunt list - See all the players/guilds in your hunt list\n&e/hunt help - Show this help menu\n");
             break;
     }
 }).setName("hunt");
@@ -1126,8 +1160,9 @@ new Thread(() => {
         onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 
         onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
+        onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n));
         if (huntingKey.isPressed()) {
-            if (onlineHunt.length < 1) {
+            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1) {
                 hunting = false, ChatLib.chat("§7Hunting: §cNo players online!");
             } else {
                 hunting = !hunting;
@@ -1303,6 +1338,25 @@ new Thread(() => {
                     else if (inMid(entity)) suffix = " &4MID";
                     else if (inSpawn(entity)) suffix = " &aSpawn";
                     else suffix = " &6Outskirts";
+                    if (!tabp) prefix += "&cNotInTab &c";
+                    else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
+                    else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
+                    if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
+                    huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
+                });
+            }
+            if (onlineHuntGuild.filter(h => !onlineHunt.includes(h)).length > 0) {
+                huntinfo.push(Settings.hudGroupColor + "&nHunted Tags");
+                onlineHuntGuild.filter(h => !onlineHunt.includes(h)).forEach(p => {
+                    let suffix = "";
+                    let prefix = "";
+                    let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
+                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
+                    if (tabp && tabp.split(" ")[2].includes("[")) suffix = " " + tabp.split(" ")[2];
+                    if (!entity) suffix += " &cUnknown";
+                    else if (inMid(entity)) suffix += " &4MID";
+                    else if (inSpawn(entity)) suffix += " &aSpawn";
+                    else suffix += " &6Outskirts";
                     if (!tabp) prefix += "&cNotInTab &c";
                     else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
                     else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
@@ -1631,7 +1685,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
