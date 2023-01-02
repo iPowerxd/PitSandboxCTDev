@@ -302,8 +302,8 @@ register("guiOpened", event => {
             let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
             let killstreaks = getKillStreaks()
             let megastreak = getMegastreak()
-            let blessing// = getBlessing()
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak], blessing]
+            //let blessing = getBlessing()
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]] // , blessing
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.getCurrentGui().close()
             ChatLib.chat("&aPerks synced.")
