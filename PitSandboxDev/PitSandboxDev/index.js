@@ -1847,15 +1847,15 @@ let fishingBooster
 let miningBooster
 
 register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 36000000
-    else if (booster == "XP") xpBooster = 36000000
-    else if (booster == "bots") botsBooster = 36000000
-    else if (booster == "Overflow") overflowBooster = 36000000
-    else if (booster == "fishing xp") fishingBooster = 36000000
-    else if (booster == "Mining xp") miningBooster = 36000000
+    if (booster == "coin") coinBooster = 3600000
+    else if (booster == "XP") xpBooster = 3600000
+    else if (booster == "bots") botsBooster = 3600000
+    else if (booster == "Overflow") overflowBooster = 3600000
+    else if (booster == "fishing xp") fishingBooster = 3600000
+    else if (booster == "Mining xp") miningBooster = 3600000
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 
-register("step", () => {
+register("tick", () => {
     if (coinBooster != undefined) coinBooster--
     if (coinBooster == 0) coinBooster = undefined
     if (xpBooster != undefined) xpBooster--
