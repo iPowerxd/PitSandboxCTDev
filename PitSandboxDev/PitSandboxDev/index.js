@@ -1880,7 +1880,7 @@ register("renderOverlay", () => {
     } if (botsBooster != undefined) {
         info.splice(0, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(msToTime * 1000))
+        info.splice(0, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
     } if (fishingBooster != undefined) {
         info.splice(0, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
     } if (miningBooster != undefined) {
