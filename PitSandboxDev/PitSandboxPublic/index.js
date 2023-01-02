@@ -1330,10 +1330,10 @@ register("renderOverlay", () => {
     } if (miningBooster != undefined) {
         info.splice(0, 0, "&8Mining Booster&7: " + miningBooster)
     }
-    let y = 4
+    let y = 0
     info.forEach(line => {
         const text = new Text(line, 0, y)
-        text.setX(Renderer.screen.getWidth() / 2)
+        //text.setX(Renderer.screen.getWidth() / 2)
         text.setShadow(true)
         text.draw()
         y += 11
