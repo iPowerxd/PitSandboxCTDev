@@ -4,13 +4,17 @@ import Settings from './config';
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
-    let name = ChatLib.removeFormatting(Player.getDisplayName().getText());
+    let name = ChatLib.removeFormatting(Player.getDisplayName().getText())
     if (name.split(" ").length < 2) return false;
-    name = name.split(" ")[0];
+    name = name.split(" ")[0]
     if (name.includes("[")) {
         if (/^\[[0-9]{1,3}\]$/g.test(name.split(" ")[0])) return true;
-        else return false;
-    } else return true;
+        else return false
+    } else {
+        if (World.getBlockAt(-14, 96, 0).includes("enchanting_table")) onKingsMap = true
+        else onKingsMap = false
+        return true
+    }
 };
 
 
@@ -173,7 +177,7 @@ const S47 = Java.type("net.minecraft.network.play.server.S47PacketPlayerListHead
 const C17 = Java.type("net.minecraft.network.play.client.C17PacketCustomPayload");
 const PacketBuffer = Java.type("net.minecraft.network.PacketBuffer");
 let Unpooled = Java.type("io.netty.buffer.Unpooled");
-
+let onKingsMap
 
 
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString");
