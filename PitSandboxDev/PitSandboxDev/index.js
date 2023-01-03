@@ -5,7 +5,7 @@ register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
     let name = ChatLib.removeFormatting(Player.getDisplayName().getText())
-    if (name.split(" ").length < 2) return false;
+    if (name.split(" ").length < 2) return false
     name = name.split(" ")[0]
     if (name.includes("[")) {
         if (/^\[[0-9]{1,3}\]$/g.test(name.split(" ")[0])) return true;
@@ -15,8 +15,7 @@ const isInMainServer = () => {
         else onKingsMap = false
         return true
     }
-};
-
+}
 
 const playerAutocomplete = args =>
     TabList.getUnformattedNames()
@@ -407,17 +406,22 @@ const inMid = entity => {
 };
 
 const inSpawn = entity => {
-    if (/* !Settings.swapMid && */ Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-        if (entity.getY() > 94 && entity.getY() < 140) {
-            return true;
-        } /* else if (Settings.swapMid && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 90 && entity.getY() < 100) {
+    if (!onKingsMap) {
+        if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+            if (entity.getY() > 94 && entity.getY() < 140) {
                 return true;
             }
-        } */
+        }
+        return false;
+    } else {
+        if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
+            if (entity.getY() > 90 && entity.getY() < 130) {
+                return true
+            }
+        }
+        return false
     }
-    return false;
-};
+}
 
 const storeSidebar = () => {
     if (Scoreboard.getLines(false).length > 0) {
