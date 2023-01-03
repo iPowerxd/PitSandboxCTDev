@@ -29,7 +29,7 @@ const huntCmdAutocomplete = args =>
         TabList.getUnformattedNames()
             .filter(n =>
                 n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "") && !n.includes("§") && !n.startsWith("CIT-")
-            ).sort() : ["add", "remove", "addguild", "removeguild", "ignore", "list", "clear"].filter(n => n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "")).sort();
+            ).sort() : ["add", "remove", "list", "clear"].filter(n => n.toLowerCase().startsWith(args.length ? args[args.length - 1].toLowerCase() : "")).sort();
 
 const msToTime = (s, showms = false) => {
     var ms = s % 1000;
@@ -164,12 +164,14 @@ let huntingKey = new KeyBind("Toggle Hunting", "", "!PitSandbox");
 let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox");
 let airBlock = new KeyBind("Create Ghost Air", "", "!PitSandbox");
 let huntedPlayers = JSON.parse(FileLib.read("PitSandboxDev", "huntedPlayers.json"));
+let huntedGuilds = JSON.parse(FileLib.read("PitSandboxDev", "huntedGuilds.json"));
 let ignoredPlayers = [];
 if (!FileLib.exists("PitSandboxDev", "ignoredPlayers.json")) FileLib.write("PitSandboxDev", "ignoredPlayers.json", "[]");
-else ignoredPlayers = JSON.parse(FileLib.read("PitSandBoxDev", "ignoredPlayers.json"));
+else ignoredPlayers = JSON.parse(FileLib.read("PitSandboxDev", "ignoredPlayers.json"));
 let onlinePlayers = TabList.getUnformattedNames().filter(n => !n.includes("§") && !n.startsWith("CIT-"));
 let onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 let onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
+let onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1]));
 const BlockPos1 = Java.type("net.minecraft.util.BlockPos");
 const C08 = Java.type("net.minecraft.network.play.client.C08PacketPlayerBlockPlacement");
 const S01 = Java.type("net.minecraft.network.play.server.S01PacketJoinGame");
@@ -1162,8 +1164,9 @@ new Thread(() => {
         onlinePlayersFormatted = TabList.getNames().filter(n => n.split(" ").length > 1);
 
         onlineHunt = huntedPlayers.filter(n => onlinePlayers.includes(n));
+        onlineHuntGuild = onlinePlayersFormatted.filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n));
         if (huntingKey.isPressed()) {
-            if (onlineHunt.length < 1) {
+            if (onlineHunt.length < 1 && onlineHuntGuild.length < 1) {
                 hunting = false, ChatLib.chat("§7Hunting: §cNo players online!");
             } else {
                 hunting = !hunting;
@@ -1339,6 +1342,25 @@ new Thread(() => {
                     else if (inMid(entity)) suffix = " &4MID";
                     else if (inSpawn(entity)) suffix = " &aSpawn";
                     else suffix = " &6Outskirts";
+                    if (!tabp) prefix += "&cNotInTab &c";
+                    else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
+                    else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
+                    if (entity && entity.getItemInSlot(2) && entity.getItemInSlot(2).getNBT() && !hasEnchant("mirror", entity.getItemInSlot(2).getNBT())) suffix += " &cNoMirrors";
+                    huntinfo.push(prefix + (tabp ? tabp.split(" ")[1] : p) + suffix);
+                });
+            }
+            if (onlineHuntGuild.filter(h => !onlineHunt.includes(h)).length > 0) {
+                huntinfo.push(Settings.hudGroupColor + "&nHunted Tags");
+                onlineHuntGuild.filter(h => !onlineHunt.includes(h)).forEach(p => {
+                    let suffix = "";
+                    let prefix = "";
+                    let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
+                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
+                    if (tabp && tabp.split(" ")[2].includes("[")) suffix = " " + tabp.split(" ")[2];
+                    if (!entity) suffix += " &cUnknown";
+                    else if (inMid(entity)) suffix += " &4MID";
+                    else if (inSpawn(entity)) suffix += " &aSpawn";
+                    else suffix += " &6Outskirts";
                     if (!tabp) prefix += "&cNotInTab &c";
                     else if (tabp.split(" ")[0].includes("[")) prefix += "&4&nPRE&r &c";
                     else prefix += tabp.split(" ")[0].replace(/§l/g, "") + " &c";
@@ -1667,7 +1689,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
     if (Settings.stopRenderSpawn && inSpawn(entity) && !inSpawn(Player.asPlayerMP())) return cancel(event);
     if (Settings.hideBotNametags && entity.getName().includes("'s Apprentice") && inMid(entity)) return cancel(event);
-    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName())) return cancel(event);
+    if (hunting && entity.getEntity().class.toString().includes("EntityOtherPlayerMP") && inMid(entity) && !onlineHunt.includes(entity.getName()) && !onlineHuntGuild.includes(entity.getName())) return cancel(event);
 });
 
 register("worldUnload", () => {
