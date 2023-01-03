@@ -11,7 +11,7 @@ const isInMainServer = () => {
         if (/^\[[0-9]{1,3}\]$/g.test(name.split(" ")[0])) return true;
         else return false
     } else {
-        if (World.getBlockAt(-14, 96, 0).includes("enchanting_table")) onKingsMap = true
+        if (World.getBlockAt(-14, 96, 0).toString().includes("enchanting_table")) onKingsMap = true
         else onKingsMap = false
         return true
     }
