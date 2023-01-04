@@ -583,11 +583,14 @@ const recapStreak = () => {
 
 
 const endStreak = () => {
-    if (!streaking) return;
-    lastendstreak = Date.now();
-    streaking = false;
-    recapStreak();
-};
+    if (!streaking) return
+    lastendstreak = Date.now()
+    streaking = false
+    strengthCount = 0
+    strengthTimer = 0
+    bodybuilderDamage = 0
+    recapStreak()
+}
 
 
 let sent = false;
