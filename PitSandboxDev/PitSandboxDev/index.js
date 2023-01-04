@@ -1971,13 +1971,13 @@ register("tick", () => {
         let ngPeople = 0
         switch (hasEnchant("notgladiator", Player.armor.getLeggings().getNBT())) {
             case 1:
-                ngMult = 1
+                ngMult = 2
                 break
             case 2:
-                ngMult = 1.5
+                ngMult = 4
                 break
             case 3:
-                ngMult = 2
+                ngMult = 6
                 break
             default:
                 break
