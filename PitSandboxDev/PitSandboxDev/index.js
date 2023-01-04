@@ -1877,21 +1877,20 @@ register("step", () => {
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
-    if (coinBooster || xpBooster || botsBooster || overflowBooster || fishingBooster || miningBooster != undefined) {
-        info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
-    }
     if (coinBooster != undefined) {
         info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
     } if (xpBooster != undefined) {
-        info.splice(1, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
+        info.splice(2, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
     } if (botsBooster != undefined) {
-        info.splice(1, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
+        info.splice(3, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
     } if (overflowBooster != undefined) {
-        info.splice(1, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
+        info.splice(4, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
     } if (fishingBooster != undefined) {
-        info.splice(1, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
+        info.splice(5, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
     } if (miningBooster != undefined) {
-        info.splice(1, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
+        info.splice(6, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
+    } if (info.length > 0) {
+        info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
     }
     let y = 4
     info.forEach(line => {
