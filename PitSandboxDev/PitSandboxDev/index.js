@@ -1985,6 +1985,6 @@ register("tick", () => {
         World.getAllEntities().forEach((e) => {
             if (e.getEntity().class.toString().includes("Player") && e.getUUID() != Player.getUUID() && e.distanceTo(World.getPlayerByName(Player.getName())) < 7) ngPeople++
         })
-        notglad = (ngPeople > 10 ? ngMult * 10 : ngMult * ngPeople)
+        notglad = (ngPeople > 5 ? ngMult * 5 : ngMult * ngPeople)
     } else notglad = 0
 })
