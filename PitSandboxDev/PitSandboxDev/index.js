@@ -1861,17 +1861,17 @@ register("chat", (booster, event) => {
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
 register("step", () => {
     if (coinBooster != undefined) coinBooster--
-    else if (coinBooster == 0) coinBooster = undefined
+    if (coinBooster == 0) coinBooster = undefined
     if (xpBooster != undefined) xpBooster--
-    else if (xpBooster == 0) xpBooster = undefined
+    if (xpBooster == 0) xpBooster = undefined
     if (botsBooster != undefined) botsBooster--
-    else if (botsBooster == 0) botsBooster = undefined
+    if (botsBooster == 0) botsBooster = undefined
     if (overflowBooster != undefined) overflowBooster--
-    else if (overflowBooster == 0) overflowBooster = undefined
+    if (overflowBooster == 0) overflowBooster = undefined
     if (fishingBooster != undefined) fishingBooster--
-    else if (fishingBooster == 0) fishingBooster = undefined
+    if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
-    else if (miningBooster == 0) miningBooster = undefined
+    if (miningBooster == 0) miningBooster = undefined
 }).setFps(1)
 
 register("renderOverlay", () => {
