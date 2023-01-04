@@ -810,6 +810,7 @@ register("chat", (player, xp, gold, event) => {
     if (!pitsandbox) return;
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
+    strength()
     if (Date.now() - lastendstreak < 2000) return;
     xp = xp.replace(/[,]/g, "");
     let str = 1;
@@ -851,6 +852,7 @@ register("chat", (mult, player, xp, gold, event) => {
     if (!Settings.toggleSandboxHUD) return;
     if (mult.split(" ").length > 1) return;
     cancel(event);
+    strength()
     if (Date.now() - lastendstreak < 2000) return;
     xp = xp.replace(/[,]/g, "");
     let str = 1;
@@ -867,6 +869,7 @@ register("chat", (mult, player, xp, gold, event) => {
     if (!pitsandbox) return;
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
+    strength()
     if (Date.now() - lastendstreak < 2000) return;
     xp = xp.replace(/[,]/g, "");
     let str = 1;
@@ -1900,4 +1903,85 @@ register("renderOverlay", () => {
         text.draw()
         y += 11
     })
+})
+
+let strengthCount = 0
+let strengthTimer = 0
+let bodybuilderDamage = 0
+
+register("renderOverlay", () => {
+    if (!pitsandbox) return
+    let info = []
+    let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
+    let strength = strengthCount * 8
+    if (!inSpawn(Player.asPlayerMP())) {
+        if (strengthCount != 0) {
+            info.splice(1, 0, "&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
+        }
+        if (hasPerk("Bodybuilder") && strengthCount == 5) {
+            info.splice(2, 0, "&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
+        }
+        if (hasPerk("Berserker Brew") && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
+            const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
+            info.splice(3, 0, "&f&lBers Brew&r: &c" + bersLevel)
+        }
+        if (notglad != 0) {
+            info.splice(4, 0, '&b&l"Not" Glad&b: -' + notglad + "%")
+        }
+        if (info.length > 0) {
+            info.splice(0, 0, `${Settings.hudGroupColor}&nBuffs`)
+        }
+    }
+    let y = 4
+    info.forEach(line => {
+        const text = new Text(line, 0, y)
+        text.setX(Renderer.screen.getWidth() / 6)
+        text.setShadow(true)
+        text.draw()
+        y += 11.5
+    })
+})
+
+register("step", () => {
+    if (!pitsandbox) return
+    if (strengthTimer != 0) strengthTimer--
+    if (strengthTimer == 0) {
+        strengthCount = 0
+        bodybuilderDamage = 0
+    }
+}).setFps(1)
+
+function strength() {
+    if (strengthCount < 5) strengthCount++
+    if (hasPerk("Bodybuilder")) {
+        strengthTimer = 3
+        if (strengthCount == 5 && bodybuilderDamage < 16) bodybuilderDamage += hasPerk("Bodybuilder") * 0.5
+    } else {
+        strengthTimer = 7
+    }
+}
+
+register("tick", () => {
+    if (!pitsandbox) return
+    if (Player.armor.getLeggings() && hasEnchant("notgladiator", Player.armor.getLeggings().getNBT()) && hasEnchant("notgladiator", Player.armor.getLeggings().getNBT()) != NaN) {
+        let ngMult = 0
+        let ngPeople = 0
+        switch (hasEnchant("notgladiator", Player.armor.getLeggings().getNBT())) {
+            case 1:
+                ngMult = 1
+                break
+            case 2:
+                ngMult = 1.5
+                break
+            case 3:
+                ngMult = 2
+                break
+            default:
+                break
+        }
+        World.getAllEntities().forEach((e) => {
+            if (e.getEntity().class.toString().includes("Player") && e.getUUID() != Player.getUUID() && e.distanceTo(World.getPlayerByName(Player.getName())) < 7) ngPeople++
+        })
+        notglad = (ngPeople > 10 ? ngMult * 10 : ngMult * ngPeople)
+    } else notglad = 0
 })
