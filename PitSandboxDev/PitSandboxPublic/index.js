@@ -1164,7 +1164,6 @@ new Thread(() => {
                 if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
                     str.push("&c&nYou are premega");
                 }
-                if (nols) str.push("&cNo LS in hotbar");
                 if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
                 if (str.length > 0) {
                     let text = new Text(str.join("&r   "));

@@ -17,6 +17,7 @@ const isInMainServer = () => {
     }
 }
 
+
 const playerAutocomplete = args =>
     TabList.getUnformattedNames()
         .filter(n =>
@@ -1850,15 +1851,14 @@ let overflowBooster
 let fishingBooster
 let miningBooster
 
-register("chat", event => {
+register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 3600
     else if (booster == "XP") xpBooster = 3600
-    else if (booster == "bots") botsBooster = 3600
+    else if (booster == "Bots") botsBooster = 3600
     else if (booster == "Overflow") overflowBooster = 3600
     else if (booster == "fishing xp") fishingBooster = 3600
     else if (booster == "Mining xp") miningBooster = 3600
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
-
 register("step", () => {
     if (coinBooster != undefined) coinBooster--
     else if (coinBooster == 0) coinBooster = undefined
@@ -1872,23 +1872,26 @@ register("step", () => {
     else if (fishingBooster == 0) fishingBooster = undefined
     if (miningBooster != undefined) miningBooster--
     else if (miningBooster == 0) miningBooster = undefined
-})
+}).setFps(1)
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
+    if (coinBooster || xpBooster || botsBooster || overflowBooster || fishingBooster || miningBooster != undefined) {
+        info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
+    }
     if (coinBooster != undefined) {
-        info.splice(0, 0, "&6Coin Booster&7: " + coinBooster)
+        info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
     } if (xpBooster != undefined) {
-        info.splice(0, 0, "&bXP Booster&7: " + xpBooster)
+        info.splice(1, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
     } if (botsBooster != undefined) {
-        info.splice(0, 0, "&3Bots Booster&7: " + botsBooster)
+        info.splice(1, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
     } if (overflowBooster != undefined) {
-        info.splice(0, 0, "&cOverflow Booster&7: " + overflowBooster)
+        info.splice(1, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
     } if (fishingBooster != undefined) {
-        info.splice(0, 0, "&dFishing Booster&7: " + fishingBooster)
+        info.splice(1, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
     } if (miningBooster != undefined) {
-        info.splice(0, 0, "&8Mining Booster&7: " + miningBooster)
+        info.splice(1, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
     }
     let y = 4
     info.forEach(line => {
