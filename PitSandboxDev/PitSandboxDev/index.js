@@ -1959,7 +1959,7 @@ register("tick", () => {
 })
 
 register("renderOverlay", () => {
-    if (!onSandbox()) return
+    if (!pitsandbox) return
     let info = []
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let strength = strengthCount * 8
