@@ -27,7 +27,7 @@
 	pre_oof = true
 	toggle_major_and_minor_events = true
 	egg_effect_display = true
-	toggle_low_health_indicator = true
+	toggle_low_health_indicator = false
 	megastreak_sounds = false
 	"minimum_/pay_amount" = 5000
 	toggle_blitz_queue_messages = true
@@ -35,7 +35,7 @@
 	eradicate_blitz = false
 	bounty_bumps = false
 	fish_alert = true
-	remove_billionaire_sounds_in_middle = true
+	remove_billionaire_sounds_in_middle = false
 	anti_cf = true
 	target_info = true
 	lower_render_distance_in_middle = true
@@ -54,5 +54,5 @@
 	custom_guild_messages = true
 	hud_group_colors = "&3"
 	hud_colors = "&b"
-	auto_chat_color = "&b"
+	auto_chat_color = "&1"
 
