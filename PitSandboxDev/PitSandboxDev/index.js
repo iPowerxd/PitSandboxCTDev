@@ -1959,6 +1959,7 @@ function strength() {
     if (hasPerk("Bodybuilder")) {
         strengthTimer = 3
         if (strengthCount == 5 && bodybuilderDamage < 16) bodybuilderDamage += hasPerk("Bodybuilder") * 0.5
+        if (bodybuilderDamage > 16) bodybuilderDamage = 16
     } else {
         strengthTimer = 7
     }
