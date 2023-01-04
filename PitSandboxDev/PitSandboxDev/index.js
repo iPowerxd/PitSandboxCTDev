@@ -1989,3 +1989,9 @@ register("tick", () => {
         notglad = (ngPeople > 5 ? ngMult * 5 : ngMult * ngPeople)
     } else notglad = 0
 })
+
+let serverNumber
+
+register("chat", server => {
+    serverNumber = server
+}).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
