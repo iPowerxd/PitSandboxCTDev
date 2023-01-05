@@ -1217,9 +1217,9 @@ new Thread(() => {
                 const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
                 const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
                 const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
-                general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "mining" ? `&8${skill}` : `&d${skill}`)
+                general[0] = `${Settings.hudTextColor} Skill: ` + (skill.toString() == "Mining:" ? `&8${skill}` : `&d${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &b${level}`)
-                general.splice(2, 0, `${Settings.hudTextColor}XP: ${xp}`)
+                general.splice(2, 0, `${Settings.hudTextColor}XP: &r${xp}`)
             }
             if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
