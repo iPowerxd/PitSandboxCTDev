@@ -421,14 +421,14 @@ const inSpawn = entity => {
 }
 
 const storeSidebar = () => {
-    if (Scoreboard.getLines(false).length > 0) {
-        sidebar = Scoreboard.getLines(false).map(l => l.getName());
+    if (Scoreboard.getLines(true).length > 0) {
+        sidebar = Scoreboard.getLines(true).map(l => l.getName());
     }
 };
 
 const getSidebar = () => {
-    if (Scoreboard.getLines(false).length > 0) {
-        return Scoreboard.getLines(false).map(l => l.getName());
+    if (Scoreboard.getLines(true).length > 0) {
+        return Scoreboard.getLines(true).map(l => l.getName());
     } else {
         return sidebar;
     }
