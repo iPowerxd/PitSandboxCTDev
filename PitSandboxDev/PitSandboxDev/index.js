@@ -1217,7 +1217,7 @@ new Thread(() => {
                 const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
                 const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
                 const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
-                general[0] = `${Settings.hudTextColor} Skill:` + (skill == "mining" ? `&8${skill}` : `&d${skill}`)
+                general[0] = `${Settings.hudTextColor} Skill: ` + (skill.toString() == "mining" ? `&8${skill}` : `&d${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &b${level}`)
                 general.splice(2, 0, `${Settings.hudTextColor}XP: ${xp}`)
             }
@@ -1916,6 +1916,7 @@ register("renderOverlay", () => {
     })
 })
 
+let notglad
 let strengthCount = 0
 let strengthTimer = 0
 let bodybuilderDamage = 0
