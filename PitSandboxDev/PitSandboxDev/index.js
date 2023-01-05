@@ -1184,34 +1184,40 @@ new Thread(() => {
             ChatLib.command("togglebots");
         }
         setTimeout(() => {
-            if (!Settings.toggleSandboxHUD) return;
-            let general = ["Level: &cUnknown", "Coins: &cUnknown", Settings.hudTextColor + "Megacoins: &cUnknown", Settings.hudTextColor + "Gems: &cUnknown", "GoldReq: &cUnknown &7(" + greqrefresh + ")"];
+            if (!Settings.toggleSandboxHUD) return
+            let general = ["Level: &cUnknown", "Coins: &cUnknown", Settings.hudTextColor + "Megacoins: &cUnknown", Settings.hudTextColor + "Gems: &cUnknown", "GoldReq: &cUnknown &7(" + greqrefresh + ")"]
+            let generalSkill = [`${Settings.hudTextColor}Skill: &bUnknown`, `${Settings.hudTextColor}Level: &bUnknown`, `${Settings.hudTextColor}XP: &bUnkonwn`]
             let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l));
             if (scoreboard.find(l => l.startsWith("Needed XP: "))) {
-                const neededxpn = scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1];
-                general.splice(1, 0, [Settings.hudTextColor + "Needed XP: &b" + neededxpn]);
+                const neededxpn = scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1]
+                general.splice(1, 0, [Settings.hudTextColor + "Needed XP: &b" + neededxpn])
             }
             if (scoreboard.find(l => l.startsWith("Prestige: ")) && scoreboard.find(l => l.startsWith("Level: "))) {
-                const pres = romanToInt(scoreboard.find(l => l.startsWith("Prestige: ")).split("Prestige: ")[1]);
-                const lvl = parseInt(scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1].replace(/[\[\]]/g, ""));
-                const sbneededxp = (scoreboard.find(l => l.startsWith("Needed XP: ")) ? parseInt(scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1].replace(/,/g, "")) : undefined);
+                const pres = romanToInt(scoreboard.find(l => l.startsWith("Prestige: ")).split("Prestige: ")[1])
+                const lvl = parseInt(scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1].replace(/[\[\]]/g, ""))
+                const sbneededxp = (scoreboard.find(l => l.startsWith("Needed XP: ")) ? parseInt(scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1].replace(/,/g, "")) : undefined)
                 if (lvl != 120) {
                     if (sbneededxp) {
-                        let totalxp = 0;
-                        for (let i = 1; i < 120; i++) totalxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres];
-                        let levelxp = 0;
-                        for (let i = 1; i < lvl + 1; i++) levelxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres];
+                        let totalxp = 0
+                        for (let i = 1; i < 120; i++) totalxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
+                        let levelxp = 0
+                        for (let i = 1; i < lvl + 1; i++) levelxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
                         levelxp -= sbneededxp;
-                        const percent = Math.floor(levelxp / totalxp * 100 * 1000) / 1000;
-                        general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Prestige XP Progress: &b" + percent + "%"]);
-                        let neededxp = 0;
-                        for (let i = 1; i < lvl + 1; i++) neededxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres];
-                        neededxp = totalxp - neededxp + sbneededxp;
-                        general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Total XP Needed: &b" + formatNumber(neededxp)]);
+                        const percent = Math.floor(levelxp / totalxp * 100 * 1000) / 1000
+                        general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Prestige XP Progress: &b" + percent + "%"])
+                        let neededxp = 0
+                        for (let i = 1; i < lvl + 1; i++) neededxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
+                        neededxp = totalxp - neededxp + sbneededxp
+                        general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Total XP Needed: &b" + formatNumber(neededxp)])
                     }
                 }
                 const brackets = getBrackets(lvl, pres, true);
-                general[0] = Settings.hudTextColor + "Level: " + brackets;
+                general[0] = Settings.hudTextColor + "Level: " + brackets
+            } else if (scoreboard.find(l => l.startsWith("Skill: "))) {
+                const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
+                const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
+                const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
+                general[0] = `${Settings.hudTextColor} Skill: &d${skill}`
             }
             if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
@@ -1219,20 +1225,20 @@ new Thread(() => {
             }
             if (scoreboard.find(l => l.startsWith("Megacoins: "))) {
                 const mgcoins = parseInt(scoreboard.find(l => l.startsWith("Megacoins: ")).split("Megacoins: ")[1].replace(/[,]/g, ""));
-                if (isNaN(mgcoins)) megacoins = undefined;
-                else megacoins = mgcoins;
+                if (isNaN(mgcoins)) megacoins = undefined
+                else megacoins = mgcoins
             }
             if (scoreboard.find(l => l.startsWith("Gems: "))) {
-                const ggems = parseInt(scoreboard.find(l => l.startsWith("Gems: ")).split("Gems: ")[1].replace(/[,]/g, ""));
-                if (isNaN(ggems)) gems = undefined;
-                else gems = ggems;
+                const ggems = parseInt(scoreboard.find(l => l.startsWith("Gems: ")).split("Gems: ")[1].replace(/[,]/g, ""))
+                if (isNaN(ggems)) gems = undefined
+                else gems = ggems
             }
             if (scoreboard.find(l => l.startsWith("Bounty: "))) {
-                const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1];
-                general.push(Settings.hudTextColor + "Bounty: &6" + bounty);
+                const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1]
+                general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
             }
             if (goldreq) {
-                general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax)) + (goldreqmax == 0 ? "" : " &7(" + (goldreq / goldreqmax * 100).toFixed(1) + "%)") + " &7(" + greqrefresh + ")";
+                general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax)) + (goldreqmax == 0 ? "" : " &7(" + (goldreq / goldreqmax * 100).toFixed(1) + "%)") + " &7(" + greqrefresh + ")"
             }
             if (megacoins) {
                 general[general.indexOf(Settings.hudTextColor + "Megacoins: &cUnknown")] = Settings.hudTextColor + "Megacoins: &6" + formatNumber(megacoins);
