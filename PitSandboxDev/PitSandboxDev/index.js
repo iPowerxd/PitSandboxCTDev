@@ -421,14 +421,14 @@ const inSpawn = entity => {
 }
 
 const storeSidebar = () => {
-    if (Scoreboard.getLines(true).length > 0) {
-        sidebar = Scoreboard.getLines(true).map(l => l.getName());
+    if (Scoreboard.getLines(false).length > 0) {
+        sidebar = Scoreboard.getLines(false).map(l => l.getName());
     }
 };
 
 const getSidebar = () => {
-    if (Scoreboard.getLines(true).length > 0) {
-        return Scoreboard.getLines(true).map(l => l.getName());
+    if (Scoreboard.getLines(false).length > 0) {
+        return Scoreboard.getLines(false).map(l => l.getName());
     } else {
         return sidebar;
     }
@@ -504,7 +504,7 @@ function strToUtf8Bytes(str) {
 const recapStreak = () => {
     if (!Settings.toggleSandboxHUD) return;
     ChatLib.chat("\n&c&l&nStreak Recap\n");
-    let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l));
+    let scoreboard = getSidebar().map(l => l);
 
     let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`];
 
