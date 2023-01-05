@@ -1186,7 +1186,8 @@ new Thread(() => {
         setTimeout(() => {
             if (!Settings.toggleSandboxHUD) return
             let general = ["Level: &cUnknown", "Coins: &cUnknown", Settings.hudTextColor + "Megacoins: &cUnknown", Settings.hudTextColor + "Gems: &cUnknown", "GoldReq: &cUnknown &7(" + greqrefresh + ")"]
-            let scoreboard = getSidebar().map(l => l);
+            let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
+            let formattedScoreboard = getSidebar().map(l => l)
             if (scoreboard.find(l => l.startsWith("Needed XP: "))) {
                 const neededxpn = scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1]
                 general.splice(1, 0, [Settings.hudTextColor + "Needed XP: &b" + neededxpn])
@@ -1215,7 +1216,7 @@ new Thread(() => {
             } else if (scoreboard.find(l => l.startsWith("Skill: "))) {
                 const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
                 const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
-                const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
+                const xp = formattedScoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
                 general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "Mining" ? `&8${skill}` : `&d${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &e${level}`)
                 general.splice(2, 0, xp)
