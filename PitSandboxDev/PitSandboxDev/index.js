@@ -1187,7 +1187,7 @@ new Thread(() => {
             if (!Settings.toggleSandboxHUD) return
             let general = ["Level: &cUnknown", "Coins: &cUnknown", Settings.hudTextColor + "Megacoins: &cUnknown", Settings.hudTextColor + "Gems: &cUnknown", "GoldReq: &cUnknown &7(" + greqrefresh + ")"]
             let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
-            let formattedScoreboard = getSidebar().map(l => l)
+            let formattedScoreboard = getSidebar()
             if (scoreboard.find(l => l.startsWith("Needed XP: "))) {
                 const neededxpn = scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1]
                 general.splice(1, 0, [Settings.hudTextColor + "Needed XP: &b" + neededxpn])
