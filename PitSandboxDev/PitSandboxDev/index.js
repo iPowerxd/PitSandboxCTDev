@@ -504,7 +504,7 @@ function strToUtf8Bytes(str) {
 const recapStreak = () => {
     if (!Settings.toggleSandboxHUD) return;
     ChatLib.chat("\n&c&l&nStreak Recap\n");
-    let scoreboard = getSidebar().map(l => l);
+    let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l));
 
     let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`];
 
@@ -1186,8 +1186,7 @@ new Thread(() => {
         setTimeout(() => {
             if (!Settings.toggleSandboxHUD) return
             let general = ["Level: &cUnknown", "Coins: &cUnknown", Settings.hudTextColor + "Megacoins: &cUnknown", Settings.hudTextColor + "Gems: &cUnknown", "GoldReq: &cUnknown &7(" + greqrefresh + ")"]
-            let generalSkill = [`${Settings.hudTextColor}Skill: &bUnknown`, `${Settings.hudTextColor}Level: &bUnknown`, `${Settings.hudTextColor}XP: &bUnkonwn`]
-            let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l));
+            let scoreboard = getSidebar().map(l => l);
             if (scoreboard.find(l => l.startsWith("Needed XP: "))) {
                 const neededxpn = scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1]
                 general.splice(1, 0, [Settings.hudTextColor + "Needed XP: &b" + neededxpn])
