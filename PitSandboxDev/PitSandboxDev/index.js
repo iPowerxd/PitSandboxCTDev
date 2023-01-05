@@ -1219,7 +1219,7 @@ new Thread(() => {
                 const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
                 general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "Mining" ? `&8${skill}` : `&d${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &b${level}`)
-                general.splice(2, 0, `${Settings.hudTextColor}XP: ` + xp)
+                general.splice(2, 0, xp)
             }
             if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
