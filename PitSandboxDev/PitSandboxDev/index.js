@@ -405,14 +405,14 @@ const inMid = entity => {
 const inSpawn = entity => {
     if (!onKingsMap) {
         if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 112 && entity.getY() < 140) {
+            if (entity.getY() > 94 && entity.getY() < 140) {
                 return true;
             }
         }
         return false;
     } else {
         if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 90 && entity.getY() < 120) {
+            if (entity.getY() > 90 && entity.getY() < 130) {
                 return true
             }
         }
@@ -1533,6 +1533,9 @@ register("renderExperience", event => {
     if (pitsandbox && !Settings.toggleXPBar) cancel(event);
 });
 
+register("renderBossHealth", event => {
+    if (pitsandbox && !Settings.toggleBossBar) cancel(event);
+});
 register("soundPlay", (pos, name, vol, pitch, cat, event) => {
     if (!pitsandbox) return;
     if (Settings.fishAlert) {
@@ -1864,7 +1867,7 @@ let miningBooster
 register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 3600
     else if (booster == "XP") xpBooster = 3600
-    else if (booster == "Bots") botsBooster = 3600
+    else if (booster == "bots") botsBooster = 3600
     else if (booster == "Overflow") overflowBooster = 3600
     else if (booster == "fishing xp") fishingBooster = 3600
     else if (booster == "Mining xp") miningBooster = 3600
@@ -1999,6 +2002,7 @@ let serverNumber
 
 register("chat", server => {
     serverNumber = server
+<<<<<<< HEAD
 }).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
 
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
@@ -2023,3 +2027,6 @@ register("renderOverlay", () => {
         text.draw()
     }
 })
+=======
+}).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
+>>>>>>> d4517134c45189ca647fb5876975f5f7ea376e48
