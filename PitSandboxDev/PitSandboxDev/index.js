@@ -2011,7 +2011,10 @@ function getBossName() {
 }
 
 const inEvent = () => {
-    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(/* `BLOOD BATH!` ||  */`GAMBLE!`/*  || `2X REWARDS!` || `TEAM DESTORY!` */)) return true
+    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`BLOOD BATH!`)) return true
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`GAMBLE!`)) return true
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`2X REWARDS!`)) return true
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`TEAM DESTORY!`)) return true
     else return false
 }
 
