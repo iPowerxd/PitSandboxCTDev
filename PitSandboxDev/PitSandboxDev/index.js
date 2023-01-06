@@ -405,7 +405,7 @@ const inMid = entity => {
 const inSpawn = entity => {
     if (!onKingsMap) {
         if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 122 && entity.getY() < 140) {
+            if (entity.getY() > 112 && entity.getY() < 140) {
                 return true;
             }
         }
