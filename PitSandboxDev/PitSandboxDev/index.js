@@ -2002,7 +2002,6 @@ let serverNumber
 
 register("chat", server => {
     serverNumber = server
-<<<<<<< HEAD
 }).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
 
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
@@ -2027,6 +2026,3 @@ register("renderOverlay", () => {
         text.draw()
     }
 })
-=======
-}).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
->>>>>>> d4517134c45189ca647fb5876975f5f7ea376e48
