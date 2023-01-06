@@ -1999,7 +1999,7 @@ let serverNumber
 
 register("chat", server => {
     serverNumber = server
-}).setChatCriteria(`MOVING! Sending you to PITSANDBOX-${server}`)
+}).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
 
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
 function getBossName() {
