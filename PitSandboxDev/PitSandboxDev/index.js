@@ -2002,6 +2002,7 @@ register("chat", server => {
 }).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
 
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
+
 function getBossName() {
     return BossStatus.field_82827_c
 }
@@ -2013,4 +2014,12 @@ const inEvent = () => {
 
 register("renderBossHealth", event => {
     if (!inEvent()) cancel(event)
+})
+
+register("renderOverlay", () => {
+    if (!inEvent()) {
+        const text = new Text(getBossName(), Renderer.screen.getWidth() / 2, 4)
+        text.setShadow(true)
+        text.draw()
+    }
 })
