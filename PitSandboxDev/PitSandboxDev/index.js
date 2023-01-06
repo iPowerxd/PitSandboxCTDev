@@ -2018,14 +2018,14 @@ const inEvent = () => {
     else return false
 }
 
-register("renderBossHealth", event => {
+/* register("renderBossHealth", event => {
     if (!inEvent()) cancel(event)
-})
+}) */
 
-register("renderOverlay", () => {
+/* register("renderOverlay", () => {
     if (!inEvent()) {
         const text = new Text(getBossName(), Renderer.screen.getWidth() / 2, 4)
         text.setShadow(true)
         text.draw()
     }
-})
+}) */
