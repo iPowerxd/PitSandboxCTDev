@@ -405,14 +405,14 @@ const inMid = entity => {
 const inSpawn = entity => {
     if (!onKingsMap) {
         if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 94 && entity.getY() < 140) {
+            if (entity.getY() > 122 && entity.getY() < 140) {
                 return true;
             }
         }
         return false;
     } else {
         if (Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 33) {
-            if (entity.getY() > 90 && entity.getY() < 130) {
+            if (entity.getY() > 90 && entity.getY() < 120) {
                 return true
             }
         }
@@ -1533,9 +1533,6 @@ register("renderExperience", event => {
     if (pitsandbox && !Settings.toggleXPBar) cancel(event);
 });
 
-register("renderBossHealth", event => {
-    if (pitsandbox && !Settings.toggleBossBar) cancel(event);
-});
 register("soundPlay", (pos, name, vol, pitch, cat, event) => {
     if (!pitsandbox) return;
     if (Settings.fishAlert) {
@@ -2002,4 +1999,18 @@ let serverNumber
 
 register("chat", server => {
     serverNumber = server
-}).setChatCriteria("MOVING! Sending you to PITSANDBOX-${server}")
+}).setChatCriteria(`MOVING! Sending you to PITSANDBOX-${server}`)
+
+const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
+function getBossName() {
+    return BossStatus.field_82827_c
+}
+
+const inEvent = () => {
+    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`BLOOD BATH` || `GAMBLE` || `2X REWARDS` || `TEAM DESTORY`)) return true
+    else return false
+}
+
+register("renderBossHealth", event => {
+    if (!inEvent()) cancel(event)
+})
