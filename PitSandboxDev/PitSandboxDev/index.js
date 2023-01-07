@@ -2038,3 +2038,95 @@ const inEvent = () => {
         text.draw()
     }
 }) */
+
+const activeRunes = () => {
+    const helmet = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    const chestplate = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    const boots = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    return [helmet, chestplate, boots]
+}
+
+register("command", () => {
+    const helmet = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    const chestplate = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    const boots = () => {
+        const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    }
+                }
+            }
+        } else {
+            return "None"
+        }
+    }
+    ChatLib.chat(helmet() + chestplate() + boots())
+}).setName("none")
