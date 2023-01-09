@@ -2050,8 +2050,6 @@ const activeRunes = () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     const chestplate = () => {
@@ -2064,8 +2062,6 @@ const activeRunes = () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     const boots = () => {
@@ -2078,8 +2074,6 @@ const activeRunes = () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     return [helmet, chestplate, boots]
@@ -2087,6 +2081,7 @@ const activeRunes = () => {
 
 register("command", () => {
     const helmet = () => {
+        if (Player.armor.getHelmet() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
@@ -2096,11 +2091,10 @@ register("command", () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     const chestplate = () => {
+        if (Player.armor.getChestplate() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
@@ -2110,11 +2104,10 @@ register("command", () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     const boots = () => {
+        if (Player.armor.getBoots() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
@@ -2124,9 +2117,50 @@ register("command", () => {
                     }
                 }
             }
-        } else {
-            return "None"
         }
     }
     ChatLib.chat(helmet() + chestplate() + boots())
 }).setName("none")
+
+const runes = {
+    unholy: {
+        uncommon: 0.01,
+        rare: 0.02,
+        epic: 0.05,
+        legendary: 0.1
+    },
+    haymaker: {
+        uncommon: 1,
+        rare: 1.5,
+        epic: 2,
+        legendary: 2.5
+    },
+    archer: {
+        uncommon: 1,
+        rare: 3,
+        epic: 5,
+        legendary: 10
+    },
+    warrior: {
+        uncommon: 1,
+        rare: 3,
+        epic: 5,
+        legendary: 10
+    },
+    crossbow: {
+        legendary: 2.5
+    },
+    piercing: {
+        uncommon: 1,
+        rare: 2.5,
+        epic: 5,
+        legendary: 10
+    },
+    justice: {
+        uncommon: 1,
+        rare: 2,
+        epic: 3,
+        legendary: 5
+    }
+
+}
