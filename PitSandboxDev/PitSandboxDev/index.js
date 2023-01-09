@@ -2041,6 +2041,7 @@ const inEvent = () => {
 
 const activeRunes = () => {
     const helmet = () => {
+        if (Player.armor.getHelmet() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
@@ -2053,6 +2054,7 @@ const activeRunes = () => {
         }
     }
     const chestplate = () => {
+        if (Player.armor.getChestplate() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
@@ -2065,6 +2067,7 @@ const activeRunes = () => {
         }
     }
     const boots = () => {
+        if (Player.armor.getBoots() == null) return "none"
         const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
         if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
             if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
