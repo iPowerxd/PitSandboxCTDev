@@ -260,6 +260,7 @@ const getBlessing = () => {
     let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
     let blessing
     let level
+    if (Player.getContainer().getStackInSlot(22).getNBT().toString() == "air") return "None"
     if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1])) {
         if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')) {
             blessing = ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')[0]
@@ -271,7 +272,6 @@ const getBlessing = () => {
     } else blessing = "None", level = "None"
     return [blessing, level]
 }
-
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (perks[0][i].includes(perk)) return perks[0][i][1]
@@ -306,8 +306,8 @@ register("guiOpened", event => {
             let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
             let killstreaks = getKillStreaks()
             let megastreak = getMegastreak()
-            //let blessing = getBlessing()
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]] // , blessing
+            let blessing = getBlessing()
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak, blessing]]
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.getCurrentGui().close()
             ChatLib.chat("&aPerks synced.")
