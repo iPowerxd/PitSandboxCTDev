@@ -1924,7 +1924,7 @@ register("renderOverlay", () => {
     } if (info.length > 0) {
         info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
     }
-    let y = 4
+    let y = 17
     info.forEach(line => {
         const text = new Text(line, 0, y)
         text.setX(Renderer.screen.getWidth() / 2)
@@ -1943,6 +1943,7 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
+    let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1];
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP())) {
         if (strengthCount != 0) {
@@ -1957,6 +1958,9 @@ register("renderOverlay", () => {
         }
         if (notglad != 0) {
             info.splice(4, 0, '&b&l"Not" Glad&b: -' + notglad + "%")
+        }
+        if (megastreak == "Nightmare") {
+            info.splice(5, 0, "&1&l+10% Bot Damage & Speed 3")
         }
         if (info.length > 0) {
             info.splice(0, 0, `${Settings.hudGroupColor}&nBuffs`)
