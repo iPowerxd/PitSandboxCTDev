@@ -1881,6 +1881,16 @@ register("chat", (booster, event) => {
     else if (booster == "fishing xp") fishingBooster = 1800
     else if (booster == "Mining xp") miningBooster = 1800
 }).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
+
+register("chat", (booster, event) => {
+    if (booster == "coin") coinBooster = 1800
+    else if (booster == "XP") xpBooster = 1800
+    else if (booster == "bots") botsBooster = 1800
+    else if (booster == "Overflow") overflowBooster = 1800
+    else if (booster == "fishing xp") fishingBooster = 1800
+    else if (booster == "Mining xp") miningBooster = 1800
+}).setChatCriteria("WOAH! ${*} just activated a ${booster} booster! GG!")
+
 register("step", () => {
     if (coinBooster != undefined) coinBooster--
     if (coinBooster == 0) coinBooster = undefined
