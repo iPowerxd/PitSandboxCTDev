@@ -100,7 +100,6 @@ let megacoins = undefined;
 let streak = 0;
 let streakkills = 0;
 let autoSuperegg = false
-let autoFirstaidegg = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
@@ -142,7 +141,6 @@ let lastalert = 0;
 let streaking = false;
 let namecache = {}
 let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
-let toggleFirstaideggeKeybind = new KeyBind("Toggle Auto FirstAidEgg", "", "!PitSandbox")
 let target = undefined;
 let targetexpire = undefined;
 let lsticks = 0;
@@ -597,29 +595,6 @@ const endStreak = () => {
 
 let sent = false;
 
-const hasFirstaidegg = (NBT) => {
-    if (NBT.toString().split("firstaidegg:")[1]) {
-        if (NBT.toString().split("firstaidegg:")[1].split(",display:")) {
-            if (NBT.toString().split("firstaidegg:")[1].split(",display:")[0] == "1b") return true
-        }
-    } else return false
-}
-
-const whereFirstaidegg = () => {
-    for (let i = 0; i < 9; i++) {
-        if (Player.getInventory()) slot = Player.getInventory().getStackInSlot(i)
-        if (slot && slot.getID() != 1 && slot.getNBT() && hasFirstaidegg(slot.getNBT())) return i
-    } return false
-}
-
-const isFirstaideggUsed = () => {
-    if (whereFirstaidegg()) {
-        let item = Player.getInventory().getStackInSlot(whereFirstaidegg()).toString().split("@")
-        if (item[1] == 60) return true
-        else if (item[1] == 96) return false
-        else return undefined
-    }
-}
 
 /* register("packetSent", (packet, event) => {
     if (!pitsandbox) return
@@ -1804,30 +1779,6 @@ register("command", () => {
     ChatLib.chat(inMid(Player.asPlayerMP()))
 }).setName("location")
 
-register("tick", () => {
-    if (toggleFirstaideggeKeybind.isPressed()) {
-        if (autoFirstaidegg) {
-            autoFirstaidegg = false
-            ChatLib.chat("&cDisabled auto first aid!")
-        } else {
-            autoFirstaidegg = true
-            ChatLib.chat("&aEnabled auto first aid!")
-        }
-
-    }
-})
-
-register("step", () => {
-    if (!pitsandbox || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
-    let lastSlot = Player.getHeldItemIndex()
-    if (!isFirstaideggUsed() && Player.getHP() < 20) {
-        Player.setHeldItemIndex(whereFirstaidegg())
-        KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
-        setTimeout(() => {
-            Player.setHeldItemIndex(lastSlot)
-        }, 2)
-    }
-}).setFps(15)
 /* if (useEggs.isPressed()) {
     let slots = [];
     for (let i = 0; i < 9; i++) {
