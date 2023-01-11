@@ -1820,14 +1820,14 @@ register("tick", () => {
 register("step", () => {
     if (!pitsandbox || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
     let lastSlot = Player.getHeldItemIndex()
-    if (!isFirstaideggUsed() && Player.getHP() < Settings.autoLSHealth) {
+    if (!isFirstaideggUsed() && Player.getHP() < 20) {
         Player.setHeldItemIndex(whereFirstaidegg())
         KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
         setTimeout(() => {
             Player.setHeldItemIndex(lastSlot)
         }, 2)
     }
-}).setFps(10)
+}).setFps(15)
 /* if (useEggs.isPressed()) {
     let slots = [];
     for (let i = 0; i < 9; i++) {
