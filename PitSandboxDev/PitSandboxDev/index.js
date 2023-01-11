@@ -100,6 +100,7 @@ let megacoins = undefined;
 let streak = 0;
 let streakkills = 0;
 let autoSuperegg = false
+let autoFirstaidegg = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
@@ -1802,18 +1803,31 @@ register("command", () => {
     ChatLib.chat(inSpawn(Player.asPlayerMP()))
     ChatLib.chat(inMid(Player.asPlayerMP()))
 }).setName("location")
-/* 
+
+register("tick", () => {
+    if (toggleFirstaideggeKeybind.isPressed()) {
+        if (autoFirstaidegg) {
+            autoFirstaidegg = false
+            ChatLib.chat("&cDisabled auto first aid!")
+        } else {
+            autoFirstaidegg = true
+            ChatLib.chat("&aEnabled auto first aid!")
+        }
+
+    }
+})
+
 register("step", () => {
-    if (!pitsandbox() || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
+    if (!pitsandbox || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
     let lastSlot = Player.getHeldItemIndex()
-    if (!isFirstaideggUsed() && Player.getHP() < 28) {
+    if (!isFirstaideggUsed() && Player.getHP() < Settings.autoLSHealth) {
         Player.setHeldItemIndex(whereFirstaidegg())
         KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
         setTimeout(() => {
             Player.setHeldItemIndex(lastSlot)
         }, 2)
     }
-}).setFps(10) */
+}).setFps(10)
 /* if (useEggs.isPressed()) {
     let slots = [];
     for (let i = 0; i < 9; i++) {
@@ -1865,16 +1879,6 @@ register("tick", () => {
             autoSuperegg = true
             ChatLib.chat("&aEnabled auto SuperEgg!")
         }
-    }
-    if (toggleFirstaideggeKeybind.isPressed()) {
-        if (autoFirstaidegg) {
-            autoFirstaidegg = false
-            ChatLib.chat("&cDisabled auto first aid!")
-        } else {
-            autoFirstaidegg = true
-            ChatLib.chat("&aEnabled auto first aid!")
-        }
-
     }
 })
 
@@ -2217,15 +2221,3 @@ register("chat", event => {
 register("chat", event => {
     promotionUses++
 }).setChatCriteria("PROMOTION! You have regained 1 Promotion Use!") */
-
-register("tick", () => {
-    if (!onSandbox() || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
-    let lastSlot = Player.getHeldItemIndex()
-    if (!isFirstaideggUsed() && Player.getHP() < 28) {
-        Player.setHeldItemIndex(whereFirstaidegg())
-        KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
-        setTimeout(() => {
-            Player.setHeldItemIndex(lastSlot)
-        }, 2)
-    }
-})
