@@ -141,6 +141,7 @@ let lastalert = 0;
 let streaking = false;
 let namecache = {}
 let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
+let toggleFirstaideggeKeybind = new KeyBind("Toggle Auto FirstAidEgg", "", "!PitSandbox")
 let target = undefined;
 let targetexpire = undefined;
 let lsticks = 0;
@@ -330,7 +331,6 @@ register("tick", () => {
         }
     }
 })
-
 
 /* register("renderOverlay", () => {
     if (!pitsandbox) return
@@ -596,7 +596,7 @@ const endStreak = () => {
 
 let sent = false;
 
-/* const hasFirstaidegg = (NBT) => {
+const hasFirstaidegg = (NBT) => {
     if (NBT.toString().split("firstaidegg:")[1]) {
         if (NBT.toString().split("firstaidegg:")[1].split(",display:")) {
             if (NBT.toString().split("firstaidegg:")[1].split(",display:")[0] == "1b") return true
@@ -620,7 +620,6 @@ const isFirstaideggUsed = () => {
     }
 }
 
- */
 /* register("packetSent", (packet, event) => {
     if (!pitsandbox) return
     if (packet instanceof C17 && !sent) {w
@@ -1268,8 +1267,10 @@ new Thread(() => {
             }
             if (majorname) {
                 general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
+            } /* if (promotionUses != 0) {
+                general.push(Settings.hudTextColor + "Promotion Uses: &e" + promotionUses)
             }
-
+ */
             let streakers = worldotherplayers.filter(e => inMid(e) && (!e.getName().startsWith("§7") && !e.getName().startsWith("CIT-"))).length;
             if (streakers != 0) {
                 general.push(Settings.hudTextColor + "Streakers: &c" + streakers);
@@ -1865,6 +1866,16 @@ register("tick", () => {
             ChatLib.chat("&aEnabled auto SuperEgg!")
         }
     }
+    if (toggleFirstaideggeKeybind.isPressed()) {
+        if (autoFirstaidegg) {
+            autoFirstaidegg = false
+            ChatLib.chat("&cDisabled auto first aid!")
+        } else {
+            autoFirstaidegg = true
+            ChatLib.chat("&aEnabled auto first aid!")
+        }
+
+    }
 })
 
 let coinBooster
@@ -2198,3 +2209,23 @@ register("command", () => {
     /* ChatLib.chat(ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())) */
     ChatLib.chat()
 }).setName("nbtlol")
+/* let promotionUses = 20
+register("chat", event => {
+    promotionUses--
+}).setChatCriteria("PROMOTION! Saved your lives! -1 Promotion Use")
+
+register("chat", event => {
+    promotionUses++
+}).setChatCriteria("PROMOTION! You have regained 1 Promotion Use!") */
+
+register("tick", () => {
+    if (!onSandbox() || isFirstaideggUsed() == undefined || !autoFirstaidegg) return
+    let lastSlot = Player.getHeldItemIndex()
+    if (!isFirstaideggUsed() && Player.getHP() < 28) {
+        Player.setHeldItemIndex(whereFirstaidegg())
+        KeyBinding.func_74507_a(Client.settings.getSettings().field_74313_G.func_151463_i())
+        setTimeout(() => {
+            Player.setHeldItemIndex(lastSlot)
+        }, 2)
+    }
+})
