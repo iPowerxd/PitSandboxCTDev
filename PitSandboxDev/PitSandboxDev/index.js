@@ -260,7 +260,7 @@ const getBlessing = () => {
     let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
     let blessing
     let level
-    if (Player.getContainer().getStackInSlot(22).getNBT().toString() == "air") return "None"
+    if (Player.getContainer().getStackInSlot(22).getNBT().toString() == null) return "None"
     if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1])) {
         if (ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')) {
             blessing = ChatLib.removeFormatting(NBT.split("Selected Blessing: ")[1]).split('"}},')[0]
@@ -272,6 +272,7 @@ const getBlessing = () => {
     } else blessing = "None", level = "None"
     return [blessing, level]
 }
+
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (perks[0][i].includes(perk)) return perks[0][i][1]
@@ -306,8 +307,8 @@ register("guiOpened", event => {
             let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
             let killstreaks = getKillStreaks()
             let megastreak = getMegastreak()
-            let blessing = getBlessing()
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]//.blessing
+            /* let blessing = getBlessing() */
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]//, blessing
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.getCurrentGui().close()
             ChatLib.chat("&aPerks synced.")
@@ -342,7 +343,7 @@ register("tick", () => {
     if (perks[1][0] != "Nothing") info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
     if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
     if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
-    //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
+    if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
     let y = 80
     info.forEach(line => {
         const text = new Text(line, 0, y)
@@ -1216,7 +1217,7 @@ new Thread(() => {
                 const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
                 const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
                 const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
-                general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "Mining" ? `&8${skill}` : `&d${skill}`)
+                general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "Mining" ? `&8&l${skill}` : `&d&l${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &e${getRoman(level)}`)
                 //general.splice(2, 0, xp)
             } else if (scoreboard.find(l => l.startsWith("WATER: "))) {
@@ -1224,10 +1225,10 @@ new Thread(() => {
                 const fire = scoreboard.find(l => l.startsWith("FIRE: ")).split("FIRE: ")[1]
                 const nature = scoreboard.find(l => l.startsWith("NATURE: ")).split("NATURE: ")[1]
                 const elemental = scoreboard.find(l => l.startsWith("ELEM: ")).split("ELEM: ")[1]
-                general.splice(1, 0, `&bWater: &7${water}`)
-                general.splice(2, 0, `&cFire: &7${fire}`)
-                general.splice(3, 0, `&aNature: &7${nature}`)
-                general.splice(4, 0, `&2Elemental: &7${elemental}`)
+                general.splice(0, 0, `&bWater: &7${water}`)
+                general.splice(1, 0, `&cFire: &7${fire}`)
+                general.splice(2, 0, `&aNature: &7${nature}`)
+                general.splice(3, 0, `&2Elemental: &7${elemental}`)
             }
             if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
@@ -1908,6 +1909,7 @@ register("step", () => {
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
+    if (Client.isInTab()) return
     let info = []
     if (coinBooster != undefined) {
         info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
@@ -1943,27 +1945,37 @@ register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
-    let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1];
+    let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
+    let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP())) {
         if (strengthCount != 0) {
             info.splice(1, 0, "&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
-        }
-        if (hasPerk("Bodybuilder") && strengthCount == 5) {
+        } if (hasPerk("Bodybuilder") && strengthCount == 5) {
             info.splice(2, 0, "&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
-        }
-        if (hasPerk("Berserker Brew") && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
+        } if (hasPerk("Berserker Brew") && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.splice(3, 0, "&f&lBers Brew&r: &c" + bersLevel)
-        }
-        if (notglad != 0) {
+        } if (notglad != 0) {
             info.splice(4, 0, '&b&l"Not" Glad&b: -' + notglad + "%")
-        }
-        if (megastreak == "Nightmare") {
-            info.splice(5, 0, "&1&l+10% Bot Damage & Speed 3")
-        }
-        if (info.length > 0) {
-            info.splice(0, 0, `${Settings.hudGroupColor}&nBuffs`)
+        } if (megastreak == "Nightmare") {
+            info.splice(5, 0, "&1&lBot Damage&1: &c+10%")
+        } if (ubermilestone == "UBER100") {
+            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
+        } if (ubermilestone == "UBER200") {
+            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
+            info.splice(6, 0, "&d&lHealing&d: &c-40%")
+        } if (ubermilestone == "UBER300") {
+            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
+            info.splice(6, 0, "&d&lHealing&d: &c-40%")
+            info.splice(6, 0, "&d&lDirty Duration and Spongesteve&d: &c-50%")
+        } if (ubermilestone == "UBER400") {
+            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
+            info.splice(6, 0, "&d&lHealing&d: &c-40%")
+            info.splice(6, 0, "&d&lDirty Duration and Spongesteve&d: &c-50%")
+            info.splice(6, 0, "&d&lNo Longer Gain Health")
+        } if (info.length > 0) {
+            info.splice(0, 0, `&a&nBuffs &7&n| &c&nDebuffs`)
         }
     }
     let y = 4
@@ -2181,3 +2193,8 @@ const runes = {
     }
 
 }
+
+register("command", () => {
+    /* ChatLib.chat(ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())) */
+    ChatLib.chat()
+}).setName("nbtlol")
