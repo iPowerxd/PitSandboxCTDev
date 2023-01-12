@@ -256,7 +256,7 @@ const getMegastreak = () => {
     }
 }
 
-const getBlessing = () => {
+/* const getBlessing = () => {
     let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
     let blessing
     let level
@@ -271,12 +271,11 @@ const getBlessing = () => {
         }
     } else blessing = "None", level = "None"
     return [blessing, level]
-}
-
+} */
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
-        if (perks[0][i].includes(perk)) return perks[0][i][1]
-    } return false
+        if (perks[0][i][0].includes(perk)) return perks[0][i][1]
+    } return 0
 }
 
 register("command", () => {
@@ -1586,24 +1585,24 @@ new Thread(() => {
                 });
             }
         }; {
-            if (!Client.isInTab()) {
-                let str = [];
-                if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
-                    str.push("&c&nYou are premega");
-                }
-                if (nols) str.push("&cNo LS in hotbar");
-                if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
-                if (str.length > 0) {
-                    let text = new Text(str.join("&r   "));
-                    let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
-                    let y = Renderer.screen.getHeight() / 4 * 3.3;
-                    text.setX(x);
-                    text.setY(y);
-                    text.setShadow(true);
-                    text.setScale(1.4);
-                    text.draw();
-                }
+            /*  if (!Client.isInTab()) { */
+            let str = [];
+            if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
+                str.push("&c&nYou are premega");
             }
+            if (nols) str.push("&cNo LS in hotbar");
+            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
+            if (str.length > 0) {
+                let text = new Text(str.join("&r   "));
+                let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
+                let y = Renderer.screen.getHeight() / 4 * 3.3;
+                text.setX(x);
+                text.setY(y);
+                text.setShadow(true);
+                text.setScale(1.4);
+                text.draw();
+            }
+            /* } */
         }; {
             if (Settings.eggEffectDisplay) {
                 let lines = [];
@@ -1840,14 +1839,14 @@ let overflowBooster
 let fishingBooster
 let miningBooster
 
-register("chat", (booster, event) => {
+/* register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 1800
     else if (booster == "XP") xpBooster = 1800
     else if (booster == "bots") botsBooster = 1800
     else if (booster == "Overflow") overflowBooster = 1800
     else if (booster == "fishing xp") fishingBooster = 1800
     else if (booster == "Mining xp") miningBooster = 1800
-}).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!")
+}).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!") */
 
 register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 1800
@@ -1917,9 +1916,9 @@ register("renderOverlay", () => {
     if (!inSpawn(Player.asPlayerMP())) {
         if (strengthCount != 0) {
             info.splice(1, 0, "&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
-        } if (hasPerk("Bodybuilder") && strengthCount == 5) {
+        } if (hasPerk("Bodybuilder") != 0 && strengthCount == 5) {
             info.splice(2, 0, "&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
-        } if (hasPerk("Berserker Brew") && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
+        } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.splice(3, 0, "&f&lBers Brew&r: &c" + bersLevel)
         } if (notglad != 0) {
@@ -1965,7 +1964,7 @@ register("step", () => {
 
 function strength() {
     if (strengthCount < 5) strengthCount++
-    if (hasPerk("Bodybuilder")) {
+    if (hasPerk("Bodybuilder") != 0) {
         strengthTimer = 3
         if (strengthCount == 5 && bodybuilderDamage < 16) bodybuilderDamage += hasPerk("Bodybuilder") * 0.5
         if (bodybuilderDamage > 16) bodybuilderDamage = 16
