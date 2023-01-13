@@ -16,8 +16,6 @@ const isInMainServer = () => {
         return true
     }
 }
-
-
 const playerAutocomplete = args =>
     TabList.getUnformattedNames()
         .filter(n =>
@@ -140,6 +138,7 @@ let lasthookmotion = 0;
 let lastalert = 0;
 let streaking = false;
 let namecache = {}
+let useEggs = new KeyBind("Use All Eggs", "", "!PitSandbox")
 let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
 let target = undefined;
 let targetexpire = undefined;
@@ -1778,17 +1777,37 @@ register("command", () => {
     ChatLib.chat(inMid(Player.asPlayerMP()))
 }).setName("location")
 
-/* if (useEggs.isPressed()) {
-    let slots = [];
-    for (let i = 0; i < 9; i++) {
-        if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
-            if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
-                if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
-                    slots.push(i);
+register("step", () => {
+    if (pitsandbox && useEggs.isPressed()) {
+        let slots = [];
+        for (let i = 0; i < 9; i++) {
+            if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 383) {
+                if (Player.getInventory().getStackInSlot(i).getNBT() && Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag")) {
+                    if (Player.getInventory().getStackInSlot(i).getNBT().getCompoundTag("tag").get("superegg") && Player.getInventory().getStackInSlot(i).getDamage() != 0) {
+                        slots.push(i);
+                    }
                 }
             }
         }
-    } */
+        if (slots.length > 0) {
+            lasteggslot = Player.getHeldItemIndex();
+            rightclicking = true;
+            slots.forEach((slot, i) => {
+                setTimeout(() => {
+                    if (Player.getHeldItemIndex() != slot) {
+                        Player.setHeldItemIndex(slot);
+                    }
+                    if (i == slots.length - 1) {
+                        setTimeout(() => {
+                            rightclicking = false;
+                            if (Player.getHeldItemIndex() != lasteggslot) Player.setHeldItemIndex(lasteggslot);
+                        }, 100);
+                    }
+                }, i * 50);
+            });
+        }
+    }
+}).setFps(3)
 register("step", () => {
     if (pitsandbox && autoSuperegg) {
         let slots = [];
@@ -1908,6 +1927,7 @@ let bodybuilderDamage = 0
 
 register("renderOverlay", () => {
     if (!pitsandbox) return
+    if (!Settings.toggleSandboxHUD) return
     let info = []
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
@@ -1939,6 +1959,9 @@ register("renderOverlay", () => {
             info.splice(6, 0, "&d&lHealing&d: &c-40%")
             info.splice(6, 0, "&d&lDirty Duration and Spongesteve&d: &c-50%")
             info.splice(6, 0, "&d&lNo Longer Gain Health")
+        } if (megastreak == "Hermit") {
+            info.splice(7, 0, "&9&lLonger Block Duration by&9: &a+100%")
+            info.splice(7, 0, "&9&lCan't use&c Mirror")
         } if (info.length > 0) {
             info.splice(0, 0, `&a&nBuffs &7&n| &c&nDebuffs`)
         }
