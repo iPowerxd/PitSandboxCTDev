@@ -93,13 +93,6 @@ class Settings {
     eggEffectDisplay = true;
 
     @SwitchProperty({
-        name: "Prestige Auto GG",
-        description: "Says GG Whenever someone Prestiges.",
-        category: "!General"
-    })
-    prestigeAutoGG = true;
-
-    @SwitchProperty({
         name: "Remove Particles In Middle",
         description: "Disable rendering particles when in middle.\n&eCan positively impact performance.",
         category: "!General"
