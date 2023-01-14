@@ -831,6 +831,9 @@ new Thread(() => {
                 const ggems = parseInt(scoreboard.find(l => l.startsWith("Gems: ")).split("Gems: ")[1].replace(/[,]/g, ""));
                 if (isNaN(ggems)) gems = undefined;
                 else gems = ggems;
+            } if (scoreboard.find(l => l.startsWith("MVP+: "))) {
+                const mvpplus = scoreboard.find(l => l.startsWith("MVP+: ")).split("MVP+: ")[1]
+                general.push(Settings.hudTextColor + "MVP+: &6" + mvpplus)
             }
             if (scoreboard.find(l => l.startsWith("Bounty: "))) {
                 const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1];

@@ -179,6 +179,8 @@ const C17 = Java.type("net.minecraft.network.play.client.C17PacketCustomPayload"
 const PacketBuffer = Java.type("net.minecraft.network.PacketBuffer");
 let Unpooled = Java.type("io.netty.buffer.Unpooled");
 let onKingsMap
+let solisBroken
+let soliLevel
 
 
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString");
@@ -271,10 +273,34 @@ const getMegastreak = () => {
     } else blessing = "None", level = "None"
     return [blessing, level]
 } */
+
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (perks[0][i][0].includes(perk)) return perks[0][i][1]
     } return 0
+}
+
+function playerInfo(player) {
+    for (let i = 0; i < onlinePlayers.length; i++) {
+        if (player == onlinePlayers[i]) {
+            if (onlinePlayersFormatted[i] == undefined) return ["§7" + onlinePlayers[i]];
+            else return onlinePlayersFormatted[i].split(" ");
+        }
+    }
+}
+
+function getMega(player) {
+    let info = playerInfo(player);
+    if (info[0].includes("OVRDRV")) return "overdrive";
+    else if (info[0].includes("HIGH")) return "highlander";
+    else if (info[0].includes("MOON")) return "moon";
+    else if (info[0].includes("UBER100")) return "uberstreak100";
+    else if (info[0].includes("UBER200")) return "uberstreak200";
+    else if (info[0].includes("UBER300")) return "uberstreak300";
+    else if (info[0].includes("UBER400")) return "uberstreak400";
+    else if (info[0].includes("NGHTMRE")) return "nightmare";
+    else if (info[0].includes("HERMIT")) return "hermit";
+    else return "premega";
 }
 
 register("command", () => {
@@ -1217,6 +1243,10 @@ new Thread(() => {
                 if (isNaN(ggems)) gems = undefined
                 else gems = ggems
             }
+            if (scoreboard.find(l => l.startsWith("MVP+: "))) {
+                const mvpplus = scoreboard.find(l => l.startsWith("MVP+: ")).split("MVP+: ")[1]
+                general.push(Settings.hudTextColor + "MVP+: &6" + mvpplus)
+            }
             if (scoreboard.find(l => l.startsWith("Bounty: "))) {
                 const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1]
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
@@ -1279,6 +1309,10 @@ new Thread(() => {
                     let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
                     streakinfo.push(Settings.hudTextColor + "Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph);
                 }
+                if (scoreboard.find(l => l.startsWith("Stored XP: ")) && getMega(Player.getName()) == "moon") {
+                    const storedXP = (scoreboard.find(l => l.startsWith("Stored XP: ")).split("Stored XP: "))[1]
+                    streakinfo.push(Settings.hudTextColor + "Stored XP: &b" + storedXP)
+                }
 
                 if (currentstreak.assgold || currentstreak.killgold || currentstreak.othergold) {
                     let gold = 0;
@@ -1318,11 +1352,6 @@ new Thread(() => {
                     let other = currentstreak.other.map(o => o.color + o.amount + " " + o.id).join(" ");
                     streakinfo.push(Settings.hudTextColor + "Other: " + other);
                 }
-
-                if (shark) {
-                    streakinfo.push(Settings.hudTextColor + "Shark: &c+" + shark + "%");
-                }
-
                 if (Date.now() < rngdamage) {
                     streakinfo.push(Settings.hudTextColor + "RNGesus DMG: &c" + msToTime(rngdamage - Date.now(), true));
                 }
@@ -1584,9 +1613,9 @@ new Thread(() => {
                 });
             }
         }; {
-            /*  if (!Client.isInTab()) { */
+            if (!pitsandbox || !Settings.toggleSandboxHUD) return
             let str = [];
-            if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
+            if (Settings.togglePreAlert && !isPre() && !inSpawn(Player.asPlayerMP())) {
                 str.push("&c&nYou are premega");
             }
             if (nols) str.push("&cNo LS in hotbar");
@@ -1892,8 +1921,7 @@ register("step", () => {
 }).setFps(1)
 
 register("renderOverlay", () => {
-    if (!pitsandbox) return
-    if (Client.isInTab()) return
+    if (!pitsandbox || Client.isInTab() || !Settings.toggleSandboxHUD) return
     let info = []
     if (coinBooster != undefined) {
         info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
@@ -1926,8 +1954,7 @@ let strengthTimer = 0
 let bodybuilderDamage = 0
 
 register("renderOverlay", () => {
-    if (!pitsandbox) return
-    if (!Settings.toggleSandboxHUD) return
+    if (!pitsandbox || !Settings.toggleSandboxHUD) return
     let info = []
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
@@ -1962,8 +1989,16 @@ register("renderOverlay", () => {
         } if (megastreak == "Hermit") {
             info.splice(7, 0, "&9&lLonger Block Duration by&9: &a+100%")
             info.splice(7, 0, "&9&lCan't use&c Mirror")
-        } if (info.length > 0) {
-            info.splice(0, 0, `&a&nBuffs &7&n| &c&nDebuffs`)
+        } if (solisBroken) {
+            info.splice(8, 0, "&aSolitude: &cBroken")
+        } else {
+            info.splice(8, 0, `&aSolitude: &b-${soliLevel}%`)
+        }
+        if (shark) {
+            info.splice(9, 0, "&cShark: &c+" + shark + "%")
+        }
+        if (info.length > 0) {
+            info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
         }
     }
     let y = 4
@@ -2019,6 +2054,34 @@ register("tick", () => {
         })
         notglad = (ngPeople > 5 ? ngMult * 5 : ngMult * ngPeople)
     } else notglad = 0
+})
+
+register("step", () => {
+    if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
+        let soliPeople = 0
+        World.getAllEntities().forEach((e) => {
+            if (e.getEntity().class.toString().includes("Player") && e.getUUID() != Player.getUUID() && e.distanceTo(World.getPlayerByName(Player.getName())) < 7) soliPeople++
+        })
+        switch (hasEnchant("solitude", Player.armor.getLeggings().getNBT())) {
+            case 1:
+                soliLevel = 40
+                if (soliPeople < 2) solisBroken = false
+                else solisBroken = true
+                break
+            case 2:
+                soliLevel = 50
+                if (soliPeople < 3) solisBroken = false
+                else solisBroken = true
+                break
+            case 3:
+                soliLevel = 60
+                if (soliPeople < 3) solisBroken = false
+                else solisBroken = true
+                break
+            default:
+                break
+        }
+    } else solisBroken = undefined
 })
 
 let serverNumber
@@ -2186,11 +2249,3 @@ register("command", () => {
     /* ChatLib.chat(ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())) */
     ChatLib.chat()
 }).setName("nbtlol")
-/* let promotionUses = 20
-register("chat", event => {
-    promotionUses--
-}).setChatCriteria("PROMOTION! Saved your lives! -1 Promotion Use")
-
-register("chat", event => {
-    promotionUses++
-}).setChatCriteria("PROMOTION! You have regained 1 Promotion Use!") */
