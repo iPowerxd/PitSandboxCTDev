@@ -303,6 +303,21 @@ function getMega(player) {
     else return "premega";
 }
 
+function getMegaFormatted(player) {
+    let mega = getMega(player);
+    if (mega == "overdrive") return ("&cOverdrive");
+    else if (mega == "highlander") return ("&6Highlander");
+    else if (mega == "moon") return ("&bTo the Moon");
+    else if (mega == "uberstreak100") return ("&dUberstreak100");
+    else if (mega == "uberstreak200") return ("&dUberstreak200");
+    else if (mega == "uberstreak300") return ("&dUberstreak300");
+    else if (mega == "uberstreak400") return ("&dUberstreak400");
+    else if (mega == "nightmare") return ("&1Nightmare");
+    else if (mega == "hermit") return ("&9Hermit");
+    else return "&cPremega";
+}
+
+
 register("command", () => {
     ChatLib.command("view " + Player.getName())
     syncperks = true
@@ -1322,7 +1337,7 @@ new Thread(() => {
                     let gps = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000)));
                     let gpm = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60)));
                     let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-                    streakinfo.push(Settings.hudTextColor + "Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
+                    if (Player.armor.getLeggings() && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
                 }
 
                 if (currentstreak.assxp || currentstreak.killxp || currentstreak.otherxp) {
@@ -1333,7 +1348,7 @@ new Thread(() => {
                     let xps = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000)));
                     let xpm = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60)));
                     let xph = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-                    streakinfo.push(Settings.hudTextColor + "XP Per S/M/H: &b" + xps + "&r/&b" + xpm + "&r/&b" + xph);
+                    if (Player.armor.getLeggings() && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "XP Per S/M/H: &b" + xps + "&r/&b" + xpm + "&r/&b" + xph);
                 }
 
                 if (scoreboard.find(l => l.startsWith("Status: ") && !l.startsWith("Status: Fighting") && !l.startsWith("Status: Idling") && !l.startsWith("Status: Bountied") && !l.startsWith("Status: Strength"))) {
@@ -1619,7 +1634,7 @@ new Thread(() => {
                 str.push("&c&nYou are premega");
             }
             if (nols) str.push("&cNo LS in hotbar");
-            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
+            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon");
             if (str.length > 0) {
                 let text = new Text(str.join("&r   "));
                 let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
@@ -1806,7 +1821,7 @@ register("command", () => {
     ChatLib.chat(inMid(Player.asPlayerMP()))
 }).setName("location")
 
-register("step", () => {
+register("tick", () => {
     if (pitsandbox && useEggs.isPressed()) {
         let slots = [];
         for (let i = 0; i < 9; i++) {
@@ -1836,7 +1851,7 @@ register("step", () => {
             });
         }
     }
-}).setFps(3)
+})
 register("step", () => {
     if (pitsandbox && autoSuperegg) {
         let slots = [];
@@ -1959,9 +1974,12 @@ register("renderOverlay", () => {
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
+    let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP())) {
-        if (strengthCount != 0) {
+        /* if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP())) {
+            info.push(`&c&lMegastreak: ${getMegaFormatted(Player.getName())}`)
+        } */ if (strengthCount != 0) {
             info.splice(1, 0, "&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthCount == 5) {
             info.splice(2, 0, "&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
@@ -1971,31 +1989,51 @@ register("renderOverlay", () => {
         } if (notglad != 0) {
             info.splice(4, 0, '&b&l"Not" Glad&b: -' + notglad + "%")
         } if (megastreak == "Nightmare") {
-            info.splice(5, 0, "&1&lBot Damage&1: &c+10%")
+            info.splice(5, 0, "&1&lNGHTMRE Bot Damage&1: &c+10%")
         } if (ubermilestone == "UBER100") {
-            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
+            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
         } if (ubermilestone == "UBER200") {
-            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
-            info.splice(6, 0, "&d&lHealing&d: &c-40%")
+            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
         } if (ubermilestone == "UBER300") {
-            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
-            info.splice(6, 0, "&d&lHealing&d: &c-40%")
-            info.splice(6, 0, "&d&lDirty Duration and Spongesteve&d: &c-50%")
+            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
+            info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
         } if (ubermilestone == "UBER400") {
-            info.splice(6, 0, "&d&lBot Damage&d: &c-30%")
-            info.splice(6, 0, "&d&lHealing&d: &c-40%")
-            info.splice(6, 0, "&d&lDirty Duration and Spongesteve&d: &c-50%")
-            info.splice(6, 0, "&d&lNo Longer Gain Health")
+            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
+            info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
+            info.splice(6, 0, "&d&lUBER400: No Longer Gain Health")
         } if (megastreak == "Hermit") {
-            info.splice(7, 0, "&9&lLonger Block Duration by&9: &a+100%")
-            info.splice(7, 0, "&9&lCan't use&c Mirror")
-        } if (solisBroken) {
-            info.splice(8, 0, "&aSolitude: &cBroken")
-        } else {
-            info.splice(8, 0, `&aSolitude: &b-${soliLevel}%`)
-        }
-        if (shark) {
-            info.splice(9, 0, "&cShark: &c+" + shark + "%")
+            info.splice(7, 0, "&9&lHERMIT Block Duration&9: &a+100%")
+            if (Player.armor.getLeggings() && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) != NaN) info.splice(7, 0, "&9&lHERMIT: &cMirrors Disabled")
+        } if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
+            if (solisBroken) {
+                info.splice(8, 0, "&a&lSolitude: &cBroken")
+            } else {
+                info.splice(8, 0, `&a&lSolitude: &b-${soliLevel}%`)
+            }
+        } if (shark) {
+            info.splice(9, 0, "&c&lShark: &c+" + shark + "%")
+        } if (inEvent() == "bloodbath") {
+            info.splice(10, 0, "&4&lBlood Bath: &c+30%")
+            info.splice(10, 0, "&4&lBlood Bath: &d+20% Healing")
+
+        } if (inEvent() == "rewards") {
+            info.splice(10, 0, "&2&l2x Rewards: &6Gold &4& &bXP &a+100%")
+        } if (inEvent() == "teamdestroy") {
+            if (teamdestroyteam == "WATER") {
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &bTo &cFire")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &bFrom &aNature")
+            } if (teamdestroyteam == "FIRE") {
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &cTo &aNature")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &cFrom &bWater")
+            } if (teamdestroyteam == "NATURE") {
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &aTo &bWater")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &aFrom &cFire")
+            } if (teamdestroyteam == "ELEMENTAL") {
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c5% Damage &bTo &eEveryone")
+            }
         }
         if (info.length > 0) {
             info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
@@ -2097,10 +2135,10 @@ function getBossName() {
 }
 
 const inEvent = () => {
-    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`BLOOD BATH!`)) return true
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`GAMBLE!`)) return true
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`2X REWARDS!`)) return true
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`TEAM DESTORY!`)) return true
+    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`BLOOD BATH!`)) return "bloodbath"
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`GAMBLE!`)) return "gamble"
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`2X REWARDS!`)) return "rewards"
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`TEAM DESTORY!`)) return "teamdestroy"
     else return false
 }
 
@@ -2247,5 +2285,5 @@ const runes = {
 
 register("command", () => {
     /* ChatLib.chat(ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())) */
-    ChatLib.chat()
+    ChatLib.chat("&e&lTEAM DESTROY: &b+10% Damage &bFrom &aNature")
 }).setName("nbtlol")
