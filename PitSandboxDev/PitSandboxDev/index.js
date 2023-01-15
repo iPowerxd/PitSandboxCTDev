@@ -2020,7 +2020,7 @@ register("renderOverlay", () => {
             info.splice(10, 0, "&4&lBlood Bath: &d+20% Healing")
 
         } if (inEvent() == "rewards") {
-            info.splice(10, 0, "&2&l2x Rewards: &6Gold &4& &bXP &a+100%")
+            info.splice(10, 0, "&2&l2x Rewards: &6Gold &7& &bXP &a+100%")
         } if (inEvent() == "teamdestroy") {
             if (teamdestroyteam == "WATER") {
                 info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &bTo &cFire")
@@ -2135,10 +2135,10 @@ function getBossName() {
 }
 
 const inEvent = () => {
-    if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`BLOOD BATH!`)) return "bloodbath"
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`GAMBLE!`)) return "gamble"
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`2X REWARDS!`)) return "rewards"
-    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`TEAM DESTORY!`)) return "teamdestroy"
+    if (ChatLib.removeFormatting(getBossName()).toString().includes(`BLOOD BATH!`)) return "bloodbath"
+    else if (ChatLib.removeFormatting(getBossName()).toString().includes(`GAMBLE!`)) return "gamble"
+    else if (ChatLib.removeFormatting(getBossName()).toString().includes(`2X REWARDS!`)) return "rewards"
+    else if (ChatLib.removeFormatting(getBossName()).toString().includes(`TEAM DESTORY!`)) return "teamdestroy"
     else return false
 }
 
