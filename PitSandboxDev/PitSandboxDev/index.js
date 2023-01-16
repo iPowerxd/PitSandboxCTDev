@@ -1628,13 +1628,12 @@ new Thread(() => {
                 });
             }
         }; {
-            if (!pitsandbox || !Settings.toggleSandboxHUD) return
             let str = [];
             if (Settings.togglePreAlert && !isPre() && !inSpawn(Player.asPlayerMP())) {
                 str.push("&c&nYou are premega");
             }
             if (nols) str.push("&cNo LS in hotbar");
-            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon");
+            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
             if (str.length > 0) {
                 let text = new Text(str.join("&r   "));
                 let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
@@ -1991,16 +1990,16 @@ register("renderOverlay", () => {
         } if (megastreak == "Nightmare") {
             info.splice(5, 0, "&1&lNGHTMRE Bot Damage&1: &c+10%")
         } if (ubermilestone == "UBER100") {
-            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
         } if (ubermilestone == "UBER200") {
-            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
         } if (ubermilestone == "UBER300") {
-            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
             info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
         } if (ubermilestone == "UBER400") {
-            info.splice(6, 0, "&1&lUBER100 Bot Damage&1: &c+10%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
             info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
             info.splice(6, 0, "&d&lUBER400: No Longer Gain Health")
