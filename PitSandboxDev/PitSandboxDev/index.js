@@ -1628,12 +1628,13 @@ new Thread(() => {
                 });
             }
         }; {
+            if (!pitsandbox || !Settings.toggleSandboxHUD) return
             let str = [];
-            if (Settings.togglePreAlert && !isPre() && !inSpawn(Player.asPlayerMP())) {
+            if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
                 str.push("&c&nYou are premega");
             }
             if (nols) str.push("&cNo LS in hotbar");
-            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo beacon");
+            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon");
             if (str.length > 0) {
                 let text = new Text(str.join("&r   "));
                 let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
@@ -2015,7 +2016,7 @@ register("renderOverlay", () => {
         } if (shark) {
             info.splice(9, 0, "&c&lShark: &c+" + shark + "%")
         } if (inEvent() == "bloodbath") {
-            info.splice(10, 0, "&4&lBlood Bath: &c+30%")
+            info.splice(10, 0, "&4&lBlood Bath: &c+30% Damage")
             info.splice(10, 0, "&4&lBlood Bath: &d+20% Healing")
 
         } if (inEvent() == "rewards") {
@@ -2134,6 +2135,7 @@ function getBossName() {
 }
 
 const inEvent = () => {
+    if (ChatLib.removeFormatting(getBossName()).toString().includes(`Starting in`)) return false
     if (ChatLib.removeFormatting(getBossName()).toString().includes(`BLOOD BATH!`)) return "bloodbath"
     else if (ChatLib.removeFormatting(getBossName()).toString().includes(`GAMBLE!`)) return "gamble"
     else if (ChatLib.removeFormatting(getBossName()).toString().includes(`2X REWARDS!`)) return "rewards"
@@ -2283,6 +2285,11 @@ const runes = {
 }
 
 register("command", () => {
-    /* ChatLib.chat(ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())) */
-    ChatLib.chat("&e&lTEAM DESTROY: &b+10% Damage &bFrom &aNature")
+    ChatLib.chat(ChatLib.removeFormatting(Player.getHeldItem().getNBT()))
 }).setName("nbtlol")
+
+register("command", (arg1, arg2) => {
+    if (arg1 < 0 && arg1 > 60) return ChatLib.chat("&cInvalid Prestige! Must be between 0-60")
+    if (arg2 < 1 && arg2 > 120) return ChatLib.chat("&cInvalid Level! Must be between 1-120")
+    ChatLib.chat(`&b${formatNumber((xpneeded[arg2] / 12) * prestigexp[arg1])} XP`)
+}).setName("prestigexp")
