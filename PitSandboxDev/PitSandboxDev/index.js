@@ -98,6 +98,7 @@ let megacoins = undefined;
 let streak = 0;
 let streakkills = 0;
 let autoSuperegg = false
+let autoStackBread = false
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500];
 const totalxpnopres = 65950;
 let rngdamage = Date.now();
@@ -140,6 +141,7 @@ let streaking = false;
 let namecache = {}
 let useEggs = new KeyBind("Use All Eggs", "", "!PitSandbox")
 let toggleSuperegg = new KeyBind("Toggle Auto SuperEgg", "", "!PitSandbox")
+let toggleStackBread = new KeyBind("Toggle Auto Bread", "", "!PitSandbox")
 let target = undefined;
 let targetexpire = undefined;
 let lsticks = 0;
@@ -1883,6 +1885,39 @@ register("step", () => {
         }
     }
 }).setFps(3)
+
+
+register("step", () => {
+    if (pitsandbox && autoStackBread) {
+        let slots = [];
+        for (let i = 0; i < 9; i++) {
+            if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 296) {
+                if (Player.getInventory().getStackInSlot(i).getStackSize() == 64) {
+                    slots.push(i);
+                }
+            }
+        }
+        if (slots.length > 0) {
+            lastBreadslot = Player.getHeldItemIndex();
+            rightclicking = true;
+            slots.forEach((slot, i) => {
+                setTimeout(() => {
+                    if (Player.getHeldItemIndex() != slot) {
+                        Player.setHeldItemIndex(slot);
+                    }
+                    if (i == slots.length - 1) {
+                        setTimeout(() => {
+                            rightclicking = false;
+                            if (Player.getHeldItemIndex() != lastBreadslot) Player.setHeldItemIndex(lastBreadslot);
+                        }, 100);
+                    }
+                }, i * 50);
+            });
+        }
+    }
+}).setFps(3)
+
+
 register("tick", () => {
     if (toggleSuperegg.isPressed()) {
         if (autoSuperegg) {
@@ -1891,6 +1926,17 @@ register("tick", () => {
         } else {
             autoSuperegg = true
             ChatLib.chat("&aEnabled auto SuperEgg!")
+        }
+    }
+})
+register("tick", () => {
+    if (toggleStackBread.isPressed()) {
+        if (autoStackBread) {
+            autoStackBread = false
+            ChatLib.chat("&cDisabled auto Stack Bread!")
+        } else {
+            autoStackBread = true
+            ChatLib.chat("&aEnabled auto Stack Bread")
         }
     }
 })
