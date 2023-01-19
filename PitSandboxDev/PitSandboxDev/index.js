@@ -2185,10 +2185,9 @@ const inEvent = () => {
     if (ChatLib.removeFormatting(getBossName()).toString().includes(`BLOOD BATH!`)) return "bloodbath"
     else if (ChatLib.removeFormatting(getBossName()).toString().includes(`GAMBLE!`)) return "gamble"
     else if (ChatLib.removeFormatting(getBossName()).toString().includes(`2X REWARDS!`)) return "rewards"
-    else if (ChatLib.removeFormatting(getBossName()).toString().includes(`TEAM DESTORY!`)) return "teamdestroy"
+    else if (ChatLib.removeFormatting(getBossName()).toString().startsWith(`W: `)) return "teamdestroy"
     else return false
 }
-
 /* register("renderBossHealth", event => {
     if (!inEvent()) cancel(event)
 }) */
