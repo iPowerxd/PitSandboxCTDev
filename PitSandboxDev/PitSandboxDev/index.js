@@ -1720,11 +1720,11 @@ register("messageSent", (message, event) => {
     if (!message.startsWith("/")) {
 
         if (Settings.chatColor != "" && /^&.$/g.test(Settings.chatColor)) {
-            if (message.startsWith("\\")) return cancel(event), ChatLib.say(message.substring(1)), Client.getChatGUI().func_146239_a(message);
+            if (message.startsWith("\\") || message.startsWith("!")) return cancel(event), ChatLib.say(message.substring(1)), Client.getChatGUI().func_146239_a(message)
             if (Date.now() - lastunscramble > 35000 && Date.now() - lastquickmath > 35000) {
-                cancel(event);
-                ChatLib.say(Settings.chatColor + message);
-                Client.getChatGUI().func_146239_a(message);
+                cancel(event)
+                ChatLib.say(Settings.chatColor + message)
+                Client.getChatGUI().func_146239_a(message)
             }
         }
     }
