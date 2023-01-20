@@ -358,7 +358,7 @@ register("guiOpened", event => {
 })
 
 register("guiOpened", event => {
-    if (!onSandbox()) return
+    if (!pitsandbox) return
     setTimeout(() => {
         if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Upgrades")) {
             if (!autoSyncperks) autoSyncperks = true
