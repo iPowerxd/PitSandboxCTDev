@@ -357,6 +357,15 @@ register("guiOpened", event => {
     }, 100)
 })
 
+register("guiOpened", event => {
+    if (!onSandbox()) return
+    setTimeout(() => {
+        if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Upgrades")) {
+            if (!autoSyncperks) autoSyncperks = true
+        }
+    }, 100)
+})
+
 register("tick", () => {
     if (inSpawn(Player.asPlayerMP()) && !spawn) {
         spawn = true
