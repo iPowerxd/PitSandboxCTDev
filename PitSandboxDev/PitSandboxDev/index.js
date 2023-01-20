@@ -1241,10 +1241,11 @@ new Thread(() => {
                 const fire = scoreboard.find(l => l.startsWith("FIRE: ")).split("FIRE: ")[1]
                 const nature = scoreboard.find(l => l.startsWith("NATURE: ")).split("NATURE: ")[1]
                 const elemental = scoreboard.find(l => l.startsWith("ELEM: ")).split("ELEM: ")[1]
-                general.splice(0, 0, `&bWater: &7${water}`)
-                general.splice(1, 0, `&cFire: &7${fire}`)
-                general.splice(2, 0, `&aNature: &7${nature}`)
-                general.splice(3, 0, `&2Elemental: &7${elemental}`)
+                general[0] = `&eTEAM DESTORY`
+                general.splice(1, 0, `&bWater: &7${water}`)
+                general.splice(2, 0, `&cFire: &7${fire}`)
+                general.splice(3, 0, `&aNature: &7${nature}`)
+                general.splice(4, 0, `&2Elemental: &7${elemental}`)
             }
             if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
@@ -1715,9 +1716,20 @@ new Thread(() => {
 }).start();
 
 register("messageSent", (message, event) => {
+    if (message.startsWith("@")) {
+        return (
+            cancel(event),
+            ChatLib.chat(!message.includes("getColourOfName") ? "\n" + eval(message.substring(1)) + "\n" : "\n" + eval(message.substring(1)) + "Colour \n"),
+            Client.getChatGUI().func_146239_a(message)
+        )
+    }
+});
+
+register("messageSent", (message, event) => {
     if (!pitsandbox) return
     if (nomvp) return
-    if (!message.startsWith("/") || !message.startsWith("!")) {
+    if (message.startsWith("!") || message.startsWith("@")) return
+    if (!message.startsWith("/")) {
 
         if (Settings.chatColor != "" && /^&.$/g.test(Settings.chatColor)) {
             if (message.startsWith("\\")) return cancel(event), ChatLib.say(message.substring(1)), Client.getChatGUI().func_146239_a(message)
@@ -1729,8 +1741,7 @@ register("messageSent", (message, event) => {
         }
     }
     if (pitsandbox && message == "/oof" && isPre() && Settings.togglePreOOF) return cancel(event), ChatLib.chat("&c&lOOF!&7 You are premega!"), Client.getChatGUI().func_146239_a("/oof");
-});
-
+})
 
 register("renderEntity", (entity, pos, ticks, event) => {
     if (!pitsandbox) return;
