@@ -760,28 +760,6 @@ register("chat", event => {
                 break;
         }
     }
-    if (Settings.toggleBDAlert) {
-        if (umsg == "DIVINE INTERVENTION! Lives kept!") {
-
-            (() => {
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        World.playSound("note.pling", 1, 1);
-                    }, i * 130);
-                }
-                Client.showTitle("&b&lDIVINE!", "&7Lives kept!", 0, 45, 0);
-            }, 200);
-        } else if (umsg == "INVENTORY BEACON! Lives kept!") {
-            setTimeout(() => {
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        World.playSound("note.pling", 1, 0.5);
-                    }, i * 130);
-                }
-                Client.showTitle("&b&lBEACON!", "&7Lives kept!", 0, 45, 0);
-            }, 200);
-        }
-    }
     if (umsg == "HEY THERE! See the latest events with MVP!") nomvp = true, ChatLib.chat("§cNo MVP, disabled auto /event.");
     if (umsg.startsWith("UNSCRAMBLE OVER!")) {
         lastunscramble = 0;
@@ -2352,3 +2330,22 @@ register("command", (arg1, arg2) => {
     if (arg2 < 1 && arg2 > 120) return ChatLib.chat("&cInvalid Level! Must be between 1-120")
     ChatLib.chat(`&b${formatNumber((xpneeded[arg2] / 12) * prestigexp[arg1])} XP`)
 }).setName("prestigexp")
+
+register("chat", event => {
+    if (!Settings.toggleBDAlert) return
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+            World.playSound("note.pling", 1, 1);
+        }, i * 130);
+    }
+    Client.showTitle("&b&lDIVINE!", "&7Lives kept!", 0, 45, 0);
+}).setChatCriteria("DIVINE INTERVENTION! Lives kept!")
+
+register("chat", event => {
+    if (!Settings.toggleBDAlert) return
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+            World.playSound("note.pling", 1, 0.5);
+        }, i * 130);
+    }
+}).setChatCriteria("INVENTORY BEACON! Lives kept!")
