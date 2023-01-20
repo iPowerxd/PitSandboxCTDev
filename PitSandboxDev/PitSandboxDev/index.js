@@ -278,7 +278,7 @@ const getMegastreak = () => {
 
 const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
-        if (perks[0][i][0].includes(perk)) return perks[0][i][1]
+        if (perks[0][i].includes(perk)) return perks[0][i][1]
     } return 0
 }
 
