@@ -428,12 +428,7 @@ register("chat", event => {
         cancel(event);
         blitzmsg = Date.now();
     }
-    if (umsg.toLowerCase().includes("blitz") && Settings.eradicateBlitz) {
-        cancel(event);
-        blitzmsg = Date.now();
-    }
-    if (umsg.includes("/cf") && Settings.antiCF) cancel(event);
-    if (umsg.startsWith("There's an active Blitz tournament")) cancel(event);
+    if (umsg.includes("/cf") && Settings.antiCF) cancel(event);;
     if (umsg.startsWith("BOUNTY! of") || umsg.startsWith("BOUNTY! bump")) {
         if (!Settings.toggleBountyBumps) cancel(event);
     }

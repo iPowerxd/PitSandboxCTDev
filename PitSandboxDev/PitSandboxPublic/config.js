@@ -216,14 +216,7 @@ class Settings {
         description: "Prevent the messages telling you to queue blitz from appearing.",
         category: "!General"
     })
-    toggleBlitzQueue = true;
-
-    @SwitchProperty({
-        name: "Eradicate Blitz",
-        description: "Cancel every message containing the word blitz.",
-        category: "!General"
-    })
-    eradicateBlitz = false;
+    toggleBlitzQueue = false;
 
     @SwitchProperty({
         name: "RNGesus Messages",
