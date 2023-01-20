@@ -1507,7 +1507,7 @@ register("step", () => {
             if (megastreak == "HERMIT" && Settings.autoOOFHermit) ChatLib.command("oof");
             if (megastreak == "OVRDRV" && Settings.autoOOFOverdrive) ChatLib.command("oof");
             if (megastreak == "UBER400" && Settings.autoOOFUber) ChatLib.command("oof")
-            if (streak == "500" && Settings.autoOOFUberRNGESUS && megastreak == "UBER400") ChatLib.command("oof");
+            if (streak >= "500" && Settings.autoOOFUberRNGESUS && megastreak == "UBER400") ChatLib.command("oof");
         }
     }
     if (Settings.hideBotNametags) {
