@@ -1241,51 +1241,43 @@ new Thread(() => {
                 const fire = scoreboard.find(l => l.startsWith("FIRE: ")).split("FIRE: ")[1]
                 const nature = scoreboard.find(l => l.startsWith("NATURE: ")).split("NATURE: ")[1]
                 const elemental = scoreboard.find(l => l.startsWith("ELEM: ")).split("ELEM: ")[1]
-                general[0] = `&eTEAM DESTORY`
+                general[0] = `&eTeam Destroy`
                 general.splice(1, 0, `&bWater: &7${water}`)
                 general.splice(2, 0, `&cFire: &7${fire}`)
                 general.splice(3, 0, `&aNature: &7${nature}`)
                 general.splice(4, 0, `&2Elemental: &7${elemental}`)
-            }
-            if (scoreboard.find(l => l.startsWith("Coins: "))) {
+            } if (scoreboard.find(l => l.startsWith("Coins: "))) {
                 const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
                 general[general.indexOf("Coins: &cUnknown")] = Settings.hudTextColor + "Coins: &6" + coins;
-            }
-            if (scoreboard.find(l => l.startsWith("Megacoins: "))) {
+            } if (scoreboard.find(l => l.startsWith("Megacoins: "))) {
                 const mgcoins = parseInt(scoreboard.find(l => l.startsWith("Megacoins: ")).split("Megacoins: ")[1].replace(/[,]/g, ""));
                 if (isNaN(mgcoins)) megacoins = undefined
                 else megacoins = mgcoins
-            }
-            if (scoreboard.find(l => l.startsWith("Gems: "))) {
+            } if (scoreboard.find(l => l.startsWith("Gems: "))) {
                 const ggems = parseInt(scoreboard.find(l => l.startsWith("Gems: ")).split("Gems: ")[1].replace(/[,]/g, ""))
                 if (isNaN(ggems)) gems = undefined
                 else gems = ggems
-            }
-            if (scoreboard.find(l => l.startsWith("MVP+: "))) {
+            } if (scoreboard.find(l => l.startsWith("MVP+: "))) {
                 const mvpplus = scoreboard.find(l => l.startsWith("MVP+: ")).split("MVP+: ")[1]
                 general.push(Settings.hudTextColor + "MVP+: &6" + mvpplus)
-            }
-            if (scoreboard.find(l => l.startsWith("Bounty: "))) {
+            } if (scoreboard.find(l => l.startsWith("Bounty: "))) {
                 const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1]
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
-            }
-            if (goldreq) {
+            } if (goldreq) {
                 if (Settings.toggleSimpleHUD) {
                     general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax))
                 } else {
                     general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax)) + (goldreqmax == 0 ? "" : " &7(" + (goldreq / goldreqmax * 100).toFixed(1) + "%)") + " &7(" + greqrefresh + ")"
                 }
-            }
-            if (megacoins) {
+            } if (megacoins) {
                 general[general.indexOf(Settings.hudTextColor + "Megacoins: &cUnknown")] = Settings.hudTextColor + "Megacoins: &6" + formatNumber(megacoins);
-            }
-            if (gems) {
+            } if (gems) {
                 general[general.indexOf(Settings.hudTextColor + "Gems: &cUnknown")] = Settings.hudTextColor + "Gems: &a" + formatNumber(gems);
             }
             if (extradamage > Date.now()) {
                 general.push(Settings.hudTextColor + "Megastar: &c" + msToTime(extradamage - Date.now()));
             } if (Settings.toggleSimpleHUD) {
-                if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())} ${majorname}`)
+                if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())}, ${majorname}`)
             } else {
                 if (nextmajor > Date.now()) {
                     general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
