@@ -334,7 +334,6 @@ register("command", () => {
 
 register("worldLoad", () => {
     setTimeout(() => {
-        if (pitsandbox) ChatLib.command("syncperks", true)
         syncperks = true
     }, 400)
 })
