@@ -1285,11 +1285,7 @@ new Thread(() => {
             if (extradamage > Date.now()) {
                 general.push(Settings.hudTextColor + "Megastar: &c" + msToTime(extradamage - Date.now()));
             } if (Settings.toggleSimpleHUD) {
-                let nextMajor
-                let majorName
-                if (nextmajor > Date.now()) nextMajor = nextmajor
-                if (majorname) majorName = majorname
-                if (nextmajor > Data.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())} ${majorName}`)
+                if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())} ${majorname}`)
             } else {
                 if (nextmajor > Date.now()) {
                     general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
