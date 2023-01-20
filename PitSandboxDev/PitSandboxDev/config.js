@@ -72,6 +72,13 @@ class Settings {
     toggleSandboxHUD = true;
 
     @SwitchProperty({
+        name: "Toggle Simple HUD",
+        description: "Toggle the HUD to show less",
+        category: "!General"
+    })
+    toggleSimpleHUD = false;
+
+    @SwitchProperty({
         name: "Toggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "!General"
