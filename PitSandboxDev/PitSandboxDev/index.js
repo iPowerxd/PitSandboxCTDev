@@ -2079,16 +2079,16 @@ register("renderOverlay", () => {
             info.splice(10, 0, "&2&l2x Rewards: &6Gold &7& &bXP &a+100%")
         } if (inEvent() == "teamdestroy") {
             if (teamdestroyteam == "WATER") {
-                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &bTo &cFire")
-                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &bFrom &aNature")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+30% Damage &bTo &cFire")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+30% Damage &bFrom &aNature")
             } if (teamdestroyteam == "FIRE") {
-                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &cTo &aNature")
-                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &cFrom &bWater")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+30% Damage &cTo &aNature")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+30% Damage &cFrom &bWater")
             } if (teamdestroyteam == "NATURE") {
-                info.splice(10, 0, "&e&lTEAM DESTROY: &c+10% Damage &aTo &bWater")
-                info.splice(10, 0, "&e&lTEAM DESTROY: &b+10% Damage &aFrom &cFire")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c+30% Damage &aTo &bWater")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &b+30% Damage &aFrom &cFire")
             } if (teamdestroyteam == "ELEMENTAL") {
-                info.splice(10, 0, "&e&lTEAM DESTROY: &c5% Damage &bTo &eEveryone")
+                info.splice(10, 0, "&e&lTEAM DESTROY: &c10% Damage &bTo &eEveryone")
             }
         }
         if (info.length > 0) {
