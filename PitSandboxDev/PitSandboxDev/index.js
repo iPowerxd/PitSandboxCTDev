@@ -760,7 +760,7 @@ register("chat", event => {
                 break;
         }
     }
-    if (Settings.toggleBDAlert && isPre()) {
+    if (Settings.toggleBDAlert) {
         if (umsg == "DIVINE INTERVENTION! Lives kept!") {
 
             (() => {
@@ -778,7 +778,7 @@ register("chat", event => {
                         World.playSound("note.pling", 1, 0.5);
                     }, i * 130);
                 }
-                Client.showTitle("&b&lBEACON!", "&7YOU GOT PRED EL BOZO!", 0, 45, 0);
+                Client.showTitle("&b&lBEACON!", "&7Lives kept!", 0, 45, 0);
             }, 200);
         }
     }
