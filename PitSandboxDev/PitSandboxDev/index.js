@@ -1220,7 +1220,7 @@ new Thread(() => {
                         for (let i = 1; i < lvl + 1; i++) levelxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
                         levelxp -= sbneededxp;
                         const percent = Math.floor(levelxp / totalxp * 100 * 1000) / 1000
-                        general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Prestige XP Progress: &b" + percent + "%"])
+                        if (Settings.toggleSimpleHUD) general.splice((general.findIndex(l => l.includes("Needed XP:")) != -1 ? general.findIndex(l => l.includes("Needed XP:")) : 1), 0, [Settings.hudTextColor + "Prestige XP Progress: &b" + percent + "%"])
                         let neededxp = 0
                         for (let i = 1; i < lvl + 1; i++) neededxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
                         neededxp = totalxp - neededxp + sbneededxp
