@@ -76,7 +76,7 @@ class Settings {
         description: "Toggle the HUD to show less",
         category: "!General"
     })
-    toggleSimpleHUD = true;
+    toggleSimpleHUD = false;
 
     @SwitchProperty({
         name: "Toggle Major and Minor Events",

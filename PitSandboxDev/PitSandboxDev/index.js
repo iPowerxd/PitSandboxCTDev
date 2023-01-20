@@ -1212,7 +1212,7 @@ new Thread(() => {
                 const pres = romanToInt(scoreboard.find(l => l.startsWith("Prestige: ")).split("Prestige: ")[1])
                 const lvl = parseInt(scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1].replace(/[\[\]]/g, ""))
                 const sbneededxp = (scoreboard.find(l => l.startsWith("Needed XP: ")) ? parseInt(scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1].replace(/,/g, "")) : undefined)
-                if (lvl != 120 || !Settings.toggleSimpleHUD) {
+                if (lvl != 120 || Settings.toggleSimpleHUD) {
                     if (sbneededxp) {
                         let totalxp = 0
                         for (let i = 1; i < 120; i++) totalxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
@@ -1289,7 +1289,7 @@ new Thread(() => {
                 let majorName
                 if (nextmajor > Date.now()) nextMajor = nextmajor
                 if (majorname) majorName = majorname
-                general.push(`${Settings.hudTextColor}Next Major: &e${nextMajor}, ${majorName}`)
+                general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())}, ${majorName}`)
             } else {
                 if (nextmajor > Date.now()) {
                     general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
