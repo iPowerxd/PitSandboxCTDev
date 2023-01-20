@@ -2331,6 +2331,9 @@ const runes = {
     }
 
 }
+register("chat", () => {
+    Client.showTitle("&eSaving Grace", "&7saved you from death!", 0, 35, 0)
+}).setChatCriteria("SAVING GRACE! saved you from death!")
 
 register("command", () => {
     ChatLib.chat(ChatLib.removeFormatting(Player.getHeldItem().getNBT()))
