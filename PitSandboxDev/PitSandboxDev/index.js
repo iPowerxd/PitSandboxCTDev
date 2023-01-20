@@ -1212,7 +1212,7 @@ new Thread(() => {
                 const pres = romanToInt(scoreboard.find(l => l.startsWith("Prestige: ")).split("Prestige: ")[1])
                 const lvl = parseInt(scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1].replace(/[\[\]]/g, ""))
                 const sbneededxp = (scoreboard.find(l => l.startsWith("Needed XP: ")) ? parseInt(scoreboard.find(l => l.startsWith("Needed XP: ")).split("Needed XP: ")[1].replace(/,/g, "")) : undefined)
-                if (lvl != 120) {
+                if (lvl != 120 || !Settings.toggleSimpleHUD) {
                     if (sbneededxp) {
                         let totalxp = 0
                         for (let i = 1; i < 120; i++) totalxp += xpneeded[Math.floor(i / 10)] * prestigexp[pres]
@@ -1270,7 +1270,11 @@ new Thread(() => {
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
             }
             if (goldreq) {
-                general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax)) + (goldreqmax == 0 ? "" : " &7(" + (goldreq / goldreqmax * 100).toFixed(1) + "%)") + " &7(" + greqrefresh + ")"
+                if (Settings.toggleSimpleHUD) {
+                    general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax))
+                } else {
+                    general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq)) + "&r/&6" + formatNumber(Math.floor(goldreqmax)) + (goldreqmax == 0 ? "" : " &7(" + (goldreq / goldreqmax * 100).toFixed(1) + "%)") + " &7(" + greqrefresh + ")"
+                }
             }
             if (megacoins) {
                 general[general.indexOf(Settings.hudTextColor + "Megacoins: &cUnknown")] = Settings.hudTextColor + "Megacoins: &6" + formatNumber(megacoins);
@@ -1280,16 +1284,21 @@ new Thread(() => {
             }
             if (extradamage > Date.now()) {
                 general.push(Settings.hudTextColor + "Megastar: &c" + msToTime(extradamage - Date.now()));
-            }
-            if (nextmajor > Date.now()) {
-                general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
-            }
-            if (nextminor > Date.now()) {
-                general.push(Settings.hudTextColor + "Next Minor: &e" + msToTime(nextminor - Date.now()));
-            }
-            if (majorname) {
-                general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
-            } /* if (promotionUses != 0) {
+            } if (Settings.toggleSimpleHUD) {
+                let nextMajor
+                let majorName
+                if (nextmajor > Date.now()) nextMajor = nextmajor
+                if (majorname) majorName = majorname
+                general.push(`${Settings.hudTextColor}Next Major: &e${nextMajor}, ${majorName}`)
+            } else {
+                if (nextmajor > Date.now()) {
+                    general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
+                } if (nextminor > Date.now()) {
+                    general.push(Settings.hudTextColor + "Next Minor: &e" + msToTime(nextminor - Date.now()));
+                } if (majorname) {
+                    general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
+                }
+            }/* if (promotionUses != 0) {
                 general.push(Settings.hudTextColor + "Promotion Uses: &e" + promotionUses)
             }
  */
