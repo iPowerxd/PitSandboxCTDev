@@ -380,7 +380,7 @@ register("tick", () => {
     }
 })
 
-/* register("renderOverlay", () => {
+register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = []
     info.splice(0, 0, Settings.hudGroupColor + "&nUpgrades")
@@ -391,7 +391,7 @@ register("tick", () => {
     if (perks[1][0] != "Nothing") info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
     if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
     if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
-    if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
+    //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
     let y = 80
     info.forEach(line => {
         const text = new Text(line, 0, y)
@@ -400,7 +400,7 @@ register("tick", () => {
         text.draw()
         y += 11.5
     })
-}) */
+})
 
 
 register("worldLoad", () => {
@@ -1292,7 +1292,7 @@ new Thread(() => {
             }
             general.splice(0, 0, [Settings.hudGroupColor + "&nGeneral Info"]);
             generallines = general;
-            if (!streaking) streakinglines = [];
+            if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [];
             else {
                 let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", Settings.hudTextColor + `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, Settings.hudTextColor + `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`];
 
@@ -1998,10 +1998,10 @@ register("renderOverlay", () => {
     let y = 17
     info.forEach(line => {
         const text = new Text(line, 0, y)
-        text.setX(Renderer.screen.getWidth() / 2)
+        text.setX(Renderer.screen.getWidth() / 3)
         text.setShadow(true)
         text.draw()
-        y += 11
+        y += 4
     })
 })
 
@@ -2019,9 +2019,9 @@ register("renderOverlay", () => {
     let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP())) {
-        /* if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP())) {
+        if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP())) {
             info.push(`&c&lMegastreak: ${getMegaFormatted(Player.getName())}`)
-        } */ if (strengthCount != 0) {
+        } if (strengthCount != 0) {
             info.splice(1, 0, "&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthCount == 5) {
             info.splice(2, 0, "&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
