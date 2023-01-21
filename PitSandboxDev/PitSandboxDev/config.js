@@ -2,10 +2,10 @@
 /// <reference lib="es2015" />
 
 import {
-@ButtonProperty,
+    @ButtonProperty,
 @CheckboxProperty,
 Color,
-@ColorProperty,
+    @ColorProperty,
 @PercentSliderProperty,
 @SliderProperty,
 @SelectorProperty,
@@ -13,7 +13,7 @@ Color,
 @SwitchProperty,
 @TextProperty,
 @Vigilant,
-} from 'Vigilance';
+    } from 'Vigilance';
 @Vigilant('PitSandboxDev', 'Pit Sandbox Developer', {
     getCategoryComparator: () => (a, b) => {
         const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
@@ -414,6 +414,13 @@ class Settings {
         category: "Auto OOF"
     })
     autoOOFUber = false;
+
+    @SwitchProperty({
+        name: "Auto OOF On 500 Uberstreak",
+        description: "Automatically /oof on 500 Uberstreak, if Custom Auto OOF is enabled.\n Mainly used for RNGESUS Begone",
+        category: "Auto OOF"
+    })
+    autoOOFRNGESUS = false;
 
     @SwitchProperty({
         name: "Auto OOF On Moon",
