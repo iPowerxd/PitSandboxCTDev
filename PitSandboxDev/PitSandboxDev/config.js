@@ -171,6 +171,46 @@ class Settings {
     removeMidBill = true;
 
     @SwitchProperty({
+        name: "Remove bow sounds in middle",
+        description: "Remove the sounds of bow shot and land while you're in middle.",
+        category: "General",
+        subcategory: "Sounds"
+    })
+    removeMidBow = true
+
+    @SwitchProperty({
+        name: "Remove Executioner Sounds in Middle",
+        description: "Removes executioner sounds when you are in middle",
+        category: "General",
+        subcategory: 'Sounds'
+    })
+    removeExeSounds = true
+
+    @SwitchProperty({
+        name: "Remove Gamble Sounds in Middle",
+        description: "Removes gamble sounds when you are in middle",
+        category: "General",
+        subcategory: 'Sounds'
+    })
+    removeGambleSounds = true
+
+    @SwitchProperty({
+        name: "Remove Perun Sounds in Middle",
+        description: "Removes perun  sounds when you are in middle",
+        category: "General",
+        subcategory: 'Sounds'
+    })
+    removePerunSounds = true
+
+    @SwitchProperty({
+        name: "Remove Stun Sounds in Middle",
+        description: "Removes stun sounds when you are in middle",
+        category: "General",
+        subcategory: 'Sounds'
+    })
+    removeStunSounds = true
+
+    @SwitchProperty({
         name: "Stop rendering entities in spawn when outside",
         description: "Stop rendering all the entities in spawn if you're not in spawn.",
         category: "General",
