@@ -19,11 +19,11 @@ Color,
         const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
         return categories.indexOf(a.name) - categories.indexOf(b.name)
     },
-    getSubcategoryComparator: () => (a, b) => {
+    /* getSubcategoryComparator: () => (a, b) => {
         const subcategories = ['General Info', 'Display', 'Quality of Life', 'Messages', 'Sounds', 'DEV'];
         return subcategories.indexOf(a.getValue()[0].attributesExt.subcategory) -
             subcategories.indexOf(b.getValue()[0].attributesExt.subcategory);
-    }
+    } */
 })
 class Settings {
 
