@@ -381,7 +381,7 @@ register("tick", () => {
 })
 
 register("renderOverlay", () => {
-    if (!pitsandbox) return
+    if (!pitsandbox || perks[2][0] == 'DO /SYNCPERKS') return
     let info = []
     info.splice(0, 0, Settings.hudGroupColor + "&nUpgrades")
     info.splice(1, 0, getMegaColor(perks[2][0]) + perks[2][0])
