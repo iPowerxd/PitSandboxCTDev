@@ -1995,13 +1995,13 @@ register("renderOverlay", () => {
     } if (info.length > 0) {
         info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
     }
-    let y = 17
+    let y = 4
     info.forEach(line => {
         const text = new Text(line, 0, y)
-        text.setX(Renderer.screen.getWidth() / 3)
+        text.setX(Renderer.screen.getWidth() * 2 / 3)
         text.setShadow(true)
         text.draw()
-        y += 4
+        y += 12
     })
 })
 
