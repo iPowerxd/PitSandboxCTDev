@@ -395,13 +395,13 @@ register("renderOverlay", () => {
     if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
     if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
     //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
-    let y = 80
+    let y = upgradesInfoHud.textY
     info.forEach(line => {
-        const text = new Text(line, 0, y)
-        text.setX(4)
+        const text = new Text(line, upgradesInfoHud.textX, y)
         text.setShadow(true)
+        text.setScale(upgradesInfoHud.textScale)
         text.draw()
-        y += 11.5
+        y += 11.5 * upgradesInfoHud.textScale
     })
 })
 
@@ -1700,7 +1700,7 @@ new Thread(() => {
                     let huntinfo = huntinglines;
                     huntinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setX(generalInfoHud.textX + Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
                         text.setScale(generalInfoHud.textScale)
                         text.setShadow(true)
                         text.draw()
@@ -2095,12 +2095,11 @@ register("renderOverlay", () => {
             info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
         }
     }
-    let y = 4
+    let y = playerInfoHud.textY
     info.forEach(line => {
-        const text = new Text(line, 0, y)
-        text.setX(playerInfoHud.textX)
-        text.setShadow(true)
+        const text = new Text(line, playerInfoHud.textX, y)
         text.setScale(playerInfoHud.textScale)
+        text.setShadow(true)
         text.draw()
         y += 11.5 * playerInfoHud.textScale
     })
@@ -2380,6 +2379,13 @@ let generalInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/generalInfo.json")
 
+let upgradesInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 4,
+    "textY": 80,
+    "textScale": 1
+}, "guiLocations/upgradesInfo.json")
+
 let playerInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
     "textX": 180,
@@ -2389,14 +2395,18 @@ let playerInfoHud = new PogObject("PitSandboxDev", {
 
 register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
     if (Settings.generalInfoHud.isOpen()) {
-        if (((mouseX + 80 >= generalInfoHud.textX) && (mouseX - 80 <= generalInfoHud.textX)) && ((mouseY + 80 >= generalInfoHud.textY) && (mouseY - 80 <= generalInfoHud.textY))) {
+        if (((mouseX + 70 >= generalInfoHud.textX) && (mouseX - 70 <= generalInfoHud.textX)) && ((mouseY + 70 >= generalInfoHud.textY) && (mouseY - 70 <= generalInfoHud.textY))) {
             generalInfoHud.textX = mouseX
             generalInfoHud.textY = mouseY
-        } else if (((mouseX + 80 >= playerInfoHud.textX) && (mouseX - 80 <= playerInfoHud.textX)) && ((mouseY + 80 >= playerInfoHud.textY) && (mouseY - 80 <= playerInfoHud.textY))) {
+        } else if (((mouseX + 70 >= upgradesInfoHud.textX) && (mouseX - 70 <= upgradesInfoHud.textX)) && ((mouseY + 70 >= upgradesInfoHud.textY) && (mouseY - 70 <= upgradesInfoHud.textY))) {
+            upgradesInfoHud.textX = mouseX
+            upgradesInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= playerInfoHud.textX) && (mouseX - 70 <= playerInfoHud.textX)) && ((mouseY + 70 >= playerInfoHud.textY) && (mouseY - 70 <= playerInfoHud.textY))) {
             playerInfoHud.textX = mouseX
             playerInfoHud.textY = mouseY
         }
         generalInfoHud.save()
+        upgradesInfoHud.save()
         playerInfoHud.save()
     }
 })
@@ -2405,10 +2415,16 @@ register("guiKey", (char, keyCode, gui, event) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (keyCode == 200) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+            upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
+            playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
         } else if (keyCode == 208) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0.1 ? 0.1 : 0
+            upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0.1 ? 0.1 : 0
+            playerInfoHud.textScale -= playerInfoHud.textScale > 0.1 ? 0.1 : 0
         }
         generalInfoHud.save()
+        upgradesInfoHud.save()
+        playerInfoHud.save()
     }
 })
 
@@ -2416,10 +2432,16 @@ register("scrolled", (mouseX, mouseY, direction) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (direction == 1) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+            upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
+            playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
         } else if (direction == -1) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0 ? 0.1 : 0
+            upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0 ? 0.1 : 0
+            playerInfoHud.textScale -= playerInfoHud.textScale > 0 ? 0.1 : 0
         }
         generalInfoHud.save()
+        upgradesInfoHud.save()
+        playerInfoHud.save()
 
     }
 })

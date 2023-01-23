@@ -29,7 +29,7 @@ class Settings {
 
     generalInfoHud = new Gui()
     @ButtonProperty({
-        name: "Move General Info GUI",
+        name: "Move GUIs",
         placeholder: "Move",
         category: "General",
         subcategory: "!General Info"
