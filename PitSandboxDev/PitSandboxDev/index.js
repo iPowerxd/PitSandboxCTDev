@@ -1,6 +1,8 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2015" />
-import Settings from './config';
+import PogObject from "../PogData"
+import Changelog from "../ChangelogLib"
+import Settings from './config'
 register("command", Settings.openGUI).setName("pitsandbox").setAliases(["ps"]);
 
 const isInMainServer = () => {
@@ -333,6 +335,7 @@ register("command", () => {
 }).setName("perks")
 
 register("worldLoad", () => {
+    welcome()
     setTimeout(() => {
         syncperks = true
     }, 400)
@@ -1667,13 +1670,15 @@ new Thread(() => {
             if (Settings.toggleSandboxHUD) {
                 let general = generallines;
 
-                let y = 4;
+                let y = generalInfoHud.textY
                 general.forEach(line => {
                     const text = new Text(line, 0, y);
-                    text.setX(Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) - 4);
-                    text.setShadow(true);
-                    text.draw();
-                    y += 12;
+
+                    text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                    text.setScale(generalInfoHud.textScale)
+                    text.setShadow(true)
+                    text.draw()
+                    y += 12 * generalInfoHud.textScale
                 });
 
                 if (streakinglines.length > 0) {
@@ -1681,11 +1686,12 @@ new Thread(() => {
                     let streakinfo = streakinglines;
 
                     streakinfo.forEach(line => {
-                        const text = new Text(line, 0, y);
-                        text.setX(Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) - 4);
-                        text.setShadow(true);
-                        text.draw();
-                        y += 12;
+                        const text = new Text(line, 0, y)
+                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setScale(generalInfoHud.textScale)
+                        text.setShadow(true)
+                        text.draw()
+                        y += 12 * generalInfoHud.textScale
                     });
                 }
 
@@ -1693,11 +1699,12 @@ new Thread(() => {
                     y += 24;
                     let huntinfo = huntinglines;
                     huntinfo.forEach(line => {
-                        const text = new Text(line, 0, y);
-                        text.setX(Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) - 4);
-                        text.setShadow(true);
-                        text.draw();
-                        y += 12;
+                        const text = new Text(line, 0, y)
+                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setScale(generalInfoHud.textScale)
+                        text.setShadow(true)
+                        text.draw()
+                        y += 12 * generalInfoHud.textScale
                     });
                 }
             }
@@ -2091,10 +2098,11 @@ register("renderOverlay", () => {
     let y = 4
     info.forEach(line => {
         const text = new Text(line, 0, y)
-        text.setX(Renderer.screen.getWidth() / 6)
+        text.setX(playerInfoHud.textX)
         text.setShadow(true)
+        text.setScale(playerInfoHud.textScale)
         text.draw()
-        y += 11.5
+        y += 11.5 * playerInfoHud.textScale
     })
 })
 
@@ -2364,3 +2372,80 @@ register("chat", event => {
         }, i * 130);
     }
 }).setChatCriteria("INVENTORY BEACON! Lives kept!")
+
+let generalInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 6,
+    "textY": 4,
+    "textScale": 1
+}, "data.json")
+
+let playerInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 6,
+    "textY": 4,
+    "textScale": 1
+}, "data.json")
+
+register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
+    if (Settings.generalInfoHud.isOpen()) {
+        generalInfoHud.textX = mouseX;
+        generalInfoHud.textY = mouseY;
+        generalInfoHud.save();
+    }
+})
+
+register("guiKey", (char, keyCode, gui, event) => {
+    if (Settings.generalInfoHud.isOpen()) {
+        if (keyCode == 200) {
+            generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+        } else if (keyCode == 208) {
+            generalInfoHud.textScale -= generalInfoHud.textScale > 0.1 ? 0.1 : 0
+        }
+        generalInfoHud.save()
+    }
+})
+
+register("scrolled", (mouseX, mouseY, direction) => {
+    if (Settings.generalInfoHud.isOpen()) {
+        if (direction == 1) {
+            generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+        } else if (direction == -1) {
+            generalInfoHud.textScale -= generalInfoHud.textScale > 0 ? 0.1 : 0
+        }
+        generalInfoHud.save()
+
+    }
+})
+
+const firstMessage = [
+    `&d&l&nPit Sandbox 2.0.0`,
+    "",
+    "&aThank you for using &dPitSandbox&a!",
+    "&7use &e/ps &7to open the settings GUI",
+    "",
+    "&aThis ChatTrigger has been verified by the owner!",
+    "",
+    "&aIf you found a bug or have any suggestions,",
+    "https://discord.gg/XZcgpz6bFw",
+    "&aDM &dJMB#0001 &7& &biPower#4441"
+]
+
+function welcome() {
+    setTimeout(() => {
+        ChatLib.chat(`&b&l&m${ChatLib.getChatBreak(" ")}`)
+        firstMessage.forEach(message => {
+            ChatLib.chat(ChatLib.getCenteredText(message))
+        })
+        ChatLib.chat(`&b&l&m${ChatLib.getChatBreak(" ")}`)
+        generalInfoHud.firstTime = false;
+        generalInfoHud.save()
+    }, 1000)
+}
+
+const changelogMessage = [
+    "&b - Test",
+]
+
+const changelog = new Changelog("PitSandboxDEV", "2.0.0", changelogMessage.join('\n'))
+changelog.writeChangelog({ name: "&d&l&n", version: "&e", changelog: "&a" })

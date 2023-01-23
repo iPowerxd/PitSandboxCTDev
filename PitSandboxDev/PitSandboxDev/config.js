@@ -27,6 +27,28 @@ Color,
 })
 class Settings {
 
+    generalInfoHud = new Gui()
+    @ButtonProperty({
+        name: "Move General Info GUI",
+        placeholder: "Move",
+        category: "General",
+        subcategory: "!General Info"
+    })
+    nameTagMove() {
+        this.generalInfoHud.open()
+    }
+
+    /* playerInfoHud = new Gui()
+    @ButtonProperty({
+        name: "Move Player Info GUI",
+        placeholder: "Move",
+        category: "General",
+        subcategory: "!Player Info"
+    })
+    nameTagMove() {
+        this.playerInfoHud.open()
+    } */
+
     @TextProperty({
         name: "HUD Colors",
         description: "Change the color of the HUD.\n&3Also Accepts chat formatting color codes.",
@@ -55,7 +77,7 @@ class Settings {
         name: "Toggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSandboxHUD = true;
 
@@ -63,7 +85,7 @@ class Settings {
         name: "Toggle Simple HUD",
         description: "Toggle the HUD to show less",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSimpleHUD = false;
 
@@ -71,7 +93,7 @@ class Settings {
         name: "Toggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleMajorandMinorEventHUD = true;
 
