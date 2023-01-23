@@ -2375,23 +2375,29 @@ register("chat", event => {
 
 let generalInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
-    "textX": 6,
+    "textX": 860,
     "textY": 4,
     "textScale": 1
-}, "data.json")
+}, "guiLocations/generalInfo.json")
 
 let playerInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
-    "textX": 6,
+    "textX": 180,
     "textY": 4,
     "textScale": 1
-}, "data.json")
+}, "guiLocations/playerInfo.json")
 
 register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
     if (Settings.generalInfoHud.isOpen()) {
-        generalInfoHud.textX = mouseX;
-        generalInfoHud.textY = mouseY;
-        generalInfoHud.save();
+        if (((mouseX + 80 >= generalInfoHud.textX) && (mouseX - 80 <= generalInfoHud.textX)) && ((mouseY + 80 >= generalInfoHud.textY) && (mouseY - 80 <= generalInfoHud.textY))) {
+            generalInfoHud.textX = mouseX
+            generalInfoHud.textY = mouseY
+        } else if (((mouseX + 80 >= playerInfoHud.textX) && (mouseX - 80 <= playerInfoHud.textX)) && ((mouseY + 80 >= playerInfoHud.textY) && (mouseY - 80 <= playerInfoHud.textY))) {
+            playerInfoHud.textX = mouseX
+            playerInfoHud.textY = mouseY
+        }
+        generalInfoHud.save()
+        playerInfoHud.save()
     }
 })
 
@@ -2424,20 +2430,21 @@ const firstMessage = [
     "&aThank you for using &dPitSandbox&a!",
     "&7use &e/ps &7to open the settings GUI",
     "",
-    "&aThis ChatTrigger has been verified by the owner!",
+    "&a&lThis ChatTrigger has been verified by the owner!",
     "",
     "&aIf you found a bug or have any suggestions,",
-    "https://discord.gg/XZcgpz6bFw",
-    "&aDM &dJMB#0001 &7& &biPower#4441"
+    "&aDM &dJMB#0001 &7& &biPower#4441",
+    "",
+    "&9&nhttps://discord.gg/XZcgpz6bFw"
 ]
 
 function welcome() {
     setTimeout(() => {
-        ChatLib.chat(`&b&l&m${ChatLib.getChatBreak(" ")}`)
+        ChatLib.chat(`&b&m${ChatLib.getChatBreak(" ")}`)
         firstMessage.forEach(message => {
             ChatLib.chat(ChatLib.getCenteredText(message))
         })
-        ChatLib.chat(`&b&l&m${ChatLib.getChatBreak(" ")}`)
+        ChatLib.chat(`&b&m${ChatLib.getChatBreak(" ")}`)
         generalInfoHud.firstTime = false;
         generalInfoHud.save()
     }, 1000)
