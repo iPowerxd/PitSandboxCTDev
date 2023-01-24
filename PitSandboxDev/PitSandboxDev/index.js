@@ -1626,26 +1626,23 @@ new Thread(() => {
                     y += 12;
                 });
             }
-        }; {
+        } {
             if (!pitsandbox || !Settings.toggleSandboxHUD) return
-            let str = [];
+            let str = []
             if (Settings.togglePreAlert && isPre() && !inSpawn(Player.asPlayerMP())) {
-                str.push("&c&nYou are premega");
+                str.push("&c&nYou are premega")
             }
-            if (nols) str.push("&cNo LS in hotbar");
-            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon");
+            if (nols) str.push("&cNo LS in hotbar")
+            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon")
             if (str.length > 0) {
-                let text = new Text(str.join("&r   "));
-                let x = Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth(text.getString()) * 1.4 / 2);
-                let y = Renderer.screen.getHeight() / 4 * 3.3;
-                text.setX(x);
-                text.setY(y);
-                text.setShadow(true);
-                text.setScale(1.4);
-                text.draw();
+                let text = new Text(str.join("&r   "))
+                text.setX(preInfoHud.textX - (Renderer.getStringWidth(text.getString()) * 1.4 / 2))
+                text.setY(preInfoHud.textY)
+                text.setShadow(true)
+                text.setScale(generalInfoHud.textScale * 1.4)
+                text.draw()
             }
-            /* } */
-        }; {
+        } {
             if (Settings.eggEffectDisplay) {
                 let lines = [];
                 if (Date.now() < sixtimescoins) {
@@ -1670,11 +1667,9 @@ new Thread(() => {
             if (Player.getHP() < 12 && Settings.toggleLowHealthHUD) Renderer.drawRect(Renderer.color(255, 0, 0, 30), 0, 0, Renderer.screen.getWidth(), Renderer.screen.getHeight());
             if (Settings.toggleSandboxHUD) {
                 let general = generallines;
-
                 let y = generalInfoHud.textY
                 general.forEach(line => {
                     const text = new Text(line, 0, y);
-
                     text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
                     text.setScale(generalInfoHud.textScale)
                     text.setShadow(true)
@@ -2403,6 +2398,13 @@ let boosterInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/boosterInfo.json")
 
+let preInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 480,
+    "textY": 410,
+    "textScale": 1
+}, "guiLocations/preInfo.json")
+
 register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (((mouseX + 70 >= generalInfoHud.textX) && (mouseX - 70 <= generalInfoHud.textX)) && ((mouseY + 70 >= generalInfoHud.textY) && (mouseY - 70 <= generalInfoHud.textY))) {
@@ -2423,6 +2425,9 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         } else if (((mouseX + 70 >= boosterInfoHud.textX) && (mouseX - 70 <= boosterInfoHud.textX)) && ((mouseY + 70 >= boosterInfoHud.textY) && (mouseY - 70 <= boosterInfoHud.textY))) {
             boosterInfoHud.textX = mouseX
             boosterInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= preInfoHud.textX) && (mouseX - 70 <= preInfoHud.textX)) && ((mouseY + 70 >= preInfoHud.textY) && (mouseY - 70 <= preInfoHud.textY))) {
+            preInfoHud.textX = mouseX
+            preInfoHud.textY = mouseY
         }
         generalInfoHud.save()
         streakInfoHud.save()
@@ -2430,6 +2435,7 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         upgradesInfoHud.save()
         playerInfoHud.save()
         boosterInfoHud.save()
+        preInfoHud.save()
     }
 })
 
@@ -2473,6 +2479,7 @@ register("scrolled", (mouseX, mouseY, direction) => {
             streakInfoHud.textScale -= streakInfoHud.textScale > 0 ? 0.1 : 0
             huntInfoHud.textScale -= huntInfoHud.textScale > 0 ? 0.1 : 0
             upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0 ? 0.1 : 0
+            playerInfoHud.textScale -= playerInfoHud.textScale > 0 ? 0.1 : 0
             boosterInfoHud.textScale -= boosterInfoHud.textScale > 0 ? 0.1 : 0
 
         }
@@ -2492,7 +2499,7 @@ const firstMessage = [
     "&aThank you for using &dPitSandbox&a!",
     "&7Use &e/ps &7to open the settings GUI",
     "",
-    "&6&lThis ChatTrigger has been verified by the owner!",
+    "&6&lThis ChatTrigger has been verified by the &cO&lwner&6!",
     "",
     "&aIf you found a bug or have any suggestions,",
     "&aDM &dJMB#0001 &7& &biPower#4441",
@@ -2514,7 +2521,7 @@ function welcome() {
 }
 
 const changelogMessage = [
-    "&b #announcements",
+    "&b#announcements",
 ]
 
 const changelog = new Changelog("PitSandboxDEV", "2.0.0", changelogMessage.join('\n'))
