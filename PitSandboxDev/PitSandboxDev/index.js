@@ -384,24 +384,25 @@ register("tick", () => {
 })
 
 register("renderOverlay", () => {
-    if (!pitsandbox || perks[2][0] == 'DO /SYNCPERKS') return
-    let info = []
-    info.splice(0, 0, Settings.hudGroupColor + "&nUpgrades")
+    if (!pitsandbox) return
+    let info = [`${Settings.hudGroupColor}&nUpgrades`]
     info.splice(1, 0, getMegaColor(perks[2][0]) + perks[2][0])
-    if (perks[0][0][0] != "Nothing") info.splice(2, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
-    if (perks[0][1][0] != "Nothing") info.splice(3, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
-    if (perks[0][1][0] != "Nothing") info.splice(4, 0, "&c" + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&7 " + perks[0][2][1]))
-    if (perks[1][0] != "Nothing") info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
-    if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
-    if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
-    //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
+    if (perks[2][0] != 'DO /SYNCPERKS') {
+        if (perks[0][0][0] != "Nothing") info.splice(2, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
+        if (perks[0][1][0] != "Nothing") info.splice(3, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
+        if (perks[0][1][0] != "Nothing") info.splice(4, 0, "&c" + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&7 " + perks[0][2][1]))
+        if (perks[1][0] != "Nothing") info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
+        if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
+        if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
+        //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
+    }
     let y = upgradesInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, upgradesInfoHud.textX, y)
         text.setShadow(true)
         text.setScale(upgradesInfoHud.textScale)
-        text.draw()
         y += 11.5 * upgradesInfoHud.textScale
+        if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
 
@@ -1295,7 +1296,7 @@ new Thread(() => {
             }
             general.splice(0, 0, [Settings.hudGroupColor + "&nGeneral Info"]);
             generallines = general;
-            if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [];
+            if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [`${Settings.hudGroupColor}&nStreaking Info`]
             else {
                 let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", Settings.hudTextColor + `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, Settings.hudTextColor + `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`];
 
@@ -1359,8 +1360,8 @@ new Thread(() => {
                 if (Date.now() < rngdamage) {
                     streakinfo.push(Settings.hudTextColor + "RNGesus DMG: &c" + msToTime(rngdamage - Date.now(), true));
                 }
-                streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"]);
-                streakinglines = streakinfo;
+                streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
+                streakinglines = streakinfo
             }
             let huntinfo = [];
             if (onlineHunt.length > 0) {
@@ -1679,20 +1680,20 @@ new Thread(() => {
                     text.setShadow(true)
                     text.draw()
                     y += 12 * generalInfoHud.textScale
-                });
+                })
 
                 if (streakinglines.length > 0) {
-                    y += 24;
+                    y = streakInfoHud.textY
                     let streakinfo = streakinglines;
 
                     streakinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
-                        text.setScale(generalInfoHud.textScale)
+                        text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * streakInfoHud.textScale)
+                        text.setScale(streakInfoHud.textScale)
                         text.setShadow(true)
-                        text.draw()
-                        y += 12 * generalInfoHud.textScale
-                    });
+                        if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
+                        y += 12 * streakInfoHud.textScale
+                    })
                 }
 
                 if (huntinglines.length > 0) {
@@ -1700,7 +1701,7 @@ new Thread(() => {
                     let huntinfo = huntinglines;
                     huntinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(generalInfoHud.textX + Renderer.screen.getWidth() - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
                         text.setScale(generalInfoHud.textScale)
                         text.setShadow(true)
                         text.draw()
@@ -2026,7 +2027,7 @@ let bodybuilderDamage = 0
 
 register("renderOverlay", () => {
     if (!pitsandbox || !Settings.toggleSandboxHUD) return
-    let info = []
+    let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
@@ -2091,17 +2092,16 @@ register("renderOverlay", () => {
                 info.splice(10, 0, "&e&lTEAM DESTROY: &c10% Damage &bTo &eEveryone")
             }
         }
-        if (info.length > 0) {
-            info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
-        }
+        //if (info.length > 0 || Settings.generalInfoHud.isOpen()) info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
+        //else if (Settings.generalInfoHud.isOpen()) new Text(`${Settings.hudGroupColor}&nPlayer Info`, playerInfoHud.textX, playerInfoHud.textY).setScale(playerInfoHud.textScale).setShadow(true).draw()
     }
     let y = playerInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, playerInfoHud.textX, y)
         text.setScale(playerInfoHud.textScale)
         text.setShadow(true)
-        text.draw()
         y += 11.5 * playerInfoHud.textScale
+        if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
 
@@ -2379,6 +2379,20 @@ let generalInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/generalInfo.json")
 
+let streakInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 860,
+    "textY": 195,
+    "textScale": 1
+}, "guiLocations/streakInfo.json")
+
+let huntInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 860,
+    "textY": 250,
+    "textScale": 1
+}, "guiLocations/huntInfo.json")
+
 let upgradesInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
     "textX": 4,
@@ -2398,6 +2412,9 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         if (((mouseX + 70 >= generalInfoHud.textX) && (mouseX - 70 <= generalInfoHud.textX)) && ((mouseY + 70 >= generalInfoHud.textY) && (mouseY - 70 <= generalInfoHud.textY))) {
             generalInfoHud.textX = mouseX
             generalInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= streakInfoHud.textX) && (mouseX - 70 <= streakInfoHud.textX)) && ((mouseY + 70 >= streakInfoHud.textY) && (mouseY - 70 <= streakInfoHud.textY))) {
+            streakInfoHud.textX = mouseX
+            streakInfoHud.textY = mouseY
         } else if (((mouseX + 70 >= upgradesInfoHud.textX) && (mouseX - 70 <= upgradesInfoHud.textX)) && ((mouseY + 70 >= upgradesInfoHud.textY) && (mouseY - 70 <= upgradesInfoHud.textY))) {
             upgradesInfoHud.textX = mouseX
             upgradesInfoHud.textY = mouseY
@@ -2406,6 +2423,7 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
             playerInfoHud.textY = mouseY
         }
         generalInfoHud.save()
+        streakInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
     }
@@ -2415,14 +2433,17 @@ register("guiKey", (char, keyCode, gui, event) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (keyCode == 200) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+            streakInfoHud.textScale += streakInfoHud.textScale < 10 ? 0.1 : 0
             upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
             playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
         } else if (keyCode == 208) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0.1 ? 0.1 : 0
+            streakInfoHud.textScale -= streakInfoHud.textScale > 0.1 ? 0.1 : 0
             upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0.1 ? 0.1 : 0
             playerInfoHud.textScale -= playerInfoHud.textScale > 0.1 ? 0.1 : 0
         }
         generalInfoHud.save()
+        streakInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
     }
@@ -2432,14 +2453,17 @@ register("scrolled", (mouseX, mouseY, direction) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (direction == 1) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
+            streakInfoHud.textScale += streakInfoHud.textScale < 10 ? 0.1 : 0
             upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
             playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
         } else if (direction == -1) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0 ? 0.1 : 0
+            streakInfoHud.textScale -= streakInfoHud.textScale > 0 ? 0.1 : 0
             upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0 ? 0.1 : 0
             playerInfoHud.textScale -= playerInfoHud.textScale > 0 ? 0.1 : 0
         }
         generalInfoHud.save()
+        streakInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
 
@@ -2456,8 +2480,8 @@ const firstMessage = [
     "",
     "&aIf you found a bug or have any suggestions,",
     "&aDM &dJMB#0001 &7& &biPower#4441",
-    "",
-    "&9&nhttps://discord.gg/XZcgpz6bFw"
+    "&9&nhttps://discord.gg/XZcgpz6bFw",
+    ""
 ]
 
 function welcome() {
