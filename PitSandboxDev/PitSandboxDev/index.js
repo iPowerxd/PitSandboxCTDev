@@ -1599,11 +1599,11 @@ new Thread(() => {
                 lines.push("&7HeldItem: " + swordenchants);
                 lines.push("&7Pants: " + pantenchants);
                 lines.push("&7Maining LS: " + (allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&4No")))));
-                let y = Renderer.screen.getHeight() - 12 * lines.length - 4;
-                let x = Renderer.screen.getWidth() / 4 * 2.59;
+                let y = targetInfoHud.textY //Renderer.screen.getHeight() - 12 * lines.length - 4
+                let x = targetInfoHud.textX
                 lines.forEach(line => {
                     const text = new Text(line, x, y);
-                    text.setShadow(true);
+                    text.setShadow(true)
                     text.draw();
                     y += 12;
                 });
@@ -1625,6 +1625,8 @@ new Thread(() => {
                     text.draw();
                     y += 12;
                 });
+            } else if (!target && Settings.generalInfoHud.isOpen()) {
+                new Text(`${Settings.hudGroupColor}&nTarget Info`, targetInfoHud.textX, targetInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
             }
         } {
             if (!pitsandbox || !Settings.toggleSandboxHUD) return
@@ -1641,6 +1643,8 @@ new Thread(() => {
                 text.setShadow(true)
                 text.setScale(generalInfoHud.textScale * 1.4)
                 text.draw()
+            } else if (str.length == 0 && Settings.generalInfoHud.isOpen()) {
+                new Text(`${Settings.hudGroupColor}&nPre Info`, targetInfoHud.textX, targetInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
             }
         } {
             if (Settings.eggEffectDisplay) {
@@ -2410,6 +2414,13 @@ let preInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/preInfo.json")
 
+let targetInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 620,
+    "textY": 405,
+    "textScale": 1
+}, "guiLocations/targetInfo.json")
+
 register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (((mouseX + 70 >= generalInfoHud.textX) && (mouseX - 70 <= generalInfoHud.textX)) && ((mouseY + 70 >= generalInfoHud.textY) && (mouseY - 70 <= generalInfoHud.textY))) {
@@ -2433,6 +2444,9 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         } else if (((mouseX + 70 >= preInfoHud.textX) && (mouseX - 70 <= preInfoHud.textX)) && ((mouseY + 70 >= preInfoHud.textY) && (mouseY - 70 <= preInfoHud.textY))) {
             preInfoHud.textX = mouseX
             preInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= targetInfoHud.textX) && (mouseX - 70 <= targetInfoHud.textX)) && ((mouseY + 70 >= targetInfoHud.textY) && (mouseY - 70 <= targetInfoHud.textY))) {
+            targetInfoHud.textX = mouseX
+            targetInfoHud.textY = mouseY
         }
         generalInfoHud.save()
         streakInfoHud.save()
@@ -2441,6 +2455,7 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         playerInfoHud.save()
         boosterInfoHud.save()
         preInfoHud.save()
+        targetInfoHud.save()
     }
 })
 
