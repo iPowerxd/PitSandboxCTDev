@@ -1363,9 +1363,9 @@ new Thread(() => {
                 streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
                 streakinglines = streakinfo
             }
-            let huntinfo = [];
+            let huntinfo = [`${Settings.hudGroupColor}&nHunted Players`]
             if (onlineHunt.length > 0) {
-                huntinfo.push(Settings.hudGroupColor + "&nHunted Players");
+                //huntinfo.push(Settings.hudGroupColor + "&nHunted Players");
                 onlineHunt.forEach(p => {
                     let suffix = "";
                     let prefix = "";
@@ -1697,16 +1697,16 @@ new Thread(() => {
                 }
 
                 if (huntinglines.length > 0) {
-                    y += 24;
-                    let huntinfo = huntinglines;
+                    y = huntInfoHud.textY
+                    let huntinfo = huntinglines
                     huntinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(generalInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
-                        text.setScale(generalInfoHud.textScale)
+                        text.setX(huntInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * huntInfoHud.textScale)
+                        text.setScale(huntInfoHud.textScale)
                         text.setShadow(true)
-                        text.draw()
-                        y += 12 * generalInfoHud.textScale
-                    });
+                        if (huntinfo.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
+                        y += 12 * huntInfoHud.textScale
+                    })
                 }
             }
         };
@@ -1959,15 +1959,6 @@ let overflowBooster
 let fishingBooster
 let miningBooster
 
-/* register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 1800
-    else if (booster == "XP") xpBooster = 1800
-    else if (booster == "bots") botsBooster = 1800
-    else if (booster == "Overflow") overflowBooster = 1800
-    else if (booster == "fishing xp") fishingBooster = 1800
-    else if (booster == "Mining xp") miningBooster = 1800
-}).setChatCriteria("WOAH! [${*}] ${*} just activated a ${booster} booster! GG!") */
-
 register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 1800
     else if (booster == "XP") xpBooster = 1800
@@ -1994,7 +1985,7 @@ register("step", () => {
 
 register("renderOverlay", () => {
     if (!pitsandbox || Client.isInTab() || !Settings.toggleSandboxHUD) return
-    let info = []
+    let info = [`${Settings.hudGroupColor}&nBoosters`]
     if (coinBooster != undefined) {
         info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
     } if (xpBooster != undefined) {
@@ -2007,15 +1998,13 @@ register("renderOverlay", () => {
         info.splice(5, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
     } if (miningBooster != undefined) {
         info.splice(6, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
-    } if (info.length > 0) {
-        info.splice(0, 0, Settings.hudGroupColor + "&nBoosters")
     }
-    let y = 4
+    let y = boosterInfoHud.textY
     info.forEach(line => {
-        const text = new Text(line, 0, y)
-        text.setX(Renderer.screen.getWidth() * 2 / 3)
+        const text = new Text(line, boosterInfoHud.textX, y)
         text.setShadow(true)
-        text.draw()
+        text.setScale(boosterInfoHud.textScale)
+        if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
     })
 })
@@ -2389,7 +2378,7 @@ let streakInfoHud = new PogObject("PitSandboxDev", {
 let huntInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
     "textX": 860,
-    "textY": 250,
+    "textY": 265,
     "textScale": 1
 }, "guiLocations/huntInfo.json")
 
@@ -2407,6 +2396,13 @@ let playerInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/playerInfo.json")
 
+let boosterInfoHud = new PogObject("PitSandboxDev", {
+    "firstTime": true,
+    "textX": 610,
+    "textY": 4,
+    "textScale": 1
+}, "guiLocations/boosterInfo.json")
+
 register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
     if (Settings.generalInfoHud.isOpen()) {
         if (((mouseX + 70 >= generalInfoHud.textX) && (mouseX - 70 <= generalInfoHud.textX)) && ((mouseY + 70 >= generalInfoHud.textY) && (mouseY - 70 <= generalInfoHud.textY))) {
@@ -2415,17 +2411,25 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         } else if (((mouseX + 70 >= streakInfoHud.textX) && (mouseX - 70 <= streakInfoHud.textX)) && ((mouseY + 70 >= streakInfoHud.textY) && (mouseY - 70 <= streakInfoHud.textY))) {
             streakInfoHud.textX = mouseX
             streakInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= huntInfoHud.textX) && (mouseX - 70 <= huntInfoHud.textX)) && ((mouseY + 70 >= huntInfoHud.textY) && (mouseY - 70 <= huntInfoHud.textY))) {
+            huntInfoHud.textX = mouseX
+            huntInfoHud.textY = mouseY
         } else if (((mouseX + 70 >= upgradesInfoHud.textX) && (mouseX - 70 <= upgradesInfoHud.textX)) && ((mouseY + 70 >= upgradesInfoHud.textY) && (mouseY - 70 <= upgradesInfoHud.textY))) {
             upgradesInfoHud.textX = mouseX
             upgradesInfoHud.textY = mouseY
         } else if (((mouseX + 70 >= playerInfoHud.textX) && (mouseX - 70 <= playerInfoHud.textX)) && ((mouseY + 70 >= playerInfoHud.textY) && (mouseY - 70 <= playerInfoHud.textY))) {
             playerInfoHud.textX = mouseX
             playerInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= boosterInfoHud.textX) && (mouseX - 70 <= boosterInfoHud.textX)) && ((mouseY + 70 >= boosterInfoHud.textY) && (mouseY - 70 <= boosterInfoHud.textY))) {
+            boosterInfoHud.textX = mouseX
+            boosterInfoHud.textY = mouseY
         }
         generalInfoHud.save()
         streakInfoHud.save()
+        huntInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
+        boosterInfoHud.save()
     }
 })
 
@@ -2434,18 +2438,24 @@ register("guiKey", (char, keyCode, gui, event) => {
         if (keyCode == 200) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
             streakInfoHud.textScale += streakInfoHud.textScale < 10 ? 0.1 : 0
+            huntInfoHud.textScale += huntInfoHud.textScale < 10 ? 0.1 : 0
             upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
             playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
+            boosterInfoHud.textScale += boosterInfoHud.textScale < 10 ? 0.1 : 0
         } else if (keyCode == 208) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0.1 ? 0.1 : 0
             streakInfoHud.textScale -= streakInfoHud.textScale > 0.1 ? 0.1 : 0
+            huntInfoHud.textScale -= huntInfoHud.textScale > 0.1 ? 0.1 : 0
             upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0.1 ? 0.1 : 0
             playerInfoHud.textScale -= playerInfoHud.textScale > 0.1 ? 0.1 : 0
+            boosterInfoHud.textScale -= boosterInfoHud.textScale > 0.1 ? 0.1 : 0
         }
         generalInfoHud.save()
         streakInfoHud.save()
+        huntInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
+        boosterInfoHud.save()
     }
 })
 
@@ -2454,18 +2464,24 @@ register("scrolled", (mouseX, mouseY, direction) => {
         if (direction == 1) {
             generalInfoHud.textScale += generalInfoHud.textScale < 10 ? 0.1 : 0
             streakInfoHud.textScale += streakInfoHud.textScale < 10 ? 0.1 : 0
+            huntInfoHud.textScale += huntInfoHud.textScale < 10 ? 0.1 : 0
             upgradesInfoHud.textScale += upgradesInfoHud.textScale < 10 ? 0.1 : 0
             playerInfoHud.textScale += playerInfoHud.textScale < 10 ? 0.1 : 0
+            boosterInfoHud.textScale += boosterInfoHud.textScale < 10 ? 0.1 : 0
         } else if (direction == -1) {
             generalInfoHud.textScale -= generalInfoHud.textScale > 0 ? 0.1 : 0
             streakInfoHud.textScale -= streakInfoHud.textScale > 0 ? 0.1 : 0
+            huntInfoHud.textScale -= huntInfoHud.textScale > 0 ? 0.1 : 0
             upgradesInfoHud.textScale -= upgradesInfoHud.textScale > 0 ? 0.1 : 0
-            playerInfoHud.textScale -= playerInfoHud.textScale > 0 ? 0.1 : 0
+            boosterInfoHud.textScale -= boosterInfoHud.textScale > 0 ? 0.1 : 0
+
         }
         generalInfoHud.save()
         streakInfoHud.save()
+        huntInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
+        boosterInfoHud.save()
 
     }
 })
