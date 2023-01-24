@@ -2342,6 +2342,11 @@ register("command", (arg1, arg2) => {
     ChatLib.chat(`&b${formatNumber((xpneeded[arg2] / 12) * prestigexp[arg1])} XP`)
 }).setName("prestigexp")
 
+register("command", (arg1) => {
+    if (arg1 < 0 && arg1 > 60) return ChatLib.chat("&cInvalid Prestige! Must be between 0-60")
+    ChatLib.chat(`&b${formatNumber((prestigexp[arg1]) * totalxpnopres)} XP`)
+}).setName("prestigetotalxp")
+
 register("chat", event => {
     if (!Settings.toggleBDAlert) return
     for (let i = 0; i < 3; i++) {
