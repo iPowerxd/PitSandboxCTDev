@@ -2490,9 +2490,9 @@ const firstMessage = [
     `&d&l&nPit Sandbox 2.0.0`,
     "",
     "&aThank you for using &dPitSandbox&a!",
-    "&7use &e/ps &7to open the settings GUI",
+    "&7Use &e/ps &7to open the settings GUI",
     "",
-    "&a&lThis ChatTrigger has been verified by the owner!",
+    "&6&lThis ChatTrigger has been verified by the owner!",
     "",
     "&aIf you found a bug or have any suggestions,",
     "&aDM &dJMB#0001 &7& &biPower#4441",
@@ -2502,6 +2502,7 @@ const firstMessage = [
 
 function welcome() {
     setTimeout(() => {
+        World.playSound("random.levelup", 1, 1)
         ChatLib.chat(`&b&m${ChatLib.getChatBreak(" ")}`)
         firstMessage.forEach(message => {
             ChatLib.chat(ChatLib.getCenteredText(message))
@@ -2513,7 +2514,7 @@ function welcome() {
 }
 
 const changelogMessage = [
-    "&b - Test",
+    "&b #announcements",
 ]
 
 const changelog = new Changelog("PitSandboxDEV", "2.0.0", changelogMessage.join('\n'))
