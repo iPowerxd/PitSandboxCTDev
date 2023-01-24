@@ -1576,8 +1576,6 @@ register("soundPlay", (pos, name, vol, pitch, cat, event) => {
         if (name.toLowerCase().includes("game.player.hurt") && inMid(Player.asPlayerMP()) && Settings.removeMidHit) cancel(event)
         if (name.toLowerCase().includes("random.orb") && pitch.toFixed(2) == "0.71" && inMid(Player.asPlayerMP()) && Settings.removeMidBill) cancel(event)
         if (name.toLowerCase().includes("note.pling") && pitch.toFixed(1) == "1.0" && Date.now() - blitzmsg < 500) cancel(event)
-        if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.8" && !Settings.toggleBountyBumps) cancel(event)
-        if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.6" && !Settings.toggleMegastreakSounds) cancel(event)
         if (name.toLowerCase().includes("mob.guardian.curse") && pitch.toFixed(2) == "1.05" && !Settings.toggleMegastreakSounds) cancel(event)
         if ((name.toLowerCase().includes("random.bow") || name.toLowerCase().includes("random.bowhit") || name.toLowerCase().includes("random.successful_hit")) && Settings.removeMidBow) cancel(event)
         if (Settings.removeExeSounds && name.toLowerCase().includes("mob.villager.death")) return cancel(event)
@@ -1585,6 +1583,8 @@ register("soundPlay", (pos, name, vol, pitch, cat, event) => {
         if (Settings.removePerunSounds && name.toLowerCase().includes("random.explode")) return cancel(event)
         if (Settings.removeStunSounds && name.toLowerCase().includes("random.anvil_land")) return cancel(event)
     }
+    if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.8" && !Settings.toggleBountyBumps) cancel(event)
+    if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.6" && !Settings.toggleMegastreakSounds) cancel(event)
 })
 
 new Thread(() => {
@@ -2336,6 +2336,11 @@ register("command", (arg1, arg2) => {
     if (arg2 < 1 && arg2 > 120) return ChatLib.chat("&cInvalid Level! Must be between 1-120")
     ChatLib.chat(`&b${formatNumber((xpneeded[arg2] / 12) * prestigexp[arg1])} XP`)
 }).setName("prestigexp")
+
+register("command", (arg1) => {
+    if (arg1 < 0 && arg1 > 60) return ChatLib.chat("&cInvalid Prestige! Must be between 0-60")
+    ChatLib.chat(`&b${formatNumber((prestigexp[arg1]) * totalxpnopres)} XP`)
+}).setName("prestigetotalxp")
 
 register("chat", event => {
     if (!Settings.toggleBDAlert) return

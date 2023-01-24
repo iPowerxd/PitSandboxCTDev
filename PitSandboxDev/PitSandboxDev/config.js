@@ -406,15 +406,6 @@ class Settings {
         subcategory: "Sounds"
     })
     fishAlert = true;
-
-    @SwitchProperty({
-        name: "Auto Quick Maths",
-        description: "Does Quick Maths for you",
-        category: "General",
-        subcategory: 'DEV'
-    })
-    autoQuickMaths = true;
-
     /*     @SwitchProperty({
             name: "Toggle Custom Guild Chat",
             description: "Toggle having another chat at the bottom right of the screen only including guild chat messages.",
