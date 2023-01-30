@@ -2528,6 +2528,7 @@ const firstMessage = [
 ]
 
 function welcome() {
+    if (!generalInfoHud.firstTime) return
     setTimeout(() => {
         World.playSound("random.levelup", 1, 1)
         ChatLib.chat(`&b&m${ChatLib.getChatBreak(" ")}`)
