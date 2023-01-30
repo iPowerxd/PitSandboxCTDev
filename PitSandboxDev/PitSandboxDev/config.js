@@ -119,7 +119,7 @@ class Settings {
         category: "General",
         subcategory: 'Messages'
     })
-    prestigeAutoGG = true;
+    prestigeAutoGG = false;
 
     @SwitchProperty({
         name: "Remove Particles In Middle",

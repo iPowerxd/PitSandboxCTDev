@@ -34,7 +34,7 @@ class Settings {
         name: "HUD Colors",
         description: "Change the color of the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
-        placeholder: "§8Example: &3"
+        placeholder: "§8Example: &f"
     })
     hudTextColor = "";
 
@@ -42,9 +42,9 @@ class Settings {
         name: "HUD Group Colors",
         description: "Change the colors of the Group Titles in the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
-        placeholder: "§8Example: &3"
+        placeholder: "§8Example: &e"
     })
-    hudGroupColor = "";
+    hudGroupColor = "&e";
 
     @SwitchProperty({
         name: "Custom Guild Messages",
@@ -95,14 +95,6 @@ class Settings {
     eggEffectDisplay = true;
 
     @SwitchProperty({
-        name: "Prestige Auto GG",
-        description: "Says GG Whenever someone Prestiges.",
-        category: "General",
-        subcategory: 'Messages'
-    })
-    prestigeAutoGG = true;
-
-    @SwitchProperty({
         name: "Remove Particles In Middle",
         description: "Disable rendering particles when in middle.\n&eCan positively impact performance.",
         category: "General",
@@ -141,6 +133,14 @@ class Settings {
         subcategory: 'Quality of Life'
     })
     antiCF = true;
+
+    @SwitchProperty({
+        name: "Hide Stash Messages",
+        description: "Hide all stash messages",
+        category: "General",
+        subcategory: "Messages"
+    })
+    hideStash = false;
 
     @SwitchProperty({
         name: "Only personal bounty claims",
@@ -269,22 +269,6 @@ class Settings {
         subcategory: 'Quality of Life'
     })
     togglePreOOF = true;
-
-    @SwitchProperty({
-        name: "Toggle Blitz Queue Messages",
-        description: "Prevent the messages telling you to queue blitz from appearing.",
-        category: "General",
-        subcategory: 'Messages'
-    })
-    toggleBlitzQueue = true;
-
-    @SwitchProperty({
-        name: "Eradicate Blitz",
-        description: "Cancel every message containing the word blitz.",
-        category: "General",
-        subcategory: 'Messages'
-    })
-    eradicateBlitz = false;
 
     @SwitchProperty({
         name: "RNGesus Messages",

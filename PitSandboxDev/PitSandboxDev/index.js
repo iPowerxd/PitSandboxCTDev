@@ -321,7 +321,6 @@ function getMegaFormatted(player) {
     else return "&cPremega";
 }
 
-
 register("command", () => {
     ChatLib.command("view " + Player.getName())
     syncperks = true
@@ -1644,7 +1643,7 @@ new Thread(() => {
                 text.setScale(generalInfoHud.textScale * 1.4)
                 text.draw()
             } else if (str.length == 0 && Settings.generalInfoHud.isOpen()) {
-                new Text(`${Settings.hudGroupColor}&nPre Info`, targetInfoHud.textX, targetInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
+                new Text(`${Settings.hudGroupColor}&nPre Info`, preInfoHud.textX, preInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
             }
         } {
             if (Settings.eggEffectDisplay) {
@@ -2541,7 +2540,7 @@ function welcome() {
 }
 
 const changelogMessage = [
-    "&b#announcements",
+    "&bRead the changelogs in #announcements",
 ]
 
 const changelog = new Changelog("PitSandboxDEV", "2.0.0", changelogMessage.join('\n'))
