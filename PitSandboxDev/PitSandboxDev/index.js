@@ -2035,16 +2035,16 @@ register("renderOverlay", () => {
         } if (megastreak == "Nightmare") {
             info.splice(5, 0, "&1&lNGHTMRE Bot Damage&1: &c+10%")
         } if (ubermilestone == "UBER100") {
-            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c-30%")
         } if (ubermilestone == "UBER200") {
-            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c-30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
         } if (ubermilestone == "UBER300") {
-            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c-30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
             info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
         } if (ubermilestone == "UBER400") {
-            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c+30%")
+            info.splice(6, 0, "&d&lUBER100 Bot Damage&1: &c-30%")
             info.splice(6, 0, "&d&lUBER200 Healing&d: &c-40%")
             info.splice(6, 0, "&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
             info.splice(6, 0, "&d&lUBER400: No Longer Gain Health")
@@ -2527,6 +2527,7 @@ const firstMessage = [
 ]
 
 function welcome() {
+    if (!generalInfoHud.firstTime) return
     setTimeout(() => {
         World.playSound("random.levelup", 1, 1)
         ChatLib.chat(`&b&m${ChatLib.getChatBreak(" ")}`)

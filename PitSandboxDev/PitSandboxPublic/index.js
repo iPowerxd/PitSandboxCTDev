@@ -1896,4 +1896,8 @@ register("chat", (event) => {
 register("chat", () => {
     if (!pitsandbox) return
     Client.showTitle("&eSaving Grace", "&7saved you from death!", 0, 35, 0)
+<<<<<<< HEAD
 }).setChatCriteria("SAVING GRACE! saved you from death!")
+=======
+}).setChatCriteria("SAVING GRACE! saved you from death!")
+>>>>>>> a5de232c81e45c423ceb7e686f8090bcd1523890
