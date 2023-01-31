@@ -1492,15 +1492,14 @@ register("step", () => {
 register("step", () => {
     if (pitsandbox && Settings.toggleAutoOOF) {
         let megastreak = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0]);
-        let streak = scoreboard.find(l => l.startsWith("Streak: ")).split("Streak: ")[1]
         if (megastreak && !megastreak.includes("[")) {
-            if (megastreak == "HIGH" && Settings.autoOOFHighlander) ChatLib.command("oof");
-            if (megastreak == "MOON" && Settings.autoOOFMoon) ChatLib.command("oof");
-            if (megastreak == "NGHTMRE" && Settings.autoOOFNightmare) ChatLib.command("oof");
-            if (megastreak == "HERMIT" && Settings.autoOOFHermit) ChatLib.command("oof");
-            if (megastreak == "OVRDRV" && Settings.autoOOFOverdrive) ChatLib.command("oof");
+            if (megastreak == "HIGH" && Settings.autoOOFHighlander) ChatLib.command("oof")
+            if (megastreak == "MOON" && Settings.autoOOFMoon) ChatLib.command("oof")
+            if (megastreak == "NGHTMRE" && Settings.autoOOFNightmare) ChatLib.command("oof")
+            if (megastreak == "HERMIT" && Settings.autoOOFHermit) ChatLib.command("oof")
+            if (megastreak == "OVRDRV" && Settings.autoOOFOverdrive) ChatLib.command("oof")
             if (megastreak == "UBER400" && Settings.autoOOFUber) ChatLib.command("oof")
-            if (streak >= "500" && Settings.autoOOFUberRNGESUS && megastreak == "UBER400") ChatLib.command("oof");
+            if (megastreak == "UBER400" && Settings.autoOOFRNGESUS && streak >= 500) ChatLib.command("oof")
         }
     }
     if (Settings.hideBotNametags) {
