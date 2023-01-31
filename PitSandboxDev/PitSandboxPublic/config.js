@@ -11,7 +11,7 @@ Color,
 @TextProperty,
 @Vigilant,
     } from 'Vigilance';
-@Vigilant('PitSandboxPublic', '§dPit Sandbox §5v2.0.0', {
+@Vigilant('PitSandboxPublic', '§dPit Sandbox §5v2.0.1', {
     getCategoryComparator: () => (a, b) => {
         const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
         return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -22,9 +22,10 @@ class Settings {
     generalInfoHud = new Gui()
     @ButtonProperty({
         name: "Move GUIs",
+        description: "Moves the locations of the displays\n&e/resetdisplay resets the displays to default\n&cThe default depends on the size of your window",
         placeholder: "Move",
         category: "General",
-        subcategory: "!General Info"
+        subcategory: "Display"
     })
     nameTagMove() {
         this.generalInfoHud.open()
@@ -58,7 +59,7 @@ class Settings {
         name: "Toggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
-        subcategory: "!General Info",
+        subcategory: "General Info",
     })
     toggleSandboxHUD = true;
 
@@ -66,7 +67,7 @@ class Settings {
         name: "Toggle Simple HUD",
         description: "Toggle the HUD to show less",
         category: "General",
-        subcategory: "!General Info",
+        subcategory: "General Info",
     })
     toggleSimpleHUD = false;
 
@@ -74,7 +75,7 @@ class Settings {
         name: "Toggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
-        subcategory: "!General Info",
+        subcategory: "General Info",
     })
     toggleMajorandMinorEventHUD = true;
 

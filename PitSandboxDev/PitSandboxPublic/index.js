@@ -142,12 +142,12 @@ let currentstreak = {
 let onKingsMap
 let solisBroken
 let soliLevel
-let coinBooster
-let xpBooster
-let botsBooster
-let overflowBooster
-let fishingBooster
-let miningBooster
+let coinBooster = 0
+let xpBooster = 0
+let botsBooster = 0
+let overflowBooster = 0
+let fishingBooster = 0
+let miningBooster = 0
 let syncperks
 let autoSyncCooldown
 let spawn
@@ -373,8 +373,6 @@ const recapStreak = () => {
     };
 };
 
-
-
 const endStreak = () => {
     if (!streaking) return;
     lastendstreak = Date.now();
@@ -384,57 +382,45 @@ const endStreak = () => {
 
 let generalInfoHud = new PogObject("PitSandboxPublic", {
     "firstTime": true,
-    "textX": 860,
+    "textX": Renderer.screen.getWidth() * 0.895,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/generalInfo.json")
 
 let streakInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 860,
-    "textY": 195,
+    "textX": Renderer.screen.getWidth() * 0.895,
+    "textY": Renderer.screen.getHeight() / 2,
     "textScale": 1
 }, "guiLocations/streakInfo.json")
 
-let huntInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 860,
-    "textY": 265,
-    "textScale": 1
-}, "guiLocations/huntInfo.json")
 
 let upgradesInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
     "textX": 4,
-    "textY": 80,
+    "textY": Renderer.screen.getHeight() / 9,
     "textScale": 1
 }, "guiLocations/upgradesInfo.json")
 
 let playerInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 180,
+    "textX": Renderer.screen.getWidth() / 5,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/playerInfo.json")
 
 let boosterInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 610,
+    "textX": Renderer.screen.getWidth() * 2 / 3,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/boosterInfo.json")
 
 let preInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 480,
-    "textY": 410,
+    "textX": Renderer.screen.getWidth() / 2,
+    "textY": Renderer.screen.getHeight() * 8 / 10,
     "textScale": 1
 }, "guiLocations/preInfo.json")
 
 let targetInfoHud = new PogObject("PitSandboxPublic", {
-    "firstTime": true,
-    "textX": 630,
-    "textY": 460,
+    "textX": Renderer.screen.getWidth() * 2 / 3,
+    "textY": Renderer.screen.getHeight() * 9 / 10,
     "textScale": 1
 }, "guiLocations/targetInfo.json")
 
@@ -498,37 +484,37 @@ const getMegastreak = () => {
 function playerInfo(player) {
     for (let i = 0; i < onlinePlayers.length; i++) {
         if (player == onlinePlayers[i]) {
-            if (onlinePlayersFormatted[i] == undefined) return ["§7" + onlinePlayers[i]];
-            else return onlinePlayersFormatted[i].split(" ");
+            if (onlinePlayersFormatted[i] == undefined) return ["§7" + onlinePlayers[i]]
+            else return onlinePlayersFormatted[i].split(" ")
         }
     }
 }
 
 function getMega(player) {
-    let info = playerInfo(player);
-    if (info[0].includes("OVRDRV")) return "overdrive";
-    else if (info[0].includes("HIGH")) return "highlander";
-    else if (info[0].includes("MOON")) return "moon";
-    else if (info[0].includes("UBER100")) return "uberstreak100";
-    else if (info[0].includes("UBER200")) return "uberstreak200";
-    else if (info[0].includes("UBER300")) return "uberstreak300";
-    else if (info[0].includes("UBER400")) return "uberstreak400";
-    else if (info[0].includes("NGHTMRE")) return "nightmare";
-    else if (info[0].includes("HERMIT")) return "hermit";
-    else return "premega";
+    let info = playerInfo(player)
+    if (info[0].includes("OVRDRV")) return "overdrive"
+    else if (info[0].includes("HIGH")) return "highlander"
+    else if (info[0].includes("MOON")) return "moon"
+    else if (info[0].includes("UBER100")) return "uberstreak100"
+    else if (info[0].includes("UBER200")) return "uberstreak200"
+    else if (info[0].includes("UBER300")) return "uberstreak300"
+    else if (info[0].includes("UBER400")) return "uberstreak400"
+    else if (info[0].includes("NGHTMRE")) return "nightmare"
+    else if (info[0].includes("HERMIT")) return "hermit"
+    else return "premega"
 }
 
 function getMegaFormatted(player) {
     let mega = getMega(player);
-    if (mega == "overdrive") return ("&cOverdrive");
-    else if (mega == "highlander") return ("&6Highlander");
-    else if (mega == "moon") return ("&bTo the Moon");
-    else if (mega == "uberstreak100") return ("&dUberstreak100");
-    else if (mega == "uberstreak200") return ("&dUberstreak200");
-    else if (mega == "uberstreak300") return ("&dUberstreak300");
-    else if (mega == "uberstreak400") return ("&dUberstreak400");
-    else if (mega == "nightmare") return ("&1Nightmare");
-    else if (mega == "hermit") return ("&9Hermit");
+    if (mega == "overdrive") return ("&cOverdrive")
+    else if (mega == "highlander") return ("&6Highlander")
+    else if (mega == "moon") return ("&bTo the Moon")
+    else if (mega == "uberstreak100") return ("&dUberstreak100")
+    else if (mega == "uberstreak200") return ("&dUberstreak200")
+    else if (mega == "uberstreak300") return ("&dUberstreak300")
+    else if (mega == "uberstreak400") return ("&dUberstreak400")
+    else if (mega == "nightmare") return ("&1Nightmare")
+    else if (mega == "hermit") return ("&9Hermit")
     else return "&cPremega";
 }
 
@@ -554,6 +540,31 @@ function strength() {
     }
 }
 
+function resetdisplay() {
+    generalInfoHud.textScale = 1
+    generalInfoHud.textX = Renderer.screen.getWidth() * 0.895
+    generalInfoHud.textY = 4
+    streakInfoHud.textX = Renderer.screen.getWidth() * 0.895
+    streakInfoHud.textY = Renderer.screen.getHeight() / 2
+    upgradesInfoHud.textX = 4
+    upgradesInfoHud.textY = Renderer.screen.getHeight() / 9
+    playerInfoHud.textX = Renderer.screen.getWidth() / 5
+    playerInfoHud.textY = 4
+    boosterInfoHud.textX = Renderer.screen.getWidth() * 2
+    boosterInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    preInfoHud.textX = Renderer.screen.getWidth() / 2
+    preInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    targetInfoHud.textX = Renderer.screen.getWidth() * 2 / 3
+    targetInfoHud.textY = Renderer.screen.getHeight() * 9 / 10
+    generalInfoHud.save()
+    streakInfoHud.save()
+    upgradesInfoHud.save()
+    playerInfoHud.save()
+    boosterInfoHud.save()
+    preInfoHud.save()
+    targetInfoHud.save()
+}
+
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
 
 function getBossName() {
@@ -570,16 +581,16 @@ const inEvent = () => {
 }
 
 const changelogMessage = [
-    '&bNew Features, New Changes, Quality of Life Features, & Bug &bFixes!',
+    '&bNew Changes & Bug Fixes!',
     '',
-    '&aJoin the disord and read &a&n#announcements&r &ato see the changes!'
+    '&aJoin the disord and read &a&n#announcements&r &ato see the &r&achanges!'
 ]
 
-const changelog = new Changelog("PitSandboxPublic", "2.0.0", changelogMessage.join('\n'))
+const changelog = new Changelog("PitSandboxPublic", "2.0.1", changelogMessage.join('\n'))
 changelog.writeChangelog({ name: "&d&l&n", version: "&e", changelog: "&a" })
 
 const firstMessage = [
-    `&d&l&nPit Sandbox 2.0.0`,
+    `&d&l&nPit Sandbox 2.0.1`,
     "",
     "&aThank you for using &dPitSandbox&a!",
     "&7Use &e/ps &7to open the settings GUI",
@@ -614,9 +625,6 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         } else if (((mouseX + 70 >= streakInfoHud.textX) && (mouseX - 70 <= streakInfoHud.textX)) && ((mouseY + 70 >= streakInfoHud.textY) && (mouseY - 70 <= streakInfoHud.textY))) {
             streakInfoHud.textX = mouseX
             streakInfoHud.textY = mouseY
-        } else if (((mouseX + 70 >= huntInfoHud.textX) && (mouseX - 70 <= huntInfoHud.textX)) && ((mouseY + 70 >= huntInfoHud.textY) && (mouseY - 70 <= huntInfoHud.textY))) {
-            huntInfoHud.textX = mouseX
-            huntInfoHud.textY = mouseY
         } else if (((mouseX + 70 >= upgradesInfoHud.textX) && (mouseX - 70 <= upgradesInfoHud.textX)) && ((mouseY + 70 >= upgradesInfoHud.textY) && (mouseY - 70 <= upgradesInfoHud.textY))) {
             upgradesInfoHud.textX = mouseX
             upgradesInfoHud.textY = mouseY
@@ -635,7 +643,6 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         }
         generalInfoHud.save()
         streakInfoHud.save()
-        huntInfoHud.save()
         upgradesInfoHud.save()
         playerInfoHud.save()
         boosterInfoHud.save()
@@ -675,6 +682,14 @@ register("packetReceived", (packet, event) => {
         TabList.setHeader(packet.func_179700_a().func_150260_c());
     }
 });
+
+register("renderOverlay", () => {
+    if (Settings.generalInfoHud.isOpen()) {
+        new Text("&aUse ▲ arrow key UP to scale up", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aUse ▲ arrow key UP to scale up") / 2), Renderer.screen.getHeight() / 2 - 5).setShadow(true).setScale(1).draw();
+        new Text("&aUse ▼ arrow key DOWN to scale down", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aUse ▼ arrow key DOWN to scale down") / 2), Renderer.screen.getHeight() / 2 + 5).setShadow(true).setScale(1).draw();
+        new Text("&aYou can also use the scroll wheel", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aYou can also use the scroll wheel") / 2), Renderer.screen.getHeight() / 2 + 15).setShadow(true).setScale(1).draw();
+    }
+})
 
 register("chat", event => {
     if (!pitsandbox) return;
@@ -839,6 +854,7 @@ register("chat", (player, xp, gold, event) => {
     streak += str;
     laststreakchange = Date.now();
     streakkills += str;
+    strength()
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp);
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldreq += parseFloat(gold);
 }).setChatCriteria("KILL! on ${player} +${xp} +$${gold}");
@@ -867,6 +883,7 @@ register("chat", (player, message, event) => {
     }
     ChatLib.chat("&aG&9D&a > &e" + player + "&r: " + message);
 }).setChatCriteria("Guild > Discord ${player}: ${message}");
+
 register("chat", (mult, player, xp, gold, event) => {
     if (!pitsandbox) return;
     if (!Settings.toggleSandboxHUD) return;
@@ -880,6 +897,7 @@ register("chat", (mult, player, xp, gold, event) => {
     streak += str;
     laststreakchange = Date.now();
     streakkills += str;
+    strength()
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp);
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldreq += parseFloat(gold);
 }).setChatCriteria("${mult} KILL! on ${player} +${xp} +$${gold}");
@@ -896,6 +914,7 @@ register("chat", (mult, player, xp, gold, event) => {
     streak += str;
     laststreakchange = Date.now();
     streakkills += str;
+    strength()
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp);
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldreq += parseFloat(gold);
 }).setChatCriteria("MULTI KILL! (${mult}) on ${player} +${xp} +$${gold}");
@@ -1549,7 +1568,7 @@ new Thread(() => {
 
                     streakinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * streakInfoHud.textScale)
+                        text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
                         text.setScale(generalInfoHud.textScale)
                         text.setShadow(true)
                         if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
@@ -1625,34 +1644,28 @@ register("chat", (booster, event) => {
 }).setChatCriteria("WOAH! ${*} just activated a ${booster} booster! GG!")
 
 register("step", () => {
-    if (coinBooster != undefined) coinBooster--
-    if (coinBooster == 0) coinBooster = undefined
-    if (xpBooster != undefined) xpBooster--
-    if (xpBooster == 0) xpBooster = undefined
-    if (botsBooster != undefined) botsBooster--
-    if (botsBooster == 0) botsBooster = undefined
-    if (overflowBooster != undefined) overflowBooster--
-    if (overflowBooster == 0) overflowBooster = undefined
-    if (fishingBooster != undefined) fishingBooster--
-    if (fishingBooster == 0) fishingBooster = undefined
-    if (miningBooster != undefined) miningBooster--
-    if (miningBooster == 0) miningBooster = undefined
+    coinBooster > 0 ? coinBooster-- : coinBooster = 0
+    xpBooster > 0 ? xpBooster-- : xpBooster = 0
+    botsBooster > 0 ? botsBooster-- : botsBooster = 0
+    overflowBooster > 0 ? overflowBooster-- : overflowBooster = 0
+    fishingBooster > 0 ? fishingBooster-- : fishingBooster = 0
+    miningBooster > 0 ? miningBooster-- : miningBooster = 0
 }).setFps(1)
 
 register("renderOverlay", () => {
     if (!pitsandbox || Client.isInTab() || !Settings.toggleSandboxHUD) return
     let info = [`${Settings.hudGroupColor}&nBoosters`]
-    if (coinBooster != undefined) {
+    if (coinBooster != 0) {
         info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
-    } if (xpBooster != undefined) {
+    } if (xpBooster != 0) {
         info.splice(2, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
-    } if (botsBooster != undefined) {
+    } if (botsBooster != 0) {
         info.splice(3, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
-    } if (overflowBooster != undefined) {
+    } if (overflowBooster != 0) {
         info.splice(4, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
-    } if (fishingBooster != undefined) {
+    } if (fishingBooster != 0) {
         info.splice(5, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
-    } if (miningBooster != undefined) {
+    } if (miningBooster != 0) {
         info.splice(6, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
     }
     let y = boosterInfoHud.textY
@@ -1706,6 +1719,7 @@ register("guiOpened", event => {
 })
 
 register("tick", () => {
+    if (!pitsandbox) return
     if (inSpawn(Player.asPlayerMP()) && !spawn) {
         spawn = true
     } else if (!inSpawn(Player.asPlayerMP()) && spawn) {
@@ -1732,7 +1746,6 @@ register("renderOverlay", () => {
         if (perks[1][0] != "Nothing") info.splice(5, 0, "&6" + (perks[1][0] == "Nothing" ? "" : perks[1][0]))
         if (perks[1][1] != "Nothing") info.splice(6, 0, "&6" + (perks[1][1] == "Nothing" ? "" : perks[1][1]))
         if (perks[1][2] != "Nothing") info.splice(7, 0, "&6" + (perks[1][2] == "Nothing" ? "" : perks[1][2]))
-        //if (perks[3][0] != "Nothing") info.splice(8, 0, "&a" + perks[3][0] + (perks[3][1] == "None" ? "" : "&7 " + perks[3][1]))
     }
     let y = upgradesInfoHud.textY
     info.forEach(line => {
@@ -1896,8 +1909,10 @@ register("chat", (event) => {
 register("chat", () => {
     if (!pitsandbox) return
     Client.showTitle("&eSaving Grace", "&7saved you from death!", 0, 35, 0)
-<<<<<<< HEAD
 }).setChatCriteria("SAVING GRACE! saved you from death!")
-=======
-}).setChatCriteria("SAVING GRACE! saved you from death!")
->>>>>>> a5de232c81e45c423ceb7e686f8090bcd1523890
+
+register("command", () => {
+    resetdisplay()
+    ChatLib.chat("&aDisplay locations reset!")
+    World.playSound("random.successful_hit", 1, 1.5)
+}).setName("resetdisplay")
