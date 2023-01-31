@@ -35,6 +35,7 @@ class Settings {
         name: "HUD Colors",
         description: "Change the color of the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
+        subcategory: "Hud",
         placeholder: "§8Example: &f"
     })
     hudTextColor = "";
@@ -43,6 +44,7 @@ class Settings {
         name: "HUD Group Colors",
         description: "Change the colors of the Group Titles in the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
+        subcategory: "Hud",
         placeholder: "§8Example: &e"
     })
     hudGroupColor = "&e";
@@ -51,6 +53,7 @@ class Settings {
         name: "Custom Guild Messages",
         description: "Enables/Disables the Customly Shortened Guild Messages",
         category: "Customization",
+        subcategory: "Chat"
     })
     customGuildChat = true;
 
@@ -219,6 +222,7 @@ class Settings {
         name: "Auto chat color",
         description: "Automatically apply a color to your chat messages.\n§eTemporarily disables when unscramble or quick maths is active.\n§cMVP rank is required for this to work, leave blank to disable.\n§cStart a message with \\ to not apply the color.",
         category: "Customization",
+        subcategory: "Chat",
         placeholder: "Example: &e"
     })
     chatColor = "";
@@ -324,7 +328,7 @@ class Settings {
 
     @SliderProperty({
         name: "Mid Radius Amount",
-        description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)\n§cNote: this affects the MID indicator in the Hunt HUD and Lifesteal swapping",
+        description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)\n§cNote: this affects the MID indicator for other features",
         category: "General",
         subcategory: 'Quality of Life',
         min: 9,
@@ -351,84 +355,96 @@ class Settings {
     @SwitchProperty({
         name: "Toggle Hunger Bar Display",
         description: "Toggle seeing the hunger bar",
-        category: "Vanilla HUD Hiding"
+        category: "Vanilla HUD Hiding",
+        subcategory: "Render"
     })
     toggleHungerBar = false;
 
     @SwitchProperty({
         name: "Toggle Armor Bar Display",
         description: "Toggle seeing the armor bar",
-        category: "Vanilla HUD Hiding"
+        category: "Vanilla HUD Hiding",
+        subcategory: "Render"
     })
     toggleArmorBar = false;
 
     @SwitchProperty({
         name: "Toggle XP Bar Display",
         description: "Toggle seeing the xp bar",
-        category: "Vanilla HUD Hiding"
+        category: "Vanilla HUD Hiding",
+        subcategory: "Render"
     })
     toggleXPBar = true;
 
     @SwitchProperty({
         name: "Toggle Boss Bar Display",
         description: "Toggle seeing the Boss bar",
-        category: "Vanilla HUD Hiding"
+        category: "Vanilla HUD Hiding",
+        subcategory: "Render"
     })
     toggleBossBar = false;
 
     @SwitchProperty({
         name: "Custom Auto OOF",
         description: "Customizable auto oof for every megastreak.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     toggleAutoOOF = false;
 
     @SwitchProperty({
         name: "Auto OOF On Highlander",
         description: "Automatically /oof on Highlander, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFHighlander = false;
 
     @SwitchProperty({
         name: "Auto OOF On Overdrive",
         description: "Automatically /oof on Overdrive, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFOverdrive = false;
 
     @SwitchProperty({
         name: "Auto OOF On 400 Uberstreak",
         description: "Automatically /oof on 400 Uberstreak, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFUber = false;
 
     @SwitchProperty({
         name: "Auto OOF On 500 Uberstreak",
         description: "Automatically /oof on 500 Uberstreak, if Custom Auto OOF is enabled.\n Mainly used for RNGESUS Begone",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFRNGESUS = false;
 
     @SwitchProperty({
         name: "Auto OOF On Moon",
         description: "Automatically /oof on Moon, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFMoon = false;
 
     @SwitchProperty({
         name: "Auto OOF On Nightmare",
         description: "Automatically /oof on Nightmare, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFNightmare = true;
 
     @SwitchProperty({
         name: "Auto OOF On Hermit",
         description: "Automatically /oof on Hermit, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFHermit = false;
 
