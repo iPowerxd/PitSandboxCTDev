@@ -443,56 +443,64 @@ class Settings {
     @SwitchProperty({
         name: "Custom Auto OOF",
         description: "Customizable auto oof for every megastreak.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     toggleAutoOOF = false;
 
     @SwitchProperty({
         name: "Auto OOF On Highlander",
         description: "Automatically /oof on Highlander, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFHighlander = false;
 
     @SwitchProperty({
         name: "Auto OOF On Overdrive",
         description: "Automatically /oof on Overdrive, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFOverdrive = false;
 
     @SwitchProperty({
         name: "Auto OOF On 400 Uberstreak",
         description: "Automatically /oof on 400 Uberstreak, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFUber = false;
 
     @SwitchProperty({
         name: "Auto OOF On 500 Uberstreak",
         description: "Automatically /oof on 500 Uberstreak, if Custom Auto OOF is enabled.\n Mainly used for RNGESUS Begone",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFRNGESUS = false;
 
     @SwitchProperty({
         name: "Auto OOF On Moon",
         description: "Automatically /oof on Moon, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFMoon = false;
 
     @SwitchProperty({
         name: "Auto OOF On Nightmare",
         description: "Automatically /oof on Nightmare, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFNightmare = true;
 
     @SwitchProperty({
         name: "Auto OOF On Hermit",
         description: "Automatically /oof on Hermit, if Custom Auto OOF is enabled.",
-        category: "Auto OOF"
+        category: "Auto OOF",
+        subcategory: "Auto OOF"
     })
     autoOOFHermit = false;
 

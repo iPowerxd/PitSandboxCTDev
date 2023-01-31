@@ -405,8 +405,8 @@ register("renderOverlay", () => {
     info.forEach(line => {
         const text = new Text(line, upgradesInfoHud.textX, y)
         text.setShadow(true)
-        text.setScale(upgradesInfoHud.textScale)
-        y += 11.5 * upgradesInfoHud.textScale
+        text.setScale(generalInfoHud.textScale)
+        y += 11.5 * generalInfoHud.textScale
         if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
@@ -1692,11 +1692,11 @@ new Thread(() => {
 
                     streakinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * streakInfoHud.textScale)
-                        text.setScale(streakInfoHud.textScale)
+                        text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setScale(generalInfoHud.textScale)
                         text.setShadow(true)
                         if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
-                        y += 12 * streakInfoHud.textScale
+                        y += 12 * generalInfoHud.textScale
                     })
                 }
 
@@ -1705,11 +1705,11 @@ new Thread(() => {
                     let huntinfo = huntinglines
                     huntinfo.forEach(line => {
                         const text = new Text(line, 0, y)
-                        text.setX(huntInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * huntInfoHud.textScale)
-                        text.setScale(huntInfoHud.textScale)
+                        text.setX(huntInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
+                        text.setScale(generalInfoHud.textScale)
                         text.setShadow(true)
                         if (huntinfo.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
-                        y += 12 * huntInfoHud.textScale
+                        y += 12 * generalInfoHud.textScale
                     })
                 }
             }
@@ -2007,7 +2007,7 @@ register("renderOverlay", () => {
     info.forEach(line => {
         const text = new Text(line, boosterInfoHud.textX, y)
         text.setShadow(true)
-        text.setScale(boosterInfoHud.textScale)
+        text.setScale(generalInfoHud.textScale)
         if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
     })
@@ -2091,9 +2091,9 @@ register("renderOverlay", () => {
     let y = playerInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, playerInfoHud.textX, y)
-        text.setScale(playerInfoHud.textScale)
+        text.setScale(generalInfoHud.textScale)
         text.setShadow(true)
-        y += 11.5 * playerInfoHud.textScale
+        y += 11.5 * generalInfoHud.textScale
         if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
@@ -2372,57 +2372,51 @@ register("chat", event => {
 
 let generalInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
-    "textX": 860,
+    "textX": Renderer.screen.getWidth() * 0.895,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/generalInfo.json")
 
 let streakInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
-    "textX": 860,
-    "textY": 195,
+    "textX": Renderer.screen.getWidth() * 0.895,
+    "textY": Renderer.screen.getHeight() * 2 / 5,
     "textScale": 1
 }, "guiLocations/streakInfo.json")
 
 let huntInfoHud = new PogObject("PitSandboxDev", {
     "firstTime": true,
-    "textX": 860,
-    "textY": 265,
+    "textX": Renderer.screen.getWidth() * 0.895,
+    "textY": Renderer.screen.getHeight() * 3 / 5,
     "textScale": 1
 }, "guiLocations/huntInfo.json")
 
 let upgradesInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
     "textX": 4,
-    "textY": 80,
+    "textY": Renderer.screen.getHeight() / 9,
     "textScale": 1
 }, "guiLocations/upgradesInfo.json")
 
 let playerInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
-    "textX": 180,
+    "textX": Renderer.screen.getWidth() / 5,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/playerInfo.json")
 
 let boosterInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
-    "textX": 610,
+    "textX": Renderer.screen.getWidth() * 2 / 3,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/boosterInfo.json")
 
 let preInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
-    "textX": 480,
-    "textY": 410,
+    "textX": Renderer.screen.getWidth() / 2,
+    "textY": Renderer.screen.getHeight() * 8 / 10,
     "textScale": 1
 }, "guiLocations/preInfo.json")
 
 let targetInfoHud = new PogObject("PitSandboxDev", {
-    "firstTime": true,
-    "textX": 620,
-    "textY": 405,
+    "textX": Renderer.screen.getWidth() * 2 / 3,
+    "textY": Renderer.screen.getHeight() * 9 / 10,
     "textScale": 1
 }, "guiLocations/targetInfo.json")
 
@@ -2552,3 +2546,38 @@ const changelogMessage = [
 
 const changelog = new Changelog("PitSandboxDEV", "2.0.0", changelogMessage.join('\n'))
 changelog.writeChangelog({ name: "&d&l&n", version: "&e", changelog: "&a" })
+
+
+register("command", () => {
+    resetdisplay()
+    ChatLib.chat("&aDisplay locations reset!")
+    World.playSound("random.successful_hit", 1, 1.5)
+}).setName("resetdisplay")
+
+function resetdisplay() {
+    generalInfoHud.textScale = 1
+    generalInfoHud.textX = Renderer.screen.getWidth() * 0.895
+    generalInfoHud.textY = 4
+    streakInfoHud.textX = Renderer.screen.getWidth() * 0.895
+    streakInfoHud.textY = Renderer.screen.getHeight() * 2 / 5
+    huntInfoHud.textX = Renderer.screen.getWidth() * 0.895
+    huntInfoHud.textY = Renderer.screen.getHeight() * 3 / 5
+    upgradesInfoHud.textX = 4
+    upgradesInfoHud.textY = Renderer.screen.getHeight() / 9
+    playerInfoHud.textX = Renderer.screen.getWidth() / 5
+    playerInfoHud.textY = 4
+    boosterInfoHud.textX = Renderer.screen.getWidth() * 2
+    boosterInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    preInfoHud.textX = Renderer.screen.getWidth() / 2
+    preInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    targetInfoHud.textX = Renderer.screen.getWidth() * 2 / 3
+    targetInfoHud.textY = Renderer.screen.getHeight() * 9 / 10
+    generalInfoHud.save()
+    streakInfoHud.save()
+    huntInfoHud.save()
+    upgradesInfoHud.save()
+    playerInfoHud.save()
+    boosterInfoHud.save()
+    preInfoHud.save()
+    targetInfoHud.save()
+}
