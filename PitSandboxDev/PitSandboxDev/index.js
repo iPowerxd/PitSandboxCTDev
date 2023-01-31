@@ -1,4 +1,4 @@
-/// <reference types="../CTAutocomplete" />
+/// <reference types="../CTAutocomplete" />sandbox
 /// <reference lib="es2015" />
 import PogObject from "../PogData"
 import Changelog from "../ChangelogLib"
@@ -1760,7 +1760,7 @@ register("worldLoad", () => {
     if (!Settings.toggleSandboxHUD) return Scoreboard.setShouldRender(true);
     setTimeout(() => {
         nomvp = false;
-        pitsandbox = (Server.getIP().includes("harrys.network") || Server.getIP().includes("pitsandbox.io") || Server.getIP().includes("harrys.gg")) && isInMainServer();
+        pitsandbox = (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) && isInMainServer();
         if (pitsandbox) Scoreboard.setShouldRender(false);
         else Scoreboard.setShouldRender(true);
         //checkChangelog();
