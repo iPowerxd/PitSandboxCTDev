@@ -2581,3 +2581,11 @@ function resetdisplay() {
     preInfoHud.save()
     targetInfoHud.save()
 }
+
+register("renderOverlay", () => {
+    if (Settings.generalInfoHud.isOpen()) {
+        new Text("&aUse ▲ arrow key UP to scale up", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aUse ▲ arrow key UP to scale up") / 2), Renderer.screen.getHeight() / 2 - 5).setShadow(true).setScale(1).draw();
+        new Text("&aUse ▼ arrow key DOWN to scale down", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aUse ▼ arrow key DOWN to scale down") / 2), Renderer.screen.getHeight() / 2 + 5).setShadow(true).setScale(1).draw();
+        new Text("&aYou can also use the scroll wheel", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aYou can also use the scroll wheel") / 2), Renderer.screen.getHeight() / 2 + 15).setShadow(true).setScale(1).draw();
+    }
+})
