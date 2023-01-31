@@ -1484,28 +1484,31 @@ new Thread(() => {
                 let y = targetInfoHud.textY //Renderer.screen.getHeight() - 12 * lines.length - 4
                 let x = targetInfoHud.textX
                 lines.forEach(line => {
-                    const text = new Text(line, x, y);
+                    const text = new Text(line, x, y)
+                    text.setScale(generalInfoHud.textScale)
                     text.setShadow(true)
-                    text.draw();
-                    y += 12;
+                    text.draw()
+                    y += 12 * generalInfoHud.textScale
                 });
                 lines = tdamage.map(d => "&c" + ((d.toString().split(".")[1] ? (d.toString().split(".")[1].length > 2 ? d.toFixed(2) : d) : d)) + "HP");
                 y = Renderer.screen.getHeight() - 12 * tdamage.length - 1;
                 x = Renderer.screen.getWidth() / 4 * 1.46;
                 lines.forEach(line => {
-                    const text = new Text(line, x, y);
-                    text.setShadow(true);
-                    text.draw();
-                    y += 12;
+                    const text = new Text(line, x, y)
+                    text.setScale(generalInfoHud.textScale)
+                    text.setShadow(true)
+                    text.draw()
+                    y += 12 * generalInfoHud.textScale
                 });
-                lines = pdamage.map(d => "&c" + ((d.toString().split(".")[1] ? (d.toString().split(".")[1].length > 2 ? d.toFixed(2) : d) : d)) + "HP");
-                y = Renderer.screen.getHeight() - 12 * pdamage.length - 1;
-                x = Renderer.screen.getWidth() / 4 * 2.40;
+                lines = pdamage.map(d => "&c" + ((d.toString().split(".")[1] ? (d.toString().split(".")[1].length > 2 ? d.toFixed(2) : d) : d)) + "HP")
+                y = Renderer.screen.getHeight() - 12 * pdamage.length - 1
+                x = Renderer.screen.getWidth() / 4 * 2.40
                 lines.forEach(line => {
-                    const text = new Text(line, x, y);
-                    text.setShadow(true);
-                    text.draw();
-                    y += 12;
+                    const text = new Text(line, x, y)
+                    text.setScale(generalInfoHud.textScale)
+                    text.setShadow(true)
+                    text.draw()
+                    y += 12 * generalInfoHud.textScale
                 });
             } else if (!target && Settings.generalInfoHud.isOpen()) {
                 new Text(`${Settings.hudGroupColor}&nTarget Info`, targetInfoHud.textX, targetInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
@@ -1690,26 +1693,26 @@ register("command", () => {
     }, 400)
 }).setName("perks")
 
-new Thread(() => {
-    register("guiOpened", event => {
-        if (!pitsandbox || !syncperks) return
-        setTimeout(() => {
-            if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
-                let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
-                let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
-                let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
-                let killstreaks = getKillStreaks()
-                let megastreak = getMegastreak()
-                perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
-                FileLib.write("PitSandboxPublic", "perks.json", JSON.stringify(perks))
+register("guiOpened", event => {
+    if (!pitsandbox || !syncperks) return
+    setTimeout(() => {
+        if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
+            let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
+            let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
+            let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
+            let killstreaks = getKillStreaks()
+            let megastreak = getMegastreak()
+            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
+            FileLib.write("PitSandboxPublic", "perks.json", JSON.stringify(perks))
+            Client.scheduleTask(0, () => {
                 Client.getCurrentGui().close()
-                ChatLib.chat("&aPerks synced.")
-                syncperks = undefined
-                firstSync = true
-            }
-        }, 100)
-    })
-}).start()
+            })
+            ChatLib.chat("&aPerks synced.")
+            syncperks = undefined
+            firstSync = true
+        }
+    }, 100)
+})
 
 register("guiOpened", event => {
     if (!pitsandbox) return
