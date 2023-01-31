@@ -1690,24 +1690,26 @@ register("command", () => {
     }, 400)
 }).setName("perks")
 
-register("guiOpened", event => {
-    if (!pitsandbox || !syncperks) return
-    setTimeout(() => {
-        if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
-            let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
-            let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
-            let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
-            let killstreaks = getKillStreaks()
-            let megastreak = getMegastreak()
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
-            FileLib.write("PitSandboxPublic", "perks.json", JSON.stringify(perks))
-            Client.getCurrentGui().close()
-            ChatLib.chat("&aPerks synced.")
-            syncperks = undefined
-            firstSync = true
-        }
-    }, 100)
-})
+new Thread(() => {
+    register("guiOpened", event => {
+        if (!pitsandbox || !syncperks) return
+        setTimeout(() => {
+            if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
+                let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
+                let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
+                let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
+                let killstreaks = getKillStreaks()
+                let megastreak = getMegastreak()
+                perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]
+                FileLib.write("PitSandboxPublic", "perks.json", JSON.stringify(perks))
+                Client.getCurrentGui().close()
+                ChatLib.chat("&aPerks synced.")
+                syncperks = undefined
+                firstSync = true
+            }
+        }, 100)
+    })
+}).start()
 
 register("guiOpened", event => {
     if (!pitsandbox) return
