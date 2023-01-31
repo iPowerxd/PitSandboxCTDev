@@ -321,7 +321,9 @@ function getMegaFormatted(player) {
     else return "&cPremega";
 }
 
+
 register("command", () => {
+    if (!pitsandbox) return
     ChatLib.command("view " + Player.getName())
     syncperks = true
 }).setName("syncperks")
@@ -340,6 +342,7 @@ register("worldLoad", () => {
     }, 400)
 })
 
+
 register("guiOpened", event => {
     if (!pitsandbox || !syncperks) return
     setTimeout(() => {
@@ -352,12 +355,15 @@ register("guiOpened", event => {
             /* let blessing = getBlessing() */
             perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]//, blessing
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
-            Client.getCurrentGui().close()
+            Client.scheduleTask(0, () => {
+                Client.getCurrentGui().close()
+            })
             ChatLib.chat("&aPerks synced.")
             syncperks = undefined
         }
     }, 100)
 })
+
 
 register("guiOpened", event => {
     if (!pitsandbox) return
