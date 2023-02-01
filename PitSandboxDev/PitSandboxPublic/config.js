@@ -21,7 +21,7 @@ class Settings {
 
     generalInfoHud = new Gui()
     @ButtonProperty({
-        name: "Move GUIs",
+        name: "§6Move GUIs",
         description: "Moves the locations of the displays\n&e/resetdisplay resets the displays to default\n&cThe default depends on the size of your window",
         placeholder: "Move",
         category: "General",
@@ -32,7 +32,7 @@ class Settings {
     }
 
     @TextProperty({
-        name: "HUD Colors",
+        name: "§eHUD §cC§6o§el§9o§5r",
         description: "Change the color of the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
         subcategory: "Hud",
@@ -41,7 +41,7 @@ class Settings {
     hudTextColor = "";
 
     @TextProperty({
-        name: "HUD Group Colors",
+        name: "§eHUD Group §cC§6o§el§9o§5r",
         description: "Change the colors of the Group Titles in the HUD.\n&3Also Accepts chat formatting color codes.",
         category: "Customization",
         subcategory: "Hud",
@@ -50,7 +50,7 @@ class Settings {
     hudGroupColor = "&e";
 
     @SwitchProperty({
-        name: "Custom Guild Messages",
+        name: "§2Custom Guild Messages",
         description: "Enables/Disables the Customly Shortened Guild Messages",
         category: "Customization",
         subcategory: "Chat"
@@ -59,7 +59,7 @@ class Settings {
 
 
     @SwitchProperty({
-        name: "Toggle HUD",
+        name: "§eToggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
         subcategory: "General Info",
@@ -67,7 +67,7 @@ class Settings {
     toggleSandboxHUD = true;
 
     @SwitchProperty({
-        name: "Toggle Simple HUD",
+        name: "§eToggle Simple HUD",
         description: "Toggle the HUD to show less",
         category: "General",
         subcategory: "General Info",
@@ -75,7 +75,7 @@ class Settings {
     toggleSimpleHUD = false;
 
     @SwitchProperty({
-        name: "Toggle Major and Minor Events",
+        name: "§eToggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
         subcategory: "General Info",
@@ -83,7 +83,31 @@ class Settings {
     toggleMajorandMinorEventHUD = true;
 
     @SwitchProperty({
-        name: "Target Info",
+        name: "§bPlayer Info",
+        description: "See a HUD that shows your positive or negative buffs.\n&eThis shows some mystics, megastreaks, and events.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    playerInfo = true;
+
+    @SwitchProperty({
+        name: "§bUpgrades Info",
+        description: "See a HUD that shows your equiped megastreak, killstreaks, and perks.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    upgradeInfo = true;
+
+    @SwitchProperty({
+        name: "§bPre Alert",
+        description: "Alerts you when you are not on a megastreak",
+        category: "General",
+        subcategory: 'Display'
+    })
+    togglePreAlert = true;
+
+    @SwitchProperty({
+        name: "§bTarget Info",
         description: "See a HUD that shows the mystics of the player you're fighting.",
         category: "General",
         subcategory: 'Display'
@@ -91,7 +115,7 @@ class Settings {
     targetInfo = true;
 
     @SwitchProperty({
-        name: "Egg Effect Display",
+        name: "§bEgg Effect Display",
         description: "Display the active egg effects and how long until they expire.",
         category: "General",
         subcategory: 'Display'
@@ -99,7 +123,15 @@ class Settings {
     eggEffectDisplay = true;
 
     @SwitchProperty({
-        name: "Remove Particles In Middle",
+        name: "§6Hide Bot Nametags",
+        description: "Hide bot nametags for clearer visibility.\n§eCan positively impact performance.",
+        category: "General",
+        subcategory: 'Quality of Life'
+    })
+    hideBotNametags = true;
+
+    @SwitchProperty({
+        name: "§6Remove Particles In Middle",
         description: "Disable rendering particles when in middle.\n&eCan positively impact performance.",
         category: "General",
         subcategory: 'Quality of Life'
@@ -107,7 +139,7 @@ class Settings {
     removeParticlesInMid = true;
 
     @SwitchProperty({
-        name: "Lower Render Distance In Middle",
+        name: "§6Lower Render Distance In Middle",
         description: "Lower the render distance when in middle.\n&eCan positively impact performance.",
         category: "General",
         subcategory: 'Quality of Life'
@@ -115,7 +147,15 @@ class Settings {
     lowerRenderDistanceInMid = true;
 
     @SwitchProperty({
-        name: "Beacon & Divine Alert",
+        name: "§6Stop rendering entities in spawn when outside",
+        description: "Stop rendering all the entities in spawn if you're not in spawn.\n&eCan positively impact performance.",
+        category: "General",
+        subcategory: 'Quality of Life'
+    })
+    stopRenderSpawn = true;
+
+    @SwitchProperty({
+        name: "§bBeacon & Divine Alert",
         description: "Get a title and sound when losing a beacon or getting divine intervention",
         category: "General",
         subcategory: 'Quality of Life'
@@ -123,7 +163,7 @@ class Settings {
     toggleBDAlert = true;
 
     @SwitchProperty({
-        name: "Show Ping in Experience Bar",
+        name: "§bShow Ping in Experience Bar",
         description: "Set your experience level to your ping",
         category: "General",
         subcategory: 'Quality of Life'
@@ -131,7 +171,7 @@ class Settings {
     showPingInXP = true;
 
     @SwitchProperty({
-        name: "Anti CF",
+        name: "§8Anti CF",
         description: "Remove every message with /cf.",
         category: "General",
         subcategory: 'Quality of Life'
@@ -139,7 +179,7 @@ class Settings {
     antiCF = true;
 
     @SwitchProperty({
-        name: "Hide Stash Messages",
+        name: "§eHide Stash Messages",
         description: "Hide all stash messages",
         category: "General",
         subcategory: "Messages"
@@ -147,7 +187,15 @@ class Settings {
     hideStash = false;
 
     @SwitchProperty({
-        name: "Only personal bounty claims",
+        name: "§dRNGesus Messages",
+        description: "Toggle seeing RNGesus messages",
+        category: "General",
+        subcategory: 'Messages'
+    })
+    toggleRNGesus = false;
+
+    @SwitchProperty({
+        name: "§6Only personal bounty claims",
         description: "Only show the bounty claim messages that are related to you (you claiming or you getting claimed).",
         category: "General",
         subcategory: 'Messages'
@@ -155,7 +203,15 @@ class Settings {
     personalClaims = true;
 
     @SwitchProperty({
-        name: "Remove player damage sounds in middle",
+        name: "§6Bounty Bumps",
+        description: "See bounty bump messages and sounds",
+        category: "General",
+        subcategory: "Messages"
+    })
+    toggleBountyBumps = false;
+
+    @SwitchProperty({
+        name: "§aRemove player damage sounds in middle",
         description: "Remove the sounds of people getting hit while you're in middle.",
         category: "General",
         subcategory: "Sounds"
@@ -163,7 +219,7 @@ class Settings {
     removeMidHit = true;
 
     @SwitchProperty({
-        name: "Remove billionaire sounds in middle",
+        name: "§aRemove billionaire sounds in middle",
         description: "Remove the sounds of billionaire while you're in middle.",
         category: "General",
         subcategory: "Sounds"
@@ -171,7 +227,7 @@ class Settings {
     removeMidBill = true;
 
     @SwitchProperty({
-        name: "Remove bow sounds in middle",
+        name: "§aRemove bow sounds in middle",
         description: "Remove the sounds of bow shot and land while you're in middle.",
         category: "General",
         subcategory: "Sounds"
@@ -179,7 +235,7 @@ class Settings {
     removeMidBow = true
 
     @SwitchProperty({
-        name: "Remove Executioner Sounds in Middle",
+        name: "§aRemove Executioner Sounds in Middle",
         description: "Removes executioner sounds when you are in middle",
         category: "General",
         subcategory: 'Sounds'
@@ -187,7 +243,7 @@ class Settings {
     removeExeSounds = true
 
     @SwitchProperty({
-        name: "Remove Gamble Sounds in Middle",
+        name: "§aRemove Gamble Sounds in Middle",
         description: "Removes gamble sounds when you are in middle",
         category: "General",
         subcategory: 'Sounds'
@@ -195,7 +251,7 @@ class Settings {
     removeGambleSounds = true
 
     @SwitchProperty({
-        name: "Remove Perun Sounds in Middle",
+        name: "§aRemove Perun Sounds in Middle",
         description: "Removes perun  sounds when you are in middle",
         category: "General",
         subcategory: 'Sounds'
@@ -203,23 +259,16 @@ class Settings {
     removePerunSounds = true
 
     @SwitchProperty({
-        name: "Remove Stun Sounds in Middle",
+        name: "§aRemove Stun Sounds in Middle",
         description: "Removes stun sounds when you are in middle",
         category: "General",
         subcategory: 'Sounds'
     })
     removeStunSounds = true
 
-    @SwitchProperty({
-        name: "Stop rendering entities in spawn when outside",
-        description: "Stop rendering all the entities in spawn if you're not in spawn.",
-        category: "General",
-        subcategory: 'Quality of Life'
-    })
-    stopRenderSpawn = true;
 
     @TextProperty({
-        name: "Auto chat color",
+        name: "§eAuto chat §cc§6o§el§9o§5r",
         description: "Automatically apply a color to your chat messages.\n§eTemporarily disables when unscramble or quick maths is active.\n§cMVP rank is required for this to work, leave blank to disable.\n§cStart a message with \\ to not apply the color.",
         category: "Customization",
         subcategory: "Chat",
@@ -228,7 +277,7 @@ class Settings {
     chatColor = "";
 
     @SwitchProperty({
-        name: "Guild Passive Sound",
+        name: "§2Guild Passive Sound",
         description: "Play a sound when trying to hit someone in /g passive",
         category: "General",
         subcategory: "Sounds"
@@ -236,7 +285,7 @@ class Settings {
     toggleGPassiveSound = true;
 
     @TextProperty({
-        name: "Custom Passive Sound",
+        name: "§2Custom Passive Sound",
         description: "The sound to play when hitting someone in /g passive",
         category: "General",
         subcategory: "Sounds"
@@ -244,7 +293,7 @@ class Settings {
     guildPassiveSound = "mob.endermen.hit";
 
     @TextProperty({
-        name: "Custom Passive Pitch",
+        name: "§2Custom Passive Pitch",
         description: "The pitch of the sound to play when hitting someone in /g passive",
         category: "General",
         subcategory: "Sounds"
@@ -252,7 +301,7 @@ class Settings {
     guildPassivePitch = "1.5";
 
     @SwitchProperty({
-        name: "Guild Message Sound",
+        name: "§2Guild Message Sound",
         description: "Play a sound when someone types in guild chat.",
         category: "General",
         subcategory: "Sounds"
@@ -260,7 +309,7 @@ class Settings {
     toggleGNotification = true;
 
     @SwitchProperty({
-        name: "Toggle Low Health Indicator",
+        name: "§cToggle Low Health Indicator",
         description: "Makes your screen red when you are low on health",
         category: "General",
         subcategory: 'Quality of Life'
@@ -268,39 +317,16 @@ class Settings {
     toggleLowHealthHUD = true;
 
     @SwitchProperty({
-        name: "Pre OOF",
+        name: "§cPre OOF",
         description: "Prevent /oofing when you are premega",
         category: "General",
         subcategory: 'Quality of Life'
     })
     togglePreOOF = true;
 
-    @SwitchProperty({
-        name: "RNGesus Messages",
-        description: "Toggle seeing RNGesus messages",
-        category: "General",
-        subcategory: 'Messages'
-    })
-    toggleRNGesus = false;
 
     @SwitchProperty({
-        name: "Pre Alert",
-        description: "Alerts you when you are not on a megastreak",
-        category: "General",
-        subcategory: 'Display'
-    })
-    togglePreAlert = true;
-
-    @SwitchProperty({
-        name: "Bounty Bumps",
-        description: "See bounty bump messages and sounds",
-        category: "General",
-        subcategory: "Messages"
-    })
-    toggleBountyBumps = false;
-
-    @SwitchProperty({
-        name: "Megastreak Sounds",
+        name: "§aMegastreak Sounds",
         description: "Hear the wither sound when someone activates a megastreak",
         category: "General",
         subcategory: "Sounds"
@@ -308,7 +334,7 @@ class Settings {
     toggleMegastreakSounds = false;
 
     @SwitchProperty({
-        name: "Hide Low /pays",
+        name: "§8Hide Low /pays",
         description: "Hide received money below a set amount",
         category: "General",
         subcategory: 'Quality of Life'
@@ -316,7 +342,7 @@ class Settings {
     hideLowPay = true;
 
     @SliderProperty({
-        name: "Minimum /pay amount",
+        name: "§8Minimum /pay amount",
         description: "Set the minimum amount of money you want to see",
         category: "General",
         subcategory: 'Quality of Life',
@@ -327,25 +353,18 @@ class Settings {
 
 
     @SliderProperty({
-        name: "Mid Radius Amount",
+        name: "§cMid Radius Amount",
         description: "The radius (in blocks) around 0 0 that counts as mid\n9 is the lantern circle, 20 is the whole middle (hardened clay)\n§cNote: this affects the MID indicator for other features",
         category: "General",
         subcategory: 'Quality of Life',
         min: 9,
         max: 20
     })
-    midRadius = parseInt("15");
+    midRadius = parseInt("10");
+
 
     @SwitchProperty({
-        name: "Hide Bot Nametags",
-        description: "Hide bot nametags for clearer visibility.\n§eCan positively impact performance.",
-        category: "General",
-        subcategory: 'Quality of Life'
-    })
-    hideBotNametags = true;
-
-    @SwitchProperty({
-        name: "Fish Alert",
+        name: "§aFish Alert",
         description: "Play a pling sound when a fish bites your hook.",
         category: "General",
         subcategory: "Sounds"
@@ -353,7 +372,7 @@ class Settings {
     fishAlert = true;
 
     @SwitchProperty({
-        name: "Toggle Hunger Bar Display",
+        name: "§bToggle Hunger Bar Display",
         description: "Toggle seeing the hunger bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -361,7 +380,7 @@ class Settings {
     toggleHungerBar = false;
 
     @SwitchProperty({
-        name: "Toggle Armor Bar Display",
+        name: "§bToggle Armor Bar Display",
         description: "Toggle seeing the armor bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -369,7 +388,7 @@ class Settings {
     toggleArmorBar = false;
 
     @SwitchProperty({
-        name: "Toggle XP Bar Display",
+        name: "§bToggle XP Bar Display",
         description: "Toggle seeing the xp bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -377,7 +396,7 @@ class Settings {
     toggleXPBar = true;
 
     @SwitchProperty({
-        name: "Toggle Boss Bar Display",
+        name: "§bToggle Boss Bar Display",
         description: "Toggle seeing the Boss bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -385,7 +404,7 @@ class Settings {
     toggleBossBar = false;
 
     @SwitchProperty({
-        name: "Custom Auto OOF",
+        name: "§cCustom Auto OOF",
         description: "Customizable auto oof for every megastreak.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -393,7 +412,7 @@ class Settings {
     toggleAutoOOF = false;
 
     @SwitchProperty({
-        name: "Auto OOF On Highlander",
+        name: "§6Auto OOF On Highlander",
         description: "Automatically /oof on Highlander, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -401,7 +420,7 @@ class Settings {
     autoOOFHighlander = false;
 
     @SwitchProperty({
-        name: "Auto OOF On Overdrive",
+        name: "§cAuto OOF On Overdrive",
         description: "Automatically /oof on Overdrive, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -409,7 +428,7 @@ class Settings {
     autoOOFOverdrive = false;
 
     @SwitchProperty({
-        name: "Auto OOF On 400 Uberstreak",
+        name: "§dAuto OOF On 400 Uberstreak",
         description: "Automatically /oof on 400 Uberstreak, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -417,7 +436,7 @@ class Settings {
     autoOOFUber = false;
 
     @SwitchProperty({
-        name: "Auto OOF On 500 Uberstreak",
+        name: "§dAuto OOF On 500 Uberstreak",
         description: "Automatically /oof on 500 Uberstreak, if Custom Auto OOF is enabled.\n Mainly used for RNGESUS Begone",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -425,7 +444,7 @@ class Settings {
     autoOOFRNGESUS = false;
 
     @SwitchProperty({
-        name: "Auto OOF On Moon",
+        name: "§bAuto OOF On Moon",
         description: "Automatically /oof on Moon, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -433,7 +452,7 @@ class Settings {
     autoOOFMoon = false;
 
     @SwitchProperty({
-        name: "Auto OOF On Nightmare",
+        name: "§1Auto OOF On Nightmare",
         description: "Automatically /oof on Nightmare, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
@@ -441,7 +460,7 @@ class Settings {
     autoOOFNightmare = true;
 
     @SwitchProperty({
-        name: "Auto OOF On Hermit",
+        name: "§9Auto OOF On Hermit",
         description: "Automatically /oof on Hermit, if Custom Auto OOF is enabled.",
         category: "Auto OOF",
         subcategory: "Auto OOF"
