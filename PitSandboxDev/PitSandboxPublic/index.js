@@ -1790,22 +1790,7 @@ register("renderOverlay", () => {
             if (streak >= 200) info.push("&d&lUBER200 Healing&d: &c-40%")
             if (streak >= 300) info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
             if (streak >= 400) info.push("&d&lUBER400: No Longer Gain Health")
-        }
-        /* if (ubermilestone == "UBER100") {
-            info.push("&d&lUBER100 Bot Damage&d: &c-30%")
-        } if (ubermilestone == "UBER200") {
-            info.push("&d&lUBER100 Bot Damage&d: &c-30%")
-            info.push("&d&lUBER200 Healing&d: &c-40%")
-        } if (ubermilestone == "UBER300") {
-            info.push("&d&lUBER100 Bot Damage&d: &c-30%")
-            info.push("&d&lUBER200 Healing&d: &c-40%")
-            info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
-        } if (ubermilestone == "UBER400") {
-            info.push("&d&lUBER100 Bot Damage&d: &c-30%")
-            info.push("&d&lUBER200 Healing&d: &c-40%")
-            info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
-            info.push("&d&lUBER400: No Longer Gain Health")
-        } */ if (megastreak == "Hermit") {
+        } if (megastreak == "Hermit") {
             info.push("&9&lHERMIT Block Duration&9: &a+100%")
             if (Player.armor.getLeggings() && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) != NaN) info.push("&9&lHERMIT: &cMirrors Disabled")
         } if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
