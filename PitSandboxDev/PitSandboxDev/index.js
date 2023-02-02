@@ -375,6 +375,7 @@ register("guiOpened", event => {
 })
 
 register("tick", () => {
+    if (!pitsandbox) return
     if (inSpawn(Player.asPlayerMP()) && !spawn) {
         spawn = true
     } else if (!inSpawn(Player.asPlayerMP()) && spawn) {
@@ -387,7 +388,6 @@ register("tick", () => {
         }
     }
 })
-
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = [`${Settings.hudGroupColor}&nUpgrades`]
