@@ -1902,7 +1902,7 @@ register("step", () => {
 
 
 register("step", () => {
-    if (pitsandbox && autoStackBread) {
+    if (pitsandbox && autoStackBread && !Client.isInGui()) {
         let slots = [];
         for (let i = 0; i < 9; i++) {
             if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 296) {
