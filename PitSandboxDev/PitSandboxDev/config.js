@@ -11,7 +11,7 @@ Color,
 @TextProperty,
 @Vigilant,
     } from 'Vigilance';
-@Vigilant('PitSandboxDev', '§dhehe owo', {
+@Vigilant('PitSandboxDev', '§dPitSandbox Dev', {
     getCategoryComparator: () => (a, b) => {
         const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
         return categories.indexOf(a.name) - categories.indexOf(b.name)
