@@ -372,6 +372,7 @@ register("guiOpened", event => {
 })
 
 register("tick", () => {
+    if (!pitsandbox) return
     if (inSpawn(Player.asPlayerMP()) && !spawn) {
         spawn = true
     } else if (!inSpawn(Player.asPlayerMP()) && spawn) {
@@ -384,7 +385,6 @@ register("tick", () => {
         }
     }
 })
-
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = [`${Settings.hudGroupColor}&nUpgrades`]
@@ -1900,7 +1900,7 @@ register("step", () => {
 
 
 register("step", () => {
-    if (pitsandbox && autoStackBread) {
+    if (pitsandbox && autoStackBread && !Client.isInGui()) {
         let slots = [];
         for (let i = 0; i < 9; i++) {
             if (Player.getInventory().getStackInSlot(i) && Player.getInventory().getStackInSlot(i).getID() == 296) {
