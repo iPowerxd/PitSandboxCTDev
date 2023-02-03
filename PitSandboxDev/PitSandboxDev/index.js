@@ -2034,17 +2034,17 @@ register("renderOverlay", () => {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthCount == 5) {
             info.push("&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
-        } if (getMega(Player.getName()) == "overdrive") {
-            info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * (streak - 50) / 5 * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "highlander") {
-            info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * (streak - 50) / 5)}%`)
-        } if (getMega(Player.getName()) == "moon") {
-            info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * (streak - 100) / 5)}%`)
-            if (streak >= 200) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * (streak - 200) / 20 * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "nightmare") {
-            info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * (streak - 40) / 15)}%`)
+        } if (getMega(Player.getName()) == "overdrive" && streak >= 55) {
+            info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * Math.floor((streak - 50) / 5) * 10) / 10}&c❤`)
+        } if (getMega(Player.getName()) == "highlander" && streak >= 55) {
+            info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * Math.floor((streak - 50) / 5))}%`)
+        } if (getMega(Player.getName()) == "moon" && streak >= 105) {
+            info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * Math.floor((streak - 100) / 5))}%`)
+            if (streak >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((streak - 200) / 20) * 10) / 10}&c❤`)
+        } if (getMega(Player.getName()) == "nightmare" && streak >= 55) {
+            info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((streak - 40) / 15))}%`)
         } if (getMega(Player.getName()) == "hermit") {
-            info.push(`&9&lHermit Damage: &b+${Math.floor(10 * (streak - 100) / 15)}%`)
+            info.push(`&9&lHermit Damage: &b+${Math.floor(10 * Math.floor((streak - 100) / 15))}%`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.push("&f&lBers Brew&r: &c" + bersLevel)
