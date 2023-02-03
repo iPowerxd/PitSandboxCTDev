@@ -99,6 +99,22 @@ class Settings {
     upgradeInfo = true;
 
     @SwitchProperty({
+        name: "§bCooldown Info",
+        description: "See a HUD that shows your cooldowns.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    cooldownInfo = true;
+
+    @SwitchProperty({
+        name: "§bBooster Info",
+        description: "See a HUD that shows active boosters.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    boostersInfo = true;
+
+    @SwitchProperty({
         name: "§bPre Alert",
         description: "Alerts you when you are not on a megastreak",
         category: "General",

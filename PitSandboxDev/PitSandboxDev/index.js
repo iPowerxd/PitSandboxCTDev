@@ -337,9 +337,6 @@ register("command", () => {
 
 register("worldLoad", () => {
     welcome()
-    setTimeout(() => {
-        syncperks = true
-    }, 400)
 })
 
 
@@ -418,6 +415,7 @@ register("worldLoad", () => {
 
 register("worldUnload", () => {
     inMenu = undefined
+    autoSyncperks = true
 })
 let inMenu = undefined
 const isPre = () => {
@@ -2007,7 +2005,7 @@ register("renderOverlay", () => {
         const text = new Text(line, boosterInfoHud.textX, y)
         text.setShadow(true)
         text.setScale(generalInfoHud.textScale)
-        if (info.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
+        if ((info.length > 1 && Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
     })
 })
@@ -2032,6 +2030,17 @@ register("renderOverlay", () => {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTimer + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthCount == 5) {
             info.push("&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
+        } if (getMega(Player.getName()) == "overdrive") {
+            info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * (streak - 50) / 5 * 10) / 10}&c❤`)
+        } if (getMega(Player.getName()) == "highlander") {
+            info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * (streak - 50) / 5)}%`)
+        } if (getMega(Player.getName()) == "moon") {
+            info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * (streak - 100) / 5)}%`)
+            if (streak >= 200) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * (streak - 200) / 20 * 10) / 10}&c❤`)
+        } if (getMega(Player.getName()) == "nightmare") {
+            info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * (streak - 40) / 15)}%`)
+        } if (getMega(Player.getName()) == "hermit") {
+            info.push(`&9&lHermit Damage: &b+${Math.floor(10 * (streak - 100) / 15)}%`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.push("&f&lBers Brew&r: &c" + bersLevel)
@@ -2422,6 +2431,11 @@ let boosterInfoHud = new PogObject("PitSandboxDev", {
     "textScale": 1
 }, "guiLocations/boosterInfo.json")
 
+let cooldownInfoHud = new PogObject("PitSandboxDev", {
+    "textX": 4,
+    "textY": Renderer.screen.getHeight() / 3
+}, "guiLoctions/cooldownInfo.json")
+
 let preInfoHud = new PogObject("PitSandboxDev", {
     "textX": Renderer.screen.getWidth() / 2,
     "textY": Renderer.screen.getHeight() * 8 / 10,
@@ -2454,6 +2468,9 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         } else if (((mouseX + 70 >= boosterInfoHud.textX) && (mouseX - 70 <= boosterInfoHud.textX)) && ((mouseY + 70 >= boosterInfoHud.textY) && (mouseY - 70 <= boosterInfoHud.textY))) {
             boosterInfoHud.textX = mouseX
             boosterInfoHud.textY = mouseY
+        } else if (((mouseX + 70 >= cooldownInfoHud.textX) && (mouseX - 70 <= cooldownInfoHud.textX)) && ((mouseY + 70 >= cooldownInfoHud.textY) && (mouseY - 70 <= cooldownInfoHud.textY))) {
+            cooldownInfoHud.textX = mouseX
+            cooldownInfoHud.textY = mouseY
         } else if (((mouseX + 70 >= preInfoHud.textX) && (mouseX - 70 <= preInfoHud.textX)) && ((mouseY + 70 >= preInfoHud.textY) && (mouseY - 70 <= preInfoHud.textY))) {
             preInfoHud.textX = mouseX
             preInfoHud.textY = mouseY
@@ -2467,6 +2484,7 @@ register("dragged", (mouseDeltaX, mouseDeltaY, mouseX, mouseY, button) => {
         upgradesInfoHud.save()
         playerInfoHud.save()
         boosterInfoHud.save()
+        cooldownInfoHud.save()
         preInfoHud.save()
         targetInfoHud.save()
     }
@@ -2582,6 +2600,8 @@ function resetdisplay() {
     playerInfoHud.textY = 4
     boosterInfoHud.textX = Renderer.screen.getWidth() * 2
     boosterInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    cooldownInfoHud.textX = 4
+    cooldownInfoHud.textY = Renderer.screen.getHeight() / 3
     preInfoHud.textX = Renderer.screen.getWidth() / 2
     preInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
     targetInfoHud.textX = Renderer.screen.getWidth() * 2 / 3
@@ -2592,6 +2612,7 @@ function resetdisplay() {
     upgradesInfoHud.save()
     playerInfoHud.save()
     boosterInfoHud.save()
+    cooldownInfoHud.save()
     preInfoHud.save()
     targetInfoHud.save()
 }
@@ -2602,4 +2623,48 @@ register("renderOverlay", () => {
         new Text("&aUse ▼ arrow key DOWN to scale down", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aUse ▼ arrow key DOWN to scale down") / 2), Renderer.screen.getHeight() / 2 + 5).setShadow(true).setScale(1).draw();
         new Text("&aYou can also use the scroll wheel", Renderer.screen.getWidth() / 2 - (Renderer.getStringWidth("&aYou can also use the scroll wheel") / 2), Renderer.screen.getHeight() / 2 + 15).setShadow(true).setScale(1).draw();
     }
+})
+
+const getMaxhealth = Java.type("net.minecraft.entity.SharedMonsterAttributes")
+
+function maxHealth() {
+    return getMaxhealth.field_111267_a(Player.getName())
+}
+
+let firstaideggCooldown = 0
+let pullCooldown = 0
+let leapCooldown = 0
+let moonStickCooldown = 0
+
+register("soundPlay", (pos, name, vol, pitch, cat, event) => {
+    if (!pitsandbox) return
+    if (name.toLocaleLowerCase().includes("mob.cat.hiss") && pitch.toFixed(1) == "2.0") firstaideggCooldown = 9.8 * 10
+    if (name.toLocaleLowerCase().includes("mob.wither.idle") && pitch.toFixed(1) == "2.0") leapCooldown = (10.4 - (10 * hasPerk("Power Surge") * 10 / 100)) * 10
+    if (name.toLocaleLowerCase().includes("mob.bat.takeoff") && pitch.toFixed(1) == "1.0") pullCooldown = (5.9 - (6 * hasPerk("Power Surge") * 10 / 100)) * 10
+})
+
+register("chat", event => {
+    if (!pitsandbox) return
+    moonStickCooldown = 19.9 * 10
+}).setChatCriteria("WHOHOO! Launched ${*} player(s) into the sky!")
+
+register("step", () => {
+    firstaideggCooldown > 0 ? firstaideggCooldown-- : firstaideggCooldown = 0
+    pullCooldown > 0 ? pullCooldown-- : pullCooldown = 0
+    leapCooldown > 0 ? leapCooldown-- : leapCooldown = 0
+    moonStickCooldown > 0 ? moonStickCooldown-- : moonStickCooldown = 0
+}).setFps(10)
+
+register("renderOverlay", () => {
+    let info = [`${Settings.hudGroupColor}&nCooldowns`]
+    if (firstaideggCooldown != 0) info.push(`&c&lFirst Aid Egg: &e${firstaideggCooldown / 10}s`)
+    if (pullCooldown != 0) info.push(`&2&lPullbow: &e${pullCooldown / 10}s`)
+    if (leapCooldown != 0) info.push(`&e&lLeap: &e${leapCooldown / 10}s`)
+    if (moonStickCooldown != 0) info.push(`&9&lMoon Stick: &e${moonStickCooldown / 10}s`)
+    let y = cooldownInfoHud.textY
+    info.forEach(line => {
+        const text = new Text(line, cooldownInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
+        y += 11.5 * generalInfoHud.textScale
+        if ((info.length > 1 && Settings.cooldownInfo) || Settings.generalInfoHud.isOpen()) text.draw()
+    })
 })
