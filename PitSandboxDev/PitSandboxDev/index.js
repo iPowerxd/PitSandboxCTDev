@@ -321,6 +321,7 @@ function getMegaFormatted(player) {
     else return "&cPremega";
 }
 
+let firstSync = false
 
 register("command", () => {
     if (!pitsandbox) return
@@ -338,7 +339,6 @@ register("command", () => {
 register("worldLoad", () => {
     welcome()
 })
-
 
 register("guiOpened", event => {
     if (!pitsandbox || !syncperks) return
@@ -385,11 +385,13 @@ register("tick", () => {
         }
     }
 })
+
 register("renderOverlay", () => {
     if (!pitsandbox) return
     let info = [`${Settings.hudGroupColor}&nUpgrades`]
-    info.splice(1, 0, getMegaColor(perks[2][0]) + perks[2][0])
-    if (perks[2][0] != 'DO /SYNCPERKS') {
+    if (!firstSync || perks[2][0] == 'DO /SYNCPERKS') {
+        info.splice(1, 0, `&7DO /SYNCPERKS`)
+    } else if (perks[2][0] != 'DO /SYNCPERKS') {
         if (perks[0][0][0] != "Nothing") info.splice(2, 0, "&c" + (perks[0][0][0] == "Nothing" ? "" : perks[0][0][0] + "&7 " + perks[0][0][1]))
         if (perks[0][1][0] != "Nothing") info.splice(3, 0, "&c" + (perks[0][1][0] == "Nothing" ? "" : perks[0][1][0] + "&7 " + perks[0][1][1]))
         if (perks[0][1][0] != "Nothing") info.splice(4, 0, "&c" + (perks[0][2][0] == "Nothing" ? "" : perks[0][2][0] + "&7 " + perks[0][2][1]))
