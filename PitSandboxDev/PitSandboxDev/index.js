@@ -357,6 +357,7 @@ register("guiOpened", event => {
             })
             ChatLib.chat("&aPerks synced.")
             syncperks = undefined
+            firstSync = true
         }
     }, 100)
 })
