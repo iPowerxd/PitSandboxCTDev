@@ -2434,7 +2434,7 @@ let boosterInfoHud = new PogObject("PitSandboxDev", {
 let cooldownInfoHud = new PogObject("PitSandboxDev", {
     "textX": 4,
     "textY": Renderer.screen.getHeight() / 3
-}, "guiLoctions/cooldownInfo.json")
+}, "guiLocations/cooldownInfo.json")
 
 let preInfoHud = new PogObject("PitSandboxDev", {
     "textX": Renderer.screen.getWidth() / 2,

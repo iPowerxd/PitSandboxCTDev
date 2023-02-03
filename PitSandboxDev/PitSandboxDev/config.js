@@ -62,7 +62,7 @@ class Settings {
         name: "§eToggle HUD",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSandboxHUD = true;
 
@@ -70,7 +70,7 @@ class Settings {
         name: "§eToggle Simple HUD",
         description: "Toggle the HUD to show less",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSimpleHUD = false;
 
@@ -78,7 +78,7 @@ class Settings {
         name: "§eToggle Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleMajorandMinorEventHUD = true;
 
