@@ -321,6 +321,58 @@ function getMegaFormatted(player) {
     else return "&cPremega";
 }
 
+function getLevelUnformatted(player) {
+    let level = ChatLib.removeFormatting(getLevel(player));
+    if (level == "none") return undefined;
+    return parseInt(level.replace(/[[\]]/g, ''));
+}
+
+function getLevel(player) {
+    let info = playerInfo(player);
+    if (ChatLib.removeFormatting(info[0]).startsWith("[")) return info[0];
+    else return "none";
+}
+
+function getNameColour(player) {
+    let info = playerInfo(player);
+    for (let i = 0; i < info.length; i++) {
+        if (info[i].includes(player)) return info[i]
+    }
+}
+
+function getColourOfName(player) {
+    return getNameColour(player).replace("§", "&").replace(player, "");
+}
+
+function getGuild(player) {
+    let info = playerInfo(player);
+    for (let i = 0; i < info.length; i++) {
+        if (info[i].includes(player)) {
+            if (info[i + 1].startsWith("[")) return info[i + 1]
+        }
+    } return "none";
+}
+
+function getBountyUnformatted(player) {
+    let bounty = getBounty(player);
+    if (bounty == "none") return 0;
+    return parseInt(ChatLib.removeFormatting(bounty.replace(/[$,]/g, '')));
+}
+
+function getBounty(player) {
+    let info = playerInfo(player);
+    for (let i = 0; i < info.length; i++) {
+        if (info[i].includes("$")) return info[i];
+    } return "none";
+}
+
+function isAFK(player) {
+    let info = playerInfo(player)
+    if (info.length < 2) return false
+    else if (info[info.length - 1].includes("AFK")) return true
+    else return false
+}
+
 let firstSync = false
 
 register("command", () => {
@@ -1415,27 +1467,131 @@ new Thread(() => {
             if (!worldotherplayers.find(p => p.getName() == target)) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = [];
             let player = new EntityLivingBase(worldentities.find(e => e.getName() == target).entity);
             if (player.getItemInSlot(2) && player.getItemInSlot(2).getNBT() && player.getItemInSlot(2).getID() == 300 && getEnchants(player.getItemInSlot(2).getNBT())) {
-                pantenchants = "§9" + getEnchants(player.getItemInSlot(2).getNBT()).join(" ");
+                //pantenchants = "§9" + getEnchants(player.getItemInSlot(2).getNBT()).join(" ")
+                let pants = []
+                for (let i = 0; i < getEnchants(player.getItemInSlot(2).getNBT()).length; i++) {
+                    pants.push(sortEnchants(getEnchants(player.getItemInSlot(2).getNBT())[i]))
+                }
+                pantenchants = pants.join("&7, ")
+            } else if (player.getItemInSlot(2) == null) {
+                pantenchants = "&cNone"
             } else {
-                pantenchants = "§cNoMysticPants";
+                pantenchants = player.getItemInSlot(2).getName()
             }
             if (player.getItemInSlot(0) && player.getItemInSlot(0).getNBT() && (player.getItemInSlot(0).getID() == 283 || player.getItemInSlot(0).getID() == 261) && getEnchants(player.getItemInSlot(0).getNBT())) {
-                swordenchants = "§9" + getEnchants(player.getItemInSlot(0).getNBT()).join(" ");
+                //swordenchants = "§9" + getEnchants(player.getItemInSlot(0).getNBT()).join(" ")
+                let held = []
+                for (let i = 0; i < getEnchants(player.getItemInSlot(0).getNBT()).length; i++) {
+                    held.push(sortEnchants(getEnchants(player.getItemInSlot(0).getNBT())[i]))
+                }
+                swordenchants = held.join("&7, ")
                 if (player.getItemInSlot(0).getID() == 283) {
-                    if (hasEnchant("lifesteal", player.getItemInSlot(0).getNBT()) && hasEnchant("billionaire", player.getItemInSlot(0).getNBT())) {
+                    if (hasEnchant("lifesteal", player.getItemInSlot(0).getNBT()) /* && hasEnchant("billionaire", player.getItemInSlot(0).getNBT()) */) {
                         lsticks++;
                         allticks++;
                     } else {
                         allticks++;
                     }
                 }
+            } else if (player.getItemInSlot(0) == null) {
+                swordenchants = "&cNone"
             } else {
-                swordenchants = "§cNoSwordOrBow";
+                swordenchants = player.getItemInSlot(0).getName()
             }
         }, 0);
     });
 }).start();
 
+function sortEnchants(enchantment) {
+    const enchant = formatEnchant(enchantment.replace(/[0-9]/g, ""))
+    const level = getRoman(parseInt(enchantment.split("")[enchantment.length - 1]))
+    return `&9${enchant} §9${level}`
+}
+
+function formatEnchant(enchant) {
+    // Pants
+    // Rare
+    if (enchant == 'assassin') return '&dAssassin'
+    else if (enchant == 'attrative') return '&dAttractive'
+    else if (enchant == 'comboladder') return '&dCombo: Ladder'
+    else if (enchant == 'divine') return '&dDivine Miracle'
+    else if (enchant == 'leap') return '&dLeap'
+    else if (enchant == 'resistance') return '&dResistance'
+    else if (enchant == 'rgm') return '&dRetro-Gravity Microcosm'
+    else if (enchant == 'solitude') return '&dSolitude'
+    // Regular
+    else if (enchant == 'absorber') return 'Absorber'
+    else if (enchant == 'booboo') return 'Boo-boo'
+    else if (enchant == 'critfunky') return 'Critically Funky'
+    else if (enchant == 'dag') return 'David and Goliath'
+    else if (enchant == 'electrolytes') return 'Electrolytes'
+    else if (enchant == 'frac') return 'Fractional Reserve'
+    else if (enchant == 'goldenheart') return 'Golden Heart'
+    else if (enchant == 'laststand') return 'Last Stand'
+    else if (enchant == 'mirror') return 'Mirror'
+    else if (enchant == 'notgladiator') return '"Not" Gladiator'
+    else if (enchant == 'pebble') return 'Pebble'
+    else if (enchant == 'peroxide') return 'Peroxide'
+    else if (enchant == 'prick') return 'Prick'
+    else if (enchant == 'protection') return 'Protection'
+    else if (enchant == 'ringarmor') return 'Ring Armor'
+    // Swords
+    // Rare
+    else if (enchant == 'billionaire') return '&dBillionaire'
+    else if (enchant == 'comboperun') return "&dPerun's Wrath"
+    else if (enchant == 'combostun') return '&dCombo: Stun'
+    else if (enchant == 'executioner') return '&dExecutioner'
+    else if (enchant == 'gamble') return '&dGamble'
+    else if (enchant == 'healer') return '&dHealer'
+    else if (enchant == 'hemorrage') return '&dHemorrage'
+    // Regular
+    else if (enchant == 'beatthespammers') return 'Beat the Spammers'
+    else if (enchant == 'berserker') return 'Berserker'
+    else if (enchant == 'bruiser') return 'Bruiser'
+    else if (enchant == 'bullettime') return 'Bullet Time'
+    else if (enchant == 'combodamage') return 'Combo: Damage'
+    else if (enchant == 'comboheal') return 'Combo: Heal'
+    else if (enchant == 'comboswift') return 'Combo: Swift'
+    else if (enchant == 'diamondstomp') return 'Diamond Stomp'
+    else if (enchant == 'fancyraider') return 'Fancy Raider'
+    else if (enchant == 'goldandboosted') return 'Gold and Boosted'
+    else if (enchant == 'huntthehunter') return 'Hunt the Hunter'
+    else if (enchant == 'kingbuster') return 'King Buster'
+    else if (enchant == 'knockback') return 'Knockback'
+    else if (enchant == 'lifesteal') return 'Lifesteal'
+    else if (enchant == 'painfocus') return 'Pain Focus'
+    else if (enchant == 'punisher') return 'Punisher'
+    else if (enchant == 'shark') return 'Shark'
+    else if (enchant == 'sharp') return 'Sharp'
+    // Bows
+    // Rare
+    else if (enchant == 'aimassist') return '&dAim Assist'
+    else if (enchant == 'explosive') return '&dExplosive'
+    else if (enchant == 'luckyshot') return '&dLucky Shot'
+    else if (enchant == 'megalongbow') return '&dMega Longbow'
+    else if (enchant == 'pullbow') return '&dPullbow'
+    else if (enchant == 'robinhood') return '&8Robinhood'
+    else if (enchant == 'telebow') return '&dTelebow'
+    else if (enchant == 'trueshot') return '&dTrue Shot'
+    else if (enchant == 'volley') return '&dVolley'
+    // Regular
+    else if (enchant == 'chipping') return 'Chipping'
+    else if (enchant == 'fletching') return 'Fletching'
+    else if (enchant == 'ftts') return 'Ftts'
+    else if (enchant == 'pcts') return 'Pcts'
+    else if (enchant == 'pindown') return 'Pin down'
+    else if (enchant == 'sprintdrain') return 'Sprint Drain'
+    else if (enchant == 'wasp') return 'Wasp'
+    // Resource
+    else if (enchant == 'sweaty') return '&bSweaty'
+    else if (enchant == 'gboost') return '&6Gold Boost'
+    else if (enchant == 'gbump') return '&6Gold Bump'
+    else if (enchant == 'moctezuma') return '&6Moctezuma'
+    else if (enchant == 'xpboost') return '&bXP Boost'
+    else if (enchant == 'xpbump') return '&bXP Bump'
+    // Failsafe
+    else return '&cError'
+}
 
 register("step", () => {
     if (rightclicking) {
@@ -1598,14 +1754,23 @@ new Thread(() => {
         if (!pitsandbox) return; {
             if (Settings.targetInfo && target) {
                 let lines = [];
+                let runes = []
                 const NetHandlerPlayClient = Client.getConnection();
                 const PlayerMap = NetHandlerPlayClient.func_175106_d();
                 const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-                lines.push("&7Name: &c" + target + " &7Ping: &c" + ping + "ms");
-                lines.push("&7HeldItem: " + swordenchants);
-                lines.push("&7Pants: " + pantenchants);
-                lines.push("&7Maining LS: " + (allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&4No")))));
-                let y = targetInfoHud.textY //Renderer.screen.getHeight() - 12 * lines.length - 4
+                if (helmet(target)[0] != "None") {
+                    runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
+                } if (chestplate(target)[0] != "None") {
+                    runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
+                } if (boots(target)[0] != "None") {
+                    runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+                }
+                lines.push(`${Settings.hudTextColor}Name: &7${getColourOfName(target)}${target} &7Ping: ${pingColour(ping)}${ping}ms`);
+                lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`);
+                lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`);
+                lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
+                lines.push(`${Settings.hudTextColor}Maining LS: ${(allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&4No"))))}`);
+                let y = targetInfoHud.textY
                 let x = targetInfoHud.textX
                 lines.forEach(line => {
                     const text = new Text(line, x, y);
@@ -2231,90 +2396,63 @@ const inEvent = () => {
     }
 }) */
 
-const activeRunes = () => {
-    const helmet = () => {
-        if (Player.armor.getHelmet() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
+const helmet = (info) => {
+    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    if (player.getItemInSlot(4) == null) return ["None", "None"]
+    const NBT = ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())
+    if (!(ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())).includes(':{rtype:"')) return ["None", "None"]
+    if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+            if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                    const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
+                    const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
+                    return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
                 }
             }
         }
     }
-    const chestplate = () => {
-        if (Player.armor.getChestplate() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
-                }
-            }
-        }
-    }
-    const boots = () => {
-        if (Player.armor.getBoots() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
-                }
-            }
-        }
-    }
-    return [helmet, chestplate, boots]
 }
 
+const chestplate = (info) => {
+    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    if (player.getItemInSlot(3) == null) return ["None", "None"]
+    const NBT = ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())
+    if (!(ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())).includes(':{rtype:"')) return ["None", "None"]
+    if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+            if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                    const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
+                    const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
+                    return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                }
+            }
+        }
+    }
+}
+
+const boots = (info) => {
+    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    if (player.getItemInSlot(1) == null) return ["None", "None"]
+    const NBT = ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())
+    if (!(ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())).includes(':{rtype:"')) return ["None", "None"]
+    if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
+        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
+            if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
+                if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
+                    const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
+                    const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
+                    return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                }
+            }
+        }
+    }
+}
+
+
 register("command", () => {
-    const helmet = () => {
-        if (Player.armor.getHelmet() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getHelmet().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
-                }
-            }
-        }
-    }
-    const chestplate = () => {
-        if (Player.armor.getChestplate() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getChestplate().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
-                }
-            }
-        }
-    }
-    const boots = () => {
-        if (Player.armor.getBoots() == null) return "none"
-        const NBT = ChatLib.removeFormatting(Player.armor.getBoots().getNBT())
-        if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1])) {
-            if (ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"'))) {
-                if (ChatLib.removeFormatting(NBT.split(`rrarity"`)[1])) {
-                    if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
-                        return [ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0]), ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                    }
-                }
-            }
-        }
-    }
-    ChatLib.chat(helmet() + chestplate() + boots())
+    ChatLib.chat(`${helmet("MysticWell")} ${chestplate("MysticWell")} ${boots("MysticWell")}`)
 }).setName("none")
 
 const runes = {
@@ -2359,6 +2497,15 @@ const runes = {
     }
 
 }
+
+function runeColour(rariy) {
+    if (rariy == 'uncommon') return '&a'
+    else if (rariy == 'rare') return '&9'
+    else if (rariy == 'epic') return '&5'
+    else if (rariy == 'legendary') return '&6'
+    else return '&c'
+}
+
 register("chat", () => {
     Client.showTitle("&eSaving Grace", "&7saved you from death!", 0, 35, 0)
 }).setChatCriteria("SAVING GRACE! saved you from death!")
@@ -2448,7 +2595,7 @@ let preInfoHud = new PogObject("PitSandboxDev", {
 
 let targetInfoHud = new PogObject("PitSandboxDev", {
     "textX": Renderer.screen.getWidth() * 2 / 3,
-    "textY": Renderer.screen.getHeight() * 9 / 10,
+    "textY": Renderer.screen.getHeight() * 8.8 / 10,
     "textScale": 1
 }, "guiLocations/targetInfo.json")
 
@@ -2609,7 +2756,7 @@ function resetdisplay() {
     preInfoHud.textX = Renderer.screen.getWidth() / 2
     preInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
     targetInfoHud.textX = Renderer.screen.getWidth() * 2 / 3
-    targetInfoHud.textY = Renderer.screen.getHeight() * 9 / 10
+    targetInfoHud.textY = Renderer.screen.getHeight() * 8.8 / 10
     generalInfoHud.save()
     streakInfoHud.save()
     huntInfoHud.save()
@@ -2672,3 +2819,13 @@ register("renderOverlay", () => {
         if ((info.length > 1 && Settings.cooldownInfo) || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
+
+function pingColour(ping) {
+    if (ping <= 30) return ("§a")
+    else if (ping <= 80) return ("§2")
+    else if (ping <= 100) return ("§e")
+    else if (ping <= 120) return ("§6")
+    else if (ping <= 150) return ("§c")
+    else if (ping > 200) return ("§5")
+    else return ("§f")
+}
