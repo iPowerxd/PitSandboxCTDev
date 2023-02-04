@@ -195,7 +195,7 @@ let KeyBinding = Java.type("net.minecraft.client.settings.KeyBinding");
 let syncperks
 let autoSyncCooldown
 let spawn
-let autoSyncperks = false
+let autoSyncperks = true
 let perks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
 
 
@@ -282,6 +282,12 @@ const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (perks[0][i].includes(perk)) return perks[0][i][1]
     } return 0
+}
+
+const hasKillstreak = (killstreak) => {
+    for (let i = 0; i < 3; i++) {
+        if (perks[1][i].includes(killstreak)) return true
+    } return false
 }
 
 function playerInfo(player) {
@@ -1766,7 +1772,7 @@ new Thread(() => {
                 } if (boots(target)[0] != "None") {
                     runes.push(runeColour(boots(target)[1]) + boots(target)[0])
                 }
-                lines.push(`${Settings.hudTextColor}Name: ${tabp.split(" ")[1]} &7Ping: ${pingColour(ping)}${ping}ms`);
+                lines.push(`${Settings.hudTextColor}Name: ${tabp.split(" ")[1]} &7Ping: ${pingColour(ping)}${ping}ms`)
                 lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`);
                 lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`);
                 lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
@@ -2211,6 +2217,8 @@ register("renderOverlay", () => {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((streak - 40) / 15))}%`)
         } if (getMega(Player.getName()) == "hermit") {
             info.push(`&9&lHermit Damage: &b+${Math.floor(10 * Math.floor((streak - 100) / 15))}%`)
+        } if (hasKillstreak('Tough Skin') && streak >= 6 - (6 - hasPerk("Killaura") * 0.15)) {
+            info.push(`&9&lTough Skin: &b+${3 * Math.floor(streak / 6)}%`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.push("&f&lBers Brew&r: &c" + bersLevel)
