@@ -1429,7 +1429,7 @@ new Thread(() => {
                     let suffix = "";
                     let prefix = "";
                     let entity = worldotherplayers.filter(e => !e.getName().startsWith("§") && !e.getName().startsWith("CIT-")).find(e => e.getName() == p);
-                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p);
+                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == p)
                     if (!entity) suffix = " &cUnknown";
                     else if (inMid(entity)) suffix = " &4MID";
                     else if (inSpawn(entity)) suffix = " &aSpawn";
@@ -1517,7 +1517,7 @@ function formatEnchant(enchant) {
     else if (enchant == 'divine') return '&dDivine Miracle'
     else if (enchant == 'leap') return '&dLeap'
     else if (enchant == 'resistance') return '&dResistance'
-    else if (enchant == 'rgm') return '&dRetro-Gravity Microcosm'
+    else if (enchant == 'rgm') return '&dRGM'
     else if (enchant == 'solitude') return '&dSolitude'
     // Regular
     else if (enchant == 'absorber') return 'Absorber'
@@ -1755,6 +1755,7 @@ new Thread(() => {
             if (Settings.targetInfo && target) {
                 let lines = [];
                 let runes = []
+                let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
                 const NetHandlerPlayClient = Client.getConnection();
                 const PlayerMap = NetHandlerPlayClient.func_175106_d();
                 const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
@@ -1765,11 +1766,11 @@ new Thread(() => {
                 } if (boots(target)[0] != "None") {
                     runes.push(runeColour(boots(target)[1]) + boots(target)[0])
                 }
-                lines.push(`${Settings.hudTextColor}Name: &7${getColourOfName(target)}${target} &7Ping: ${pingColour(ping)}${ping}ms`);
+                lines.push(`${Settings.hudTextColor}Name: ${tabp.split(" ")[1]} &7Ping: ${pingColour(ping)}${ping}ms`);
                 lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`);
                 lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`);
                 lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
-                lines.push(`${Settings.hudTextColor}Maining LS: ${(allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&4No"))))}`);
+                lines.push(`${Settings.hudTextColor}Maining LS: ${(allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&cNo"))))}`);
                 let y = targetInfoHud.textY
                 let x = targetInfoHud.textX
                 lines.forEach(line => {
@@ -2397,6 +2398,7 @@ const inEvent = () => {
 }) */
 
 const helmet = (info) => {
+    if (!inMenu) return
     let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
     if (player.getItemInSlot(4) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())
@@ -2415,6 +2417,7 @@ const helmet = (info) => {
 }
 
 const chestplate = (info) => {
+    if (!inMenu) return
     let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
     if (player.getItemInSlot(3) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())
@@ -2433,6 +2436,7 @@ const chestplate = (info) => {
 }
 
 const boots = (info) => {
+    if (!inMenu) return
     let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
     if (player.getItemInSlot(1) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())
@@ -2821,11 +2825,11 @@ register("renderOverlay", () => {
 })
 
 function pingColour(ping) {
-    if (ping <= 30) return ("§a")
+    if (ping <= 40) return ("§a")
     else if (ping <= 80) return ("§2")
     else if (ping <= 100) return ("§e")
     else if (ping <= 120) return ("§6")
     else if (ping <= 150) return ("§c")
-    else if (ping > 200) return ("§5")
+    else if (ping > 150) return ("§4")
     else return ("§f")
 }
