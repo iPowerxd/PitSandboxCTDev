@@ -1528,14 +1528,14 @@ function formatEnchant(enchant) {
     // Regular
     else if (enchant == 'absorber') return 'Absorber'
     else if (enchant == 'booboo') return 'Boo-boo'
-    else if (enchant == 'critfunky') return 'Critically Funky'
+    else if (enchant == 'critfunky') return 'Crit Funky'
     else if (enchant == 'dag') return 'David and Goliath'
     else if (enchant == 'electrolytes') return 'Electrolytes'
-    else if (enchant == 'frac') return 'Fractional Reserve'
+    else if (enchant == 'frac') return 'Frac'
     else if (enchant == 'goldenheart') return 'Golden Heart'
     else if (enchant == 'laststand') return 'Last Stand'
-    else if (enchant == 'mirror') return 'Mirror'
-    else if (enchant == 'notgladiator') return '"Not" Gladiator'
+    else if (enchant == 'mirror') return '&4Mirror'
+    else if (enchant == 'notgladiator') return '"Not" Glad'
     else if (enchant == 'pebble') return 'Pebble'
     else if (enchant == 'peroxide') return 'Peroxide'
     else if (enchant == 'prick') return 'Prick'
@@ -1757,7 +1757,7 @@ register("soundPlay", (pos, name, vol, pitch, cat, event) => {
 
 new Thread(() => {
     register("renderOverlay", () => {
-        if (!pitsandbox) return; {
+        if (!pitsandbox && !inMenu) return; {
             if (Settings.targetInfo && target) {
                 let lines = [];
                 let runes = []
@@ -2195,11 +2195,13 @@ register("renderOverlay", () => {
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak
+    let killaura
     if (pitsandbox) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP()) && pitsandbox) {
+        if (hasPerk("Killaura")) killaura = 1 - hasPerk("Killaura") * 0.15
         if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP()) && inMenu) {
             info.push(`&c&lMegastreak: ${getMegaFormatted(Player.getName())}`)
         } if (strengthCount != 0) {
@@ -2217,14 +2219,16 @@ register("renderOverlay", () => {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((streak - 40) / 15))}%`)
         } if (getMega(Player.getName()) == "hermit") {
             info.push(`&9&lHermit Damage: &b+${Math.floor(10 * Math.floor((streak - 100) / 15))}%`)
-        } if (hasKillstreak('Tough Skin') && streak >= 6 - (6 - hasPerk("Killaura") * 0.15)) {
-            info.push(`&9&lTough Skin: &b+${3 * Math.floor(streak / 6)}%`)
+        } if (streak >= 6 * killaura) {
+            if (hasKillstreak('Tough Skin')) 3 * Math.floor(streak / Math.floor(6 * killaura)) >= 24 ? info.push(`&9&lTough Skin: &b-24%`) : info.push(`&9&lTough Skin: &b-${3 * Math.floor(streak / Math.floor(6 * killaura))}%`)
+        } if (streak >= 25 * killaura) {
+            if (hasKillstreak('Monster')) Math.floor(streak / Math.floor(25 * killaura)) >= 2 ? info.push(`&c&lMonster: &c+2❤`) : info.push(`&c&lMonster: &c+1❤`)
+        } if (streak >= 10 * killaura) {
+            if (hasKillstreak('Khanate')) 5 * Math.floor(streak / Math.floor(10 * killaura)) >= 25 ? info.push(`&6&lKhanate: &c+25% &6$`) : info.push(`&6&lKhanate: &c+${5 * Math.floor(streak / Math.floor(10 * killaura))}% &6$`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.push("&f&lBers Brew&r: &c" + bersLevel)
-        } /* if (megastreak == "Nightmare") {
-            info.push("&1&lNGHTMRE Bot Damage&1: &c+10%")
-        } */ if (perks[2][0] == 'Uberstreak') {
+        } if (perks[2][0] == 'Uberstreak') {
             if (streak >= 100) info.push("&d&lUBER100 Bot Damage&d: &c-30%")
             if (streak >= 200) info.push("&d&lUBER200 Healing&d: &c-40%")
             if (streak >= 300) info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
@@ -2277,6 +2281,8 @@ register("renderOverlay", () => {
                 info.push("&e&lTEAM DESTROY: &c10% Damage &bTo &eEveryone")
             }
         }
+        /* if (megastreak == "Nightmare") {
+            info.push("&1&lNGHTMRE Bot Damage&1: &c+10%") */
         //if (info.length > 0 || Settings.generalInfoHud.isOpen()) info.splice(0, 0, `${Settings.hudGroupColor}&nPlayer Info`)
         //else if (Settings.generalInfoHud.isOpen()) new Text(`${Settings.hudGroupColor}&nPlayer Info`, playerInfoHud.textX, playerInfoHud.textY).setScale(playerInfoHud.textScale).setShadow(true).draw()
     }
@@ -2820,10 +2826,10 @@ register("step", () => {
 
 register("renderOverlay", () => {
     let info = [`${Settings.hudGroupColor}&nCooldowns`]
-    if (firstaideggCooldown != 0) info.push(`&c&lFirst Aid Egg: &e${firstaideggCooldown / 10}s`)
-    if (pullCooldown != 0) info.push(`&2&lPullbow: &e${pullCooldown / 10}s`)
-    if (leapCooldown != 0) info.push(`&e&lLeap: &e${leapCooldown / 10}s`)
-    if (moonStickCooldown != 0) info.push(`&9&lMoon Stick: &e${moonStickCooldown / 10}s`)
+    if (firstaideggCooldown > 0) info.push(`&c&lFirst Aid Egg: &e${Math.floor(firstaideggCooldown) / 10}s`)
+    if (pullCooldown > 0) info.push(`&2&lPullbow: &e${Math.floor(pullCooldown) / 10}s`)
+    if (leapCooldown > 0) info.push(`&e&lLeap: &e${Math.floor(leapCooldown) / 10}s`)
+    if (moonStickCooldown > 0) info.push(`&9&lMoon Stick: &e${Math.floor(moonStickCooldown) / 10}s`)
     let y = cooldownInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, cooldownInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
