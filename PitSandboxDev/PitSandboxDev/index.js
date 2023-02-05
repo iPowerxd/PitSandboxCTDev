@@ -751,7 +751,7 @@ register("chat", event => {
     if (Settings.toggleSandboxHUD) {
         if (umsg == "STREAK! reset as you're in spawn!" || umsg == "STREAK! reset as you're in the mine!") {
             endStreak();
-            cancel(event);
+            //cancel(event);
             return;
         } else if (umsg.startsWith("DEATH!")) return endStreak();
         if (streaking) {
@@ -1761,7 +1761,7 @@ new Thread(() => {
             if (Settings.targetInfo && target) {
                 let lines = [];
                 let runes = []
-                let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
+                const tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
                 const NetHandlerPlayClient = Client.getConnection();
                 const PlayerMap = NetHandlerPlayClient.func_175106_d();
                 const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
@@ -1813,7 +1813,7 @@ new Thread(() => {
                 str.push("&c&nYou are premega")
             }
             if (nols) str.push("&cNo LS in hotbar")
-            if (Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon")
+            if (Settings.togglePreAlert && Player.getInventory().indexOf(138) == -1) str.push("&bNo Beacon")
             if (str.length > 0) {
                 let text = new Text(str.join("&r   "))
                 text.setX(preInfoHud.textX - (Renderer.getStringWidth(text.getString()) * 1.4 / 2))
@@ -2214,7 +2214,7 @@ register("renderOverlay", () => {
             info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * Math.floor((streak - 50) / 5))}%`)
         } if (getMega(Player.getName()) == "moon" && streak >= 105) {
             info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * Math.floor((streak - 100) / 5))}%`)
-            if (streak >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((streak - 200) / 20) * 10) / 10}&c❤`)
+            if (streak >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((streak - 200) / 20) * 10) / 10}&4❤`)
         } if (getMega(Player.getName()) == "nightmare" && streak >= 55) {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((streak - 40) / 15))}%`)
         } if (getMega(Player.getName()) == "hermit") {
@@ -2222,7 +2222,7 @@ register("renderOverlay", () => {
         } if (streak >= 6 * killaura) {
             if (hasKillstreak('Tough Skin')) 3 * Math.floor(streak / Math.floor(6 * killaura)) >= 24 ? info.push(`&9&lTough Skin: &b-24%`) : info.push(`&9&lTough Skin: &b-${3 * Math.floor(streak / Math.floor(6 * killaura))}%`)
         } if (streak >= 25 * killaura) {
-            if (hasKillstreak('Monster')) Math.floor(streak / Math.floor(25 * killaura)) >= 2 ? info.push(`&c&lMonster: &c+2❤`) : info.push(`&c&lMonster: &c+1❤`)
+            if (hasKillstreak('Monster')) Math.floor(streak / Math.floor(25 * killaura)) >= 2 ? info.push(`&4&lMonster: &c+2&4❤`) : info.push(`&4&lMonster: &c+1&4❤`)
         } if (streak >= 10 * killaura) {
             if (hasKillstreak('Khanate')) 5 * Math.floor(streak / Math.floor(10 * killaura)) >= 25 ? info.push(`&6&lKhanate: &c+25% &6$`) : info.push(`&6&lKhanate: &c+${5 * Math.floor(streak / Math.floor(10 * killaura))}% &6$`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
@@ -2834,16 +2834,16 @@ register("renderOverlay", () => {
     info.forEach(line => {
         const text = new Text(line, cooldownInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
         y += 11.5 * generalInfoHud.textScale
-        if ((info.length > 1 && Settings.cooldownInfo) || Settings.generalInfoHud.isOpen()) text.draw()
+        if ((info.length > 1 && Settings.cooldownInfo && pitsandbox) || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })
 
 function pingColour(ping) {
-    if (ping <= 40) return ("§a")
-    else if (ping <= 80) return ("§2")
-    else if (ping <= 100) return ("§e")
-    else if (ping <= 120) return ("§6")
-    else if (ping <= 150) return ("§c")
-    else if (ping > 150) return ("§4")
+    if (ping < 40) return ("§a")
+    else if (ping < 80) return ("§2")
+    else if (ping < 100) return ("§e")
+    else if (ping < 120) return ("§6")
+    else if (ping < 150) return ("§c")
+    else if (ping >= 150) return ("§4")
     else return ("§f")
 }
