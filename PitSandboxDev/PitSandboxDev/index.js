@@ -1761,18 +1761,21 @@ new Thread(() => {
             if (Settings.targetInfo && target) {
                 let lines = [];
                 let runes = []
-                const tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
+                let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
+                const name = tabp.split(" ")[1]
                 const NetHandlerPlayClient = Client.getConnection();
                 const PlayerMap = NetHandlerPlayClient.func_175106_d();
                 const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-                if (helmet(target)[0] != "None") {
-                    runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
-                } if (chestplate(target)[0] != "None") {
-                    runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
-                } if (boots(target)[0] != "None") {
-                    runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+                if (target) {
+                    if (helmet(target)[0] != "None") {
+                        runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
+                    } if (chestplate(target)[0] != "None") {
+                        runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
+                    } if (boots(target)[0] != "None") {
+                        runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+                    }
                 }
-                lines.push(`${Settings.hudTextColor}Name: ${tabp.split(" ")[1]} &7Ping: ${pingColour(ping)}${ping}ms`)
+                lines.push(`${Settings.hudTextColor}Name: ${name} &7Ping: ${pingColour(ping)}${ping}ms`)
                 lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`);
                 lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`);
                 lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
