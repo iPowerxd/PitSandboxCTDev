@@ -1549,7 +1549,7 @@ function formatEnchant(enchant) {
     else if (enchant == 'executioner') return '&dExecutioner'
     else if (enchant == 'gamble') return '&dGamble'
     else if (enchant == 'healer') return '&dHealer'
-    else if (enchant == 'hemorrage') return '&dHemorrage'
+    else if (enchant == 'hemorrhage') return '&dHemorrage'
     // Regular
     else if (enchant == 'beatthespammers') return 'Beat the Spammers'
     else if (enchant == 'berserker') return 'Berserker'
