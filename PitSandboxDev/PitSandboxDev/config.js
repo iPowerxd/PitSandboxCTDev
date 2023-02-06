@@ -131,6 +131,14 @@ class Settings {
     targetInfo = true;
 
     @SwitchProperty({
+        name: "§bCombat Log",
+        description: "See a HUD that shows damage you have taken and healed.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    combatLog = false;
+
+    @SwitchProperty({
         name: "§bEgg Effect Display",
         description: "Display the active egg effects and how long until they expire.",
         category: "General",
