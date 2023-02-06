@@ -1518,7 +1518,7 @@ function formatEnchant(enchant) {
     // Pants
     // Rare
     if (enchant == 'assassin') return '&dAssassin'
-    else if (enchant == 'attrative') return '&dAttractive'
+    else if (enchant == 'attractive') return '&dAttractive'
     else if (enchant == 'comboladder') return '&dCombo: Ladder'
     else if (enchant == 'divine') return '&dDivine Miracle'
     else if (enchant == 'leap') return '&dLeap'
