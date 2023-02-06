@@ -1302,8 +1302,10 @@ new Thread(() => {
                 general.splice(3, 0, `&aNature: &7${nature}`)
                 general.splice(4, 0, `&2Elemental: &7${elemental}`)
             } if (scoreboard.find(l => l.startsWith("Coins: "))) {
-                const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1];
                 general[general.indexOf("Coins: &cUnknown")] = Settings.hudTextColor + "Coins: &6" + coins;
+                const coins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1]
+                currentCoins = scoreboard.find(l => l.startsWith("Coins: ")).split("Coins: ")[1].replace(/,/g, "")
+                general[general.indexOf("Coins: &cUnknown")] = Settings.hudTextColor + "Coins: &6" + coins
             } if (scoreboard.find(l => l.startsWith("Megacoins: "))) {
                 const mgcoins = parseInt(scoreboard.find(l => l.startsWith("Megacoins: ")).split("Megacoins: ")[1].replace(/[,]/g, ""));
                 if (isNaN(mgcoins)) megacoins = undefined
@@ -2132,12 +2134,12 @@ register("tick", () => {
     }
 })
 
-let coinBooster
-let xpBooster
-let botsBooster
-let overflowBooster
-let fishingBooster
-let miningBooster
+let coinBooster = 0
+let xpBooster = 0
+let botsBooster = 0
+let overflowBooster = 0
+let fishingBooster = 0
+let miningBooster = 0
 
 register("chat", (booster, event) => {
     if (booster == "coin") coinBooster = 1800
@@ -2149,47 +2151,40 @@ register("chat", (booster, event) => {
 }).setChatCriteria("WOAH! ${*} just activated a ${booster} booster! GG!")
 
 register("step", () => {
-    if (coinBooster != undefined) coinBooster--
-    if (coinBooster == 0) coinBooster = undefined
-    if (xpBooster != undefined) xpBooster--
-    if (xpBooster == 0) xpBooster = undefined
-    if (botsBooster != undefined) botsBooster--
-    if (botsBooster == 0) botsBooster = undefined
-    if (overflowBooster != undefined) overflowBooster--
-    if (overflowBooster == 0) overflowBooster = undefined
-    if (fishingBooster != undefined) fishingBooster--
-    if (fishingBooster == 0) fishingBooster = undefined
-    if (miningBooster != undefined) miningBooster--
-    if (miningBooster == 0) miningBooster = undefined
+    coinBooster > 0 ? coinBooster-- : coinBooster = 0
+    xpBooster > 0 ? xpBooster-- : xpBooster = 0
+    botsBooster > 0 ? botsBooster-- : botsBooster = 0
+    overflowBooster > 0 ? overflowBooster-- : overflowBooster = 0
+    fishingBooster > 0 ? fishingBooster-- : fishingBooster = 0
+    miningBooster > 0 ? miningBooster-- : miningBooster = 0
 }).setFps(1)
 
 register("renderOverlay", () => {
     if (!pitsandbox || Client.isInTab() || !Settings.toggleSandboxHUD) return
-    let info = [`${Settings.hudGroupColor}&nBoosters`]
-    if (coinBooster != undefined) {
-        info.splice(1, 0, "&6Coin Booster&7: " + msToTime(coinBooster * 1000))
-    } if (xpBooster != undefined) {
-        info.splice(2, 0, "&bXP Booster&7: " + msToTime(xpBooster * 1000))
-    } if (botsBooster != undefined) {
-        info.splice(3, 0, "&3Bots Booster&7: " + msToTime(botsBooster * 1000))
-    } if (overflowBooster != undefined) {
-        info.splice(4, 0, "&cOverflow Booster&7: " + msToTime(overflowBooster * 1000))
-    } if (fishingBooster != undefined) {
-        info.splice(5, 0, "&dFishing Booster&7: " + msToTime(fishingBooster * 1000))
-    } if (miningBooster != undefined) {
-        info.splice(6, 0, "&8Mining Booster&7: " + msToTime(miningBooster * 1000))
+    let info = [`${Settings.hudGroupColor}§nBoosters`]
+    if (coinBooster != 0) {
+        info.push(`§6Coin Booster§7: ${msToTime(coinBooster * 1000)}`)
+    } if (xpBooster != 0) {
+        info.push(`§bXP Booster§7: ${msToTime(xpBooster * 1000)}`)
+    } if (botsBooster != 0) {
+        info.push("§3Bots Booster§7: " + msToTime(botsBooster * 1000))
+    } if (overflowBooster != 0) {
+        info.push("§cOverflow Booster§7: " + msToTime(overflowBooster * 1000))
+    } if (fishingBooster != 0) {
+        info.push("§dFishing Booster§7: " + msToTime(fishingBooster * 1000))
+    } if (miningBooster != 0) {
+        info.push("§8Mining Booster§7: " + msToTime(miningBooster * 1000))
     }
     let y = boosterInfoHud.textY
     info.forEach(line => {
-        const text = new Text(line, boosterInfoHud.textX, y)
-        text.setShadow(true)
-        text.setScale(generalInfoHud.textScale)
-        if ((info.length > 1 && Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
+        const text = new Text(line, boosterInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
+        if (((info.length > 1 && pitsandbox) || Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
     })
 })
 
 let notglad
+let currentCoins
 let strengthCount = 0
 let strengthTimer = 0
 let bodybuilderDamage = 0
@@ -2204,7 +2199,7 @@ register("renderOverlay", () => {
     let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthCount * 8
     if (!inSpawn(Player.asPlayerMP()) && pitsandbox) {
-        if (hasPerk("Killaura")) killaura = 1 - hasPerk("Killaura") * 0.15
+        hasPerk("Killaura") ? killaura = 1 - hasPerk("Killaura") * 0.15 : killaura = 1
         if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP()) && inMenu) {
             info.push(`&c&lMegastreak: ${getMegaFormatted(Player.getName())}`)
         } if (strengthCount != 0) {
@@ -2217,7 +2212,7 @@ register("renderOverlay", () => {
             info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * Math.floor((streak - 50) / 5))}%`)
         } if (getMega(Player.getName()) == "moon" && streak >= 105) {
             info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * Math.floor((streak - 100) / 5))}%`)
-            if (streak >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((streak - 200) / 20) * 10) / 10}&4❤`)
+            if (streak >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((streak - 200) / 20) * 10) / 10}&c❤`)
         } if (getMega(Player.getName()) == "nightmare" && streak >= 55) {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((streak - 40) / 15))}%`)
         } if (getMega(Player.getName()) == "hermit") {
@@ -2225,7 +2220,7 @@ register("renderOverlay", () => {
         } if (streak >= 6 * killaura) {
             if (hasKillstreak('Tough Skin')) 3 * Math.floor(streak / Math.floor(6 * killaura)) >= 24 ? info.push(`&9&lTough Skin: &b-24%`) : info.push(`&9&lTough Skin: &b-${3 * Math.floor(streak / Math.floor(6 * killaura))}%`)
         } if (streak >= 25 * killaura) {
-            if (hasKillstreak('Monster')) Math.floor(streak / Math.floor(25 * killaura)) >= 2 ? info.push(`&4&lMonster: &c+2&4❤`) : info.push(`&4&lMonster: &c+1&4❤`)
+            if (hasKillstreak('Monster')) Math.floor(streak / Math.floor(25 * killaura)) >= 2 ? info.push(`&4&lMonster: &c+2&c❤`) : info.push(`&4&lMonster: &c+1&c❤`)
         } if (streak >= 10 * killaura) {
             if (hasKillstreak('Khanate')) 5 * Math.floor(streak / Math.floor(10 * killaura)) >= 25 ? info.push(`&6&lKhanate: &c+25% &6$`) : info.push(`&6&lKhanate: &c+${5 * Math.floor(streak / Math.floor(10 * killaura))}% &6$`)
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
