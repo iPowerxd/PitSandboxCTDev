@@ -1,5 +1,10 @@
+import { onSandbox } from "../functions/onSandbox"
+
 let toggleBots = new KeyBind("Toggle Bots", "", "!PitSandbox")
 
-if (toggleBots.isPressed()) {
-    ChatLib.command("togglebots");
-}
+register('tick', () => {
+    if (!onSandbox()) return
+    if (toggleBots.isPressed()) {
+        ChatLib.command("togglebots")
+    }
+})

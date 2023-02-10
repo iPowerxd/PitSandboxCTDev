@@ -5,6 +5,8 @@ import Settings from '../config'
 
 import { onSandbox } from '../functions/onSandbox'
 import { inSpawn } from '../functions/inSpawn'
+import { inMid } from '../functions/inMid'
+import { inMenu } from '../functions/inMenu'
 import { getSidebar } from '../functions/sidebar'
 import { hasEnchant } from "../functions/enchant"
 

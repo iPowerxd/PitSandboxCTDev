@@ -16,7 +16,7 @@ register("chat", event => { // Quick Maths
 register("chat", (player, event) => {
     if (!onSandbox() || !quickMaths) return
     if (player === Player.getName()) quickMaths = false
-}).setChatCriteria("QUICK MATHS! ${player} answered in ${*}s")
+}).setChatCriteria("QUICK MATHS! #${*} ${player} answered in ${*}s")
 
 register("chat", event => {
     if (!onSandbox()) return
@@ -36,7 +36,7 @@ register("chat", event => { // Unscramble
 register("chat", (player, event) => {
     if (!onSandbox() || !unscramble) return
     if (player === Player.getName()) unscramble = false
-}).setChatCriteria("UNSCRAMBLE ${player} answered in ${*}")
+}).setChatCriteria("UNSCRAMBLE #${*} ${player} answered in ${*}")
 
 register("chat", event => {
     if (!onSandbox()) return
@@ -47,6 +47,11 @@ register("chat", event => {
     if (!onSandbox()) return
     unscramble = false
 }).setChatCriteria("UNSCRAMBLE ENDED! Took too long to answer!")
+
+register('worldUnload', () => {
+    quickMaths = false
+    unscramble = false
+})
 
 register("messageSent", (message, event) => {
     if (!onSandbox()) return
