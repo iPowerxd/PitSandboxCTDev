@@ -1461,7 +1461,6 @@ register("soundPlay", (pos, name, vol, pitch, cat, event) => {
     if (inMid(Player.asPlayerMP())) {
         if (name.toLowerCase().includes("game.player.hurt") && inMid(Player.asPlayerMP()) && Settings.removeMidHit) cancel(event)
         if (name.toLowerCase().includes("random.orb") && pitch.toFixed(2) == "0.71" && inMid(Player.asPlayerMP()) && Settings.removeMidBill) cancel(event)
-        if (name.toLowerCase().includes("note.pling") && pitch.toFixed(1) == "1.0" && Date.now() - blitzmsg < 500) cancel(event)
         if (name.toLowerCase().includes("mob.guardian.curse") && pitch.toFixed(2) == "1.05" && !Settings.toggleMegastreakSounds) cancel(event)
         if ((name.toLowerCase().includes("random.bow") || name.toLowerCase().includes("random.bowhit") || name.toLowerCase().includes("random.successful_hit")) && Settings.removeMidBow) cancel(event)
         if (Settings.removeExeSounds && name.toLowerCase().includes("mob.villager.death")) return cancel(event)
