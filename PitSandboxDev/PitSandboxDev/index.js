@@ -27,7 +27,6 @@ import './features/bounty'
 import './features/botnametags'
 import './features/removePartInMid'
 import './features/hidelowpay'
-import './features/keybinds'
 
 import './commands/pinglb'
 import './commands/setbal'
