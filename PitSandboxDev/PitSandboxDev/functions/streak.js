@@ -417,9 +417,9 @@ register("tick", () => {
             streakinfo[1] = Settings.hudTextColor + `Duration: &c${dif}`;
         } if (startstreaktime && streakkills) {
             let kps = Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000) * 10) / 10;
-            let kpm = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60)));
-            let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-            streakinfo.push(Settings.hudTextColor + "Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph);
+            let kpm = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60)))
+            let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)))
+            streakinfo.push(Settings.hudTextColor + "Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph)
         } if (scoreboard.find(l => l.startsWith("Stored XP: ")) && getMega(Player.getName()) == "moon") {
             const storedXP = (scoreboard.find(l => l.startsWith("Stored XP: ")).split("Stored XP: "))[1]
             streakinfo.push(Settings.hudTextColor + "Stored XP: &b" + storedXP)
