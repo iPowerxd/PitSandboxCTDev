@@ -22,10 +22,10 @@ import { streakInfoHud } from '../features/gui'
 let laststreakchange = Date.now()
 let streaking = false
 let streak = 0
-let streakingkills = 0
+let streakkills = 0
 let rawstreak = undefined
 let startstreaktime = undefined
-let lendstreak = 0
+let lastendstreak = 0
 
 let streakinglines = []
 
@@ -34,9 +34,6 @@ let rngdamage = Date.now()
 let goldrequire = undefined
 let goldrequiremax = undefined
 let goldreqrefresh = 5
-
-export const lastendstreak = lendstreak
-export const streakkills = streakingkills
 
 export const goldreq = () => {
     return goldrequire
@@ -81,10 +78,10 @@ const recapStreak = () => {
         streakinfo[1] = `Duration: &c${dif}`;
     }
 
-    if (startstreaktime && streakingkills) {
-        let kps = Math.floor(streakingkills / ((Date.now() - startstreaktime) / 1000) * 10) / 10;
-        let kpm = formatNumber(Math.floor(streakingkills / ((Date.now() - startstreaktime) / 1000 / 60)));
-        let kph = formatNumber(Math.floor(streakingkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
+    if (startstreaktime && streakkills) {
+        let kps = Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000) * 10) / 10;
+        let kpm = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60)));
+        let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
         streakinfo.push("Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph);
     }
 
@@ -133,7 +130,7 @@ const recapStreak = () => {
     streak = 0;
     rawstreak = undefined;
     startstreaktime = undefined;
-    streakingkills = 0;
+    streakkills = 0;
     currentstreak = {
         killgold: 0,
         assgold: 0,
@@ -147,7 +144,7 @@ const recapStreak = () => {
 
 const endStreak = () => {
     if (!streaking) return
-    lendstreak = Date.now()
+    lastendstreak = Date.now()
     streaking = false
     strengthLevel(0)
     strengthTime(0)
@@ -187,7 +184,7 @@ register("chat", (percent, player, xp, gold, event) => {
     if (!onSandbox()) return;
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
-    if (Date.now() - lendstreak < 2000) return;
+    if (Date.now() - lastendstreak < 2000) return;
     xp = xp.replace(/[,]/g, "");
     gold = gold.replace(/[,]/g, "");
     if (parseInt(percent) != NaN) streak += parseInt(percent) / 100, laststreakchange = Date.now();
@@ -200,14 +197,14 @@ register("chat", (player, xp, gold, event) => {
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
     strength()
-    if (Date.now() - lendstreak < 2000) return;
+    if (Date.now() - lastendstreak < 2000) return;
     xp = xp.replace(/[,]/g, "");
     let str = 1;
     if (gold.split(" ").length > 1) str = parseFloat(gold.split(" ")[1]), gold = gold.split(" ")[0];
     gold = gold.replace(/[,]/g, "");
     streak += str;
     laststreakchange = Date.now();
-    streakingkills += str;
+    streakkills += str;
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp);
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold);
 }).setChatCriteria("KILL! on ${player} +${xp} +$${gold}");
@@ -218,14 +215,14 @@ register("chat", (mult, player, xp, gold, event) => {
     if (mult.split(" ").length > 1) return;
     cancel(event)
     strength()
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     let str = 1
     if (gold.split(" ").length > 1) str = parseFloat(gold.split(" ")[1]), gold = gold.split(" ")[0]
     gold = gold.replace(/[,]/g, "")
     streak += str
     laststreakchange = Date.now()
-    streakingkills += str
+    streakkills += str
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp)
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold)
 }).setChatCriteria("${mult} KILL! on ${player} +${xp} +$${gold}")
@@ -235,14 +232,14 @@ register("chat", (mult, player, xp, gold, event) => {
     if (!Settings.toggleSandboxHUD) return
     cancel(event)
     strength()
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     let str = 1
     if (gold.split(" ").length > 1) str = parseFloat(gold.split(" ")[1]), gold = gold.split(" ")[0];
     gold = gold.replace(/[,]/g, "")
     streak += str
     laststreakchange = Date.now()
-    streakingkills += str
+    streakkills += str
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp)
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold)
 }).setChatCriteria("MULTI KILL! (${mult}) on ${player} +${xp} +$${gold}")
@@ -251,7 +248,7 @@ register("chat", (xp, event) => {
     if (!onSandbox() || !streaking) return
     if (!Settings.toggleSandboxHUD) return
     cancel(event)
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
 }).setChatCriteria("PLETHORA! +${xp}XP")
@@ -263,7 +260,7 @@ register("chat", (event) => {
 register("chat", (xp, event) => {
     if (!onSandbox() || !streaking) return
     if (!Settings.toggleSandboxHUD) return
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
 }).setChatCriteria("SHARING IS CARING! +${xp}XP!")
@@ -271,7 +268,7 @@ register("chat", (xp, event) => {
 register("chat", (xp, event) => {
     if (!onSandbox() || !streaking) return
     if (!Settings.toggleSandboxHUD) return
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
 }).setChatCriteria("TO THE MOON! Earned +${xp}XP from megastreak (${*}x multiplier)")
@@ -280,7 +277,7 @@ register("chat", (gold, event) => {
     if (!onSandbox() || !streaking) return
     if (!Settings.toggleSandboxHUD) return
     cancel(event)
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     gold = gold.replace(/[,]/g, "")
     if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.othergold += parseFloat(gold), goldrequire += parseFloat(gold)
 }).setChatCriteria("➜ +$${gold}")
@@ -289,7 +286,7 @@ register("chat", (xp, event) => {
     if (!onSandbox() || !streaking) return
     if (!Settings.toggleSandboxHUD) return
     cancel(event)
-    if (Date.now() - lendstreak < 2000) return
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
     if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
 }).setChatCriteria("➜ ${xp} XP")
@@ -403,64 +400,68 @@ register("tick", () => {
     }
 })
 
-register("tick", () => {
-    let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
-    if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [`${Settings.hudGroupColor}&nStreaking Info`]
-    else {
-        let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", Settings.hudTextColor + `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, Settings.hudTextColor + `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`]
+new Thread(() => {
+    setTimeout(() => {
+        register("tick", () => {
+            let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
+            if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [`${Settings.hudGroupColor}&nStreaking Info`]
+            else {
+                let streakinfo = ["Streak: &cUnknown", "Duration: &cUnknown", Settings.hudTextColor + `Coins K/A/O: &6${currentstreak.killgold ? formatNumber(Math.floor(currentstreak.killgold)) : "?"}&r/&6${currentstreak.assgold ? formatNumber(Math.floor(currentstreak.assgold)) : "?"}&r/&6${currentstreak.othergold ? formatNumber(Math.floor(currentstreak.othergold)) : "?"}`, Settings.hudTextColor + `XP K/A/O: &b${currentstreak.killxp ? formatNumber(Math.floor(currentstreak.killxp)) : "?"}&r/&b${currentstreak.assxp ? formatNumber(Math.floor(currentstreak.assxp)) : "?"}&r/&b${currentstreak.otherxp ? formatNumber(Math.floor(currentstreak.otherxp)) : "?"}`]
 
-        streakinfo[0] = Settings.hudTextColor + `Streak: &c${streak != 0 ? Math.floor(streak * 100) / 100 : "?"}&7 (${rawstreak ? rawstreak : "?"})`
+                streakinfo[0] = Settings.hudTextColor + `Streak: &c${streak != 0 ? Math.floor(streak * 100) / 100 : "?"}&7 (${rawstreak ? rawstreak : "?"})`
 
-        if (startstreaktime) {
-            let dif = Date.now() - startstreaktime
-            dif = msToTime(dif, true);
-            streakinfo[1] = Settings.hudTextColor + `Duration: &c${dif}`;
-        } if (startstreaktime && streakkills) {
-            let kps = Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000) * 10) / 10;
-            let kpm = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60)));
-            let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-            streakinfo.push(Settings.hudTextColor + "Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph);
-        } if (scoreboard.find(l => l.startsWith("Stored XP: ")) && getMega(Player.getName()) == "moon") {
-            const storedXP = (scoreboard.find(l => l.startsWith("Stored XP: ")).split("Stored XP: "))[1]
-            streakinfo.push(Settings.hudTextColor + "Stored XP: &b" + storedXP)
-        } if (currentstreak.assgold || currentstreak.killgold || currentstreak.othergold) {
-            let gold = 0;
-            if (currentstreak.killgold) gold += currentstreak.killgold;
-            if (currentstreak.assgold) gold += currentstreak.assgold;
-            if (currentstreak.othergold) gold += currentstreak.othergold;
-            let gps = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000)));
-            let gpm = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60)));
-            let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-            if (Player.armor.getLeggings() && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
-        } if (currentstreak.assxp || currentstreak.killxp || currentstreak.otherxp) {
-            let xp = 0;
-            if (currentstreak.killxp) xp += currentstreak.killxp;
-            if (currentstreak.assxp) xp += currentstreak.assxp;
-            if (currentstreak.otherxp) xp += currentstreak.otherxp;
-            let xps = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000)));
-            let xpm = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60)));
-            let xph = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
-            if (Player.armor.getLeggings() && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "XP Per S/M/H: &b" + xps + "&r/&b" + xpm + "&r/&b" + xph);
-        } if (scoreboard.find(l => l.startsWith("Status: ") && !l.startsWith("Status: Fighting") && !l.startsWith("Status: Idling") && !l.startsWith("Status: Bountied") && !l.startsWith("Status: Strength"))) {
-            let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1];
-            if (megastreak == "Overdrive") megastreak = "&c" + megastreak;
-            if (megastreak == "Highlander") megastreak = "&6" + megastreak;
-            if (megastreak == "To the Moon") megastreak = "&b" + megastreak;
-            if (megastreak == "Uberstreak") megastreak = "&d" + megastreak;
-            if (megastreak == "Grand Finale") megastreak = "&e" + megastreak;
-            if (megastreak == "Nightmare") megastreak = "&1" + megastreak;
-            if (megastreak == "Hermit") megastreak = "&9" + megastreak;
-            streakinfo.push(Settings.hudTextColor + "Megastreak: " + megastreak);
-        } if (currentstreak.other.length > 0) {
-            let other = currentstreak.other.map(o => o.color + o.amount + " " + o.id).join(" ");
-            streakinfo.push(Settings.hudTextColor + "Other: " + other);
-        } if (Date.now() < rngdamage) {
-            streakinfo.push(Settings.hudTextColor + "RNGesus DMG: &c" + msToTime(rngdamage - Date.now(), true));
-        }
-        streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
-        streakinglines = streakinfo
-    }
-})
+                if (startstreaktime) {
+                    let dif = Date.now() - startstreaktime
+                    dif = msToTime(dif, true);
+                    streakinfo[1] = Settings.hudTextColor + `Duration: &c${dif}`;
+                } if (startstreaktime && streakkills) {
+                    let kps = Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000) * 10) / 10;
+                    let kpm = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60)));
+                    let kph = formatNumber(Math.floor(streakkills / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
+                    streakinfo.push(Settings.hudTextColor + "Kills Per S/M/H: &c" + kps + "&r/&c" + kpm + "&r/&c" + kph);
+                } if (scoreboard.find(l => l.startsWith("Stored XP: ")) && getMega(Player.getName()) == "moon") {
+                    const storedXP = (scoreboard.find(l => l.startsWith("Stored XP: ")).split("Stored XP: "))[1]
+                    streakinfo.push(Settings.hudTextColor + "Stored XP: &b" + storedXP)
+                } if (currentstreak.assgold || currentstreak.killgold || currentstreak.othergold) {
+                    let gold = 0;
+                    if (currentstreak.killgold) gold += currentstreak.killgold;
+                    if (currentstreak.assgold) gold += currentstreak.assgold;
+                    if (currentstreak.othergold) gold += currentstreak.othergold;
+                    let gps = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000)));
+                    let gpm = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60)));
+                    let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
+                    if (Player.armor.getLeggings() && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
+                } if (currentstreak.assxp || currentstreak.killxp || currentstreak.otherxp) {
+                    let xp = 0
+                    if (currentstreak.killxp) xp += currentstreak.killxp;
+                    if (currentstreak.assxp) xp += currentstreak.assxp;
+                    if (currentstreak.otherxp) xp += currentstreak.otherxp;
+                    let xps = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000)));
+                    let xpm = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60)));
+                    let xph = formatNumber(Math.floor(xp / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
+                    if (Player.armor.getLeggings() && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) && hasEnchant("sweaty", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "XP Per S/M/H: &b" + xps + "&r/&b" + xpm + "&r/&b" + xph);
+                } if (scoreboard.find(l => l.startsWith("Status: ") && !l.startsWith("Status: Fighting") && !l.startsWith("Status: Idling") && !l.startsWith("Status: Bountied") && !l.startsWith("Status: Strength"))) {
+                    let megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1];
+                    if (megastreak == "Overdrive") megastreak = "&c" + megastreak;
+                    if (megastreak == "Highlander") megastreak = "&6" + megastreak;
+                    if (megastreak == "To the Moon") megastreak = "&b" + megastreak;
+                    if (megastreak == "Uberstreak") megastreak = "&d" + megastreak;
+                    if (megastreak == "Grand Finale") megastreak = "&e" + megastreak;
+                    if (megastreak == "Nightmare") megastreak = "&1" + megastreak;
+                    if (megastreak == "Hermit") megastreak = "&9" + megastreak;
+                    streakinfo.push(Settings.hudTextColor + "Megastreak: " + megastreak);
+                } if (currentstreak.other.length > 0) {
+                    let other = currentstreak.other.map(o => o.color + o.amount + " " + o.id).join(" ");
+                    streakinfo.push(Settings.hudTextColor + "Other: " + other);
+                } if (Date.now() < rngdamage) {
+                    streakinfo.push(Settings.hudTextColor + "RNGesus DMG: &c" + msToTime(rngdamage - Date.now(), true));
+                }
+                streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
+                streakinglines = streakinfo
+            }
+        })
+    }, 0)
+}).start()
 
 register("renderOverlay", () => {
     if (streakinglines.length > 0) {

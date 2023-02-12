@@ -11,4 +11,6 @@ register("worldUnload", () => {
     menu = false
 })
 
-export const inMenu = menu
+export const inMenu = () => {
+    return menu
+}

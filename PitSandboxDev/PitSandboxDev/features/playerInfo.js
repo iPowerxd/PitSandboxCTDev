@@ -15,6 +15,7 @@ import { hasPerk } from './perks'
 import { hasKillstreak } from './perks'
 
 import { getMega } from '../functions/playerInformation'
+import { getMegaFormatted } from '../functions/playerInformation'
 import { strengthLevel } from '../functions/strength'
 import { strengthTime } from '../functions/strength'
 import { activeStreak } from '../functions/streak'
