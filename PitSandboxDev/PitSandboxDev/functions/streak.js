@@ -436,7 +436,7 @@ new Thread(() => {
                     let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
                     if (Player.armor.getLeggings() && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) && hasEnchant("moctezuma", Player.armor.getLeggings().getNBT()) != NaN) streakinfo.push(Settings.hudTextColor + "Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
                 } if (currentstreak.assxp || currentstreak.killxp || currentstreak.otherxp) {
-                    let xp = 0;
+                    let xp = 0
                     if (currentstreak.killxp) xp += currentstreak.killxp;
                     if (currentstreak.assxp) xp += currentstreak.assxp;
                     if (currentstreak.otherxp) xp += currentstreak.otherxp;
@@ -464,39 +464,41 @@ new Thread(() => {
                 streakinglines = streakinfo
             }
         })
+    }, 0)
+}).start()
 
-        register("renderOverlay", () => {
-            if (streakinglines.length > 0) {
-                y = streakInfoHud.textY
-                let streakinfo = streakinglines
-                streakinfo.forEach(line => {
-                    const text = new Text(line, 0, y)
-                    text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale).setScale(generalInfoHud.textScale).setShadow(true)
-                    if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
-                    y += 12 * generalInfoHud.textScale
-                })
-            }
+register("renderOverlay", () => {
+    if (streakinglines.length > 0) {
+        y = streakInfoHud.textY
+        let streakinfo = streakinglines
+        streakinfo.forEach(line => {
+            const text = new Text(line, 0, y)
+            text.setX(streakInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale).setScale(generalInfoHud.textScale).setShadow(true)
+            if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
+            y += 12 * generalInfoHud.textScale
         })
+    }
+})
 
-        register('renderOverlay', () => {
-            if (Settings.eggEffectDisplay) {
-                let lines = [];
-                if (Date.now() < sixtimescoins) {
-                    lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
-                }
-                if (Date.now() < onetapbots) {
-                    lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
-                }
-                if (Date.now() < halfhitdelay) {
-                    lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
-                }
-                let y = Renderer.screen.getHeight() / 2.2;
-                lines.forEach(line => {
-                    let text = new Text(line, 0, y);
-                    text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2);
-                    text.setShadow(true);
-                    text.draw();
-                    y -= 12;
-                });
-            }
-        })
+register('renderOverlay', () => {
+    if (Settings.eggEffectDisplay) {
+        let lines = [];
+        if (Date.now() < sixtimescoins) {
+            lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
+        }
+        if (Date.now() < onetapbots) {
+            lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
+        }
+        if (Date.now() < halfhitdelay) {
+            lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
+        }
+        let y = Renderer.screen.getHeight() / 2.2;
+        lines.forEach(line => {
+            let text = new Text(line, 0, y);
+            text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2);
+            text.setShadow(true);
+            text.draw();
+            y -= 12;
+        });
+    }
+})
