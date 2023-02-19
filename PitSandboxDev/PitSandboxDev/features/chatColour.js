@@ -36,7 +36,7 @@ register("chat", event => { // Unscramble
 register("chat", (player, event) => {
     if (!onSandbox() || !unscramble) return
     if (player === Player.getName()) unscramble = false
-}).setChatCriteria("UNSCRAMBLE #${*} ${player} answered in ${*}")
+}).setChatCriteria("UNSCRAMBLE! #${*} ${player} answered in ${*}")
 
 register("chat", event => {
     if (!onSandbox()) return
@@ -56,7 +56,7 @@ register('worldUnload', () => {
 register("messageSent", (message, event) => {
     if (!onSandbox()) return
     if (nomvp()) return
-    if (message.startsWith("!") || message.startsWith("@")) return
+    if (message.startsWith("!") || message.startsWith("@") || message.startsWith("#")) return
     if (quickMaths || unscramble) return
     if (!message.startsWith("/")) {
         if (Settings.chatColor != "" && /^&.$/g.test(Settings.chatColor)) {

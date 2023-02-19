@@ -32,10 +32,6 @@ let extradamage = Date.now()
 
 let generallines = []
 
-let sixtimescoins = 0
-let onetapbots = 0
-let halfhitdelay = 0
-
 let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
 
 const prestigeinfo = ["§7", "§9", "§9", "§9", "§9", "§e", "§e", "§e", "§e", "§e", "§6", "§6", "§6", "§6", "§6", "§c", "§c", "§c", "§c", "§c", "§5", "§5", "§5", "§5", "§5", "§d", "§d", "§d", "§d", "§d", "§f", "§f", "§f", "§f", "§f", "§b", "§b", "§b", "§b", "§b", "§a", "§a", "§a", "§a", "§a", "§4", "§4", "§4", "§4", "§4", "§3", "§3", "§3", "§3", "§3", "§2", "§2", "§2", "§2", "§2", "§1"]
@@ -271,27 +267,6 @@ new Thread(() => {
                 text.draw()
             } else if (str.length == 0 && Settings.generalInfoHud.isOpen()) {
                 new Text(`${Settings.hudGroupColor}&nPre Info`, preInfoHud.textX, preInfoHud.textY).setScale(generalInfoHud.textScale).setShadow(true).draw()
-            }
-        } {
-            if (Settings.eggEffectDisplay) {
-                let lines = [];
-                if (Date.now() < sixtimescoins) {
-                    lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
-                }
-                if (Date.now() < onetapbots) {
-                    lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
-                }
-                if (Date.now() < halfhitdelay) {
-                    lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
-                }
-                let y = Renderer.screen.getHeight() / 2.2;
-                lines.forEach(line => {
-                    let text = new Text(line, 0, y);
-                    text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2);
-                    text.setShadow(true);
-                    text.draw();
-                    y -= 12;
-                });
             }
         }; {
             if (Player.getHP() < 12 && Settings.toggleLowHealthHUD) Renderer.drawRect(Renderer.color(255, 0, 0, 30), 0, 0, Renderer.screen.getWidth(), Renderer.screen.getHeight());

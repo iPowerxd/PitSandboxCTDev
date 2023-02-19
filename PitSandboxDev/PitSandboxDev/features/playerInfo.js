@@ -29,6 +29,7 @@ let shark = 0
 let notglad
 let solisBroken
 let soliLevel
+let soliPeople = 0
 
 let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
 
@@ -153,7 +154,7 @@ register("tick", () => {
 
 register("step", () => {
     if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
-        let soliPeople = 0
+        soliPeople = 0
         World.getAllEntities().forEach((e) => {
             if (e.getEntity().class.toString().includes("Player") && e.getUUID() != Player.getUUID() && e.distanceTo(World.getPlayerByName(Player.getName())) < 7) soliPeople++
         })
@@ -180,9 +181,11 @@ register("step", () => {
 })
 
 register("renderOverlay", () => {
+    if (!onSandbox()) return
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     let megastreak
+    let mega = Player.getDisplayName().getText().split(' ')
     let killaura
     if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
@@ -190,8 +193,8 @@ register("renderOverlay", () => {
     let strength = strengthLevel() * 8
     if (!inSpawn(Player.asPlayerMP()) && onSandbox()) {
         hasPerk("Killaura") ? killaura = 1 - hasPerk("Killaura") * 0.15 : killaura = 1
-        if (getMega(Player.getName()) != "premega" && !inMid(Player.asPlayerMP()) && inMenu) {
-            info.push(`&c&lMegastreak: ${getMegaFormatted(Player.getName())}`)
+        if (!mega[0].includes('[') && !inMid(Player.asPlayerMP())) {
+            info.push(`${mega[0]} &7(${Math.floor(activeStreak() * 100) / 100})`)
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
@@ -226,9 +229,9 @@ register("renderOverlay", () => {
             if (Player.armor.getLeggings() && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) != NaN) info.push("&9&lHERMIT: &cMirrors Disabled")
         } if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
             if (solisBroken) {
-                info.push("&a&lSolitude: &cBroken")
+                info.push(`&a&lSolitude: &cBroken &7(${soliPeople})`)
             } else {
-                info.push(`&a&lSolitude: &b-${soliLevel}%`)
+                info.push(`&a&lSolitude: &b-${soliLevel}% &7(${soliPeople})`)
             }
         } if (notglad != 0) {
             info.push('&b&l"Not" Glad&b: -' + notglad + "%")
@@ -280,6 +283,6 @@ register("renderOverlay", () => {
         text.setScale(generalInfoHud.textScale)
         text.setShadow(true)
         y += 11.5 * generalInfoHud.textScale
-        if ((info.length > 1 && Settings.playerInfo && onSandbox()) || Settings.generalInfoHud.isOpen()) text.draw()
+        if ((info.length > 1 && Settings.playerInfo) || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })

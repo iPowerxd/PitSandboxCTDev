@@ -10,13 +10,10 @@ const isInMainServer = () => {
         if (/^\[[0-9]{1,3}\]$/g.test(name.split(" ")[0])) return true;
         else return false
     } else {
-        if (World.getBlockAt(-14, 96, 0).toString().includes("enchanting_table")) kingsmap = true
-        else kingsmap = false
         return true
     }
 }
 
-let kingsmap
 let pitsandbox = (Server.getIP().toLowerCase().includes("harrys.network") || Server.getIP().toLowerCase().includes("pitsandbox.io") || Server.getIP().toLowerCase().includes("harrys.gg")) && isInMainServer()
 
 register("worldLoad", () => {
@@ -36,7 +33,3 @@ register("worldUnload", () => {
 export const onSandbox = () => {
     return pitsandbox
 } // import { onSandbox } from "../functions/onSandbox"
-
-export const onKingsMap = () => {
-    return kingsmap
-} // import { onKingsMap } from "../functions/onSandbox"

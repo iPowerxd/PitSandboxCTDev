@@ -197,16 +197,17 @@ register("actionBar", event => {
 new Thread(() => {
     setTimeout(() => {
         register("renderOverlay", () => {
-            if (!onSandbox() && !inMenu) return; {
+            if (!onSandbox() && !inMenu()) return; {
                 if (Settings.targetInfo && target) {
+                    let first = false
                     let lines = []
                     let runes = []
                     let name
-                    let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
+                    //let tabp = onlinePlayersFormatted.find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target)
                     const NetHandlerPlayClient = Client.getConnection()
                     const PlayerMap = NetHandlerPlayClient.func_175106_d()
                     const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-                    if (target) {
+                    /* if (target && !first) {
                         name = tabp.split(" ")[1]
                         if (helmet(target)[0] != "None") {
                             runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
@@ -215,11 +216,12 @@ new Thread(() => {
                         } if (boots(target)[0] != "None") {
                             runes.push(runeColour(boots(target)[1]) + boots(target)[0])
                         }
-                    }
-                    lines.push(`${Settings.hudTextColor}Name: ${name} &7Ping: ${pingColour(ping)}${ping}ms`)
+                        first = true
+                    } */
+                    lines.push(`${Settings.hudTextColor}Name: &b${target} &7Ping: ${pingColour(ping)}${ping}ms`)
                     lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`)
                     lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`)
-                    lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
+                    //lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)
                     lines.push(`${Settings.hudTextColor}Maining LS: ${(allticks < 60 ? "&cWaiting..." : (lsticks / allticks > 0.8 ? "&2A lot" : (lsticks / allticks > 0.6 ? "&aMost of the time" : (lsticks / allticks > 0.4 ? "&6Less than half the time" : "&cNo"))))}`)
                     let y = targetInfoHud.textY
                     let x = targetInfoHud.textX

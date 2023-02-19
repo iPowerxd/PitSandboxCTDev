@@ -42,19 +42,10 @@ export const firstSync = () => {
     return firstTimeSync
 }
 
-const getMegastreak = () => {
-    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
-    if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')) {
-            return ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')[0]
-        }
-    }
-}
-
-const getPerk = (NBT) => {
-    if (ChatLib.removeFormatting(NBT.split("Selected: ")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Selected: ")[1].split('"]'))) {
-            let perk = ChatLib.removeFormatting(NBT.split("Selected: ")[1].split('"]')[0]).split(" I")
+const getPerk = (nbt) => {
+    if (ChatLib.removeFormatting(nbt.split("Selected: ")[1])) {
+        if (ChatLib.removeFormatting(nbt.split("Selected: ")[1].split('"]'))) {
+            let perk = ChatLib.removeFormatting(nbt.split("Selected: ")[1].split('"]')[0]).split(" I")
             if (perk == "Nothing") return ["Nothing", 0]
             switch (perk[1]) {
                 case "":
@@ -93,6 +84,15 @@ const getKillStreaks = () => {
     return undefined
 }
 
+const megastreak = () => {
+    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
+    if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1])) {
+        if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')) {
+            return ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')[0]
+        }
+    }
+}
+
 /* const getBlessing = () => {
     let NBT = Player.getContainer().getStackInSlot(22).getNBT().toString()
     let blessing
@@ -110,6 +110,10 @@ const getKillStreaks = () => {
     return [blessing, level]
 } */
 
+let equPerks = []
+let equKillstreaks = []
+let equMegastreak
+
 register("guiOpened", event => {
     if (!onSandbox() || !syncperks) return
     setTimeout(() => {
@@ -117,10 +121,20 @@ register("guiOpened", event => {
             let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
             let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
             let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
+
+            equPerks = []
+
+            for (let i = 0; i < 3; i++) {
+                let perk = getPerk(Player.getContainer().getStackInSlot(i + 13).getNBT().toString())
+                if (perk !== 'Nothing') equPerks.push(perk)
+            }
+
+            ChatLib.chat(equPerks.join(', '))
+
             let killstreaks = getKillStreaks()
-            let megastreak = getMegastreak()
+            let mega = megastreak()
             /* let blessing = getBlessing() */
-            perks = [[perk1, perk2, perk3], killstreaks, [megastreak]]//, blessing
+            perks = [[perk1, perk2, perk3], killstreaks, [mega]]//, blessing
             FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
             Client.scheduleTask(0, () => {
                 Client.getCurrentGui().close()
@@ -129,7 +143,7 @@ register("guiOpened", event => {
             syncperks = undefined
             firstTimeSync = true
         }
-    }, 100)
+    }, 200)
 })
 
 register("guiOpened", event => {

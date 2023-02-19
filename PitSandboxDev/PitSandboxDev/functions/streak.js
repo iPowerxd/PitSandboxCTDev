@@ -35,6 +35,10 @@ let goldrequire = undefined
 let goldrequiremax = undefined
 let goldreqrefresh = 5
 
+let sixtimescoins = 0
+let onetapbots = 0
+let halfhitdelay = 0
+
 export const goldreq = () => {
     return goldrequire
 }
@@ -473,5 +477,28 @@ register("renderOverlay", () => {
             if (streakinglines.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
             y += 12 * generalInfoHud.textScale
         })
+    }
+})
+
+register('renderOverlay', () => {
+    if (Settings.eggEffectDisplay) {
+        let lines = [];
+        if (Date.now() < sixtimescoins) {
+            lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
+        }
+        if (Date.now() < onetapbots) {
+            lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
+        }
+        if (Date.now() < halfhitdelay) {
+            lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
+        }
+        let y = Renderer.screen.getHeight() / 2.2;
+        lines.forEach(line => {
+            let text = new Text(line, 0, y);
+            text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2);
+            text.setShadow(true);
+            text.draw();
+            y -= 12;
+        });
     }
 })
