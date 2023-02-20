@@ -178,7 +178,7 @@ register("step", () => {
 register("step", () => {
     if (!onSandbox()) return
     if (!Settings.toggleSandboxHUD) return
-    if (streaking && Date.now() - laststreakchange > 5000 && rawstreak && streak != rawstreak) {
+    if (streaking && Date.now() - laststreakchange > 2000 && rawstreak && streak != rawstreak) {
         streak = rawstreak
         ChatLib.chat("&c&l!&7 Streak resynced with server scoreboard.")
     }

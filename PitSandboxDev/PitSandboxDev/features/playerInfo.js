@@ -191,7 +191,7 @@ register("renderOverlay", () => {
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     //let megastreak
-    let mega = Player.getDisplayName().getText().split(' ')
+    let mega = Player.getDisplayName().getText().split(' ')[0]
     let killaura
     //if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
@@ -199,22 +199,22 @@ register("renderOverlay", () => {
     let strength = strengthLevel() * 8
     if (!inSpawn(Player.asPlayerMP()) && onSandbox()) {
         hasPerk("Killaura") ? killaura = 1 - hasPerk("Killaura") * 0.15 : killaura = 1
-        if (!mega[0].includes('[') && !inMid(Player.asPlayerMP())) {
-            info.push(`${mega[0]} &c(${Math.floor(activeStreak() * 100) / 100})`)
+        if (!mega.includes('[') && !inMid(Player.asPlayerMP())) {
+            info.push(`${mega} &c(${Math.floor(activeStreak() * 100) / 100})`)
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
             info.push("&4&lBody Builder&4: &c+" + bbDamage() + "%")
-        } if (getMega(Player.getName()) == "overdrive" && activeStreak() >= 55) {
+        } if (mega.includes("OVRDRV") && activeStreak() >= 55) {
             info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * Math.floor((activeStreak() - 50) / 5) * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "highlander" && activeStreak() >= 55) {
+        } if (mega.includes("HIGH") && activeStreak() >= 55) {
             info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * Math.floor((activeStreak() - 50) / 5))}%`)
-        } if (getMega(Player.getName()) == "moon" && activeStreak() >= 105) {
+        } if (mega.includes("MOON") && activeStreak() >= 105) {
             info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * Math.floor((activeStreak() - 100) / 5))}%`)
             if (activeStreak() >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((activeStreak() - 200) / 20) * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "nightmare" && activeStreak() >= 55) {
+        } if (mega.includes("NGHTMR") && activeStreak() >= 55) {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((activeStreak() - 40) / 15))}%`)
-        } if (getMega(Player.getName()) == "hermit") {
+        } if (mega.includes("HERMIT")) {
             info.push(`&9&lHermit Damage: &b+${Math.floor(10 * Math.floor((activeStreak() - 100) / 15))}%`)
         } if (activeStreak() >= 6 * killaura) {
             if (hasKillstreak('Tough Skin')) 3 * Math.floor(activeStreak() / Math.floor(6 * killaura)) >= 24 ? info.push(`&9&lTough Skin: &b-24%`) : info.push(`&9&lTough Skin: &b-${3 * Math.floor(activeStreak() / Math.floor(6 * killaura))}%`)
