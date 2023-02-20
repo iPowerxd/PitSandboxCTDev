@@ -190,10 +190,10 @@ register("renderOverlay", () => {
     if (!onSandbox()) return
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
-    let megastreak
+    //let megastreak
     let mega = Player.getDisplayName().getText().split(' ')
     let killaura
-    if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
+    //if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthLevel() * 8
@@ -230,7 +230,7 @@ register("renderOverlay", () => {
             if (activeStreak() >= 200) info.push("&d&lUBER200 Healing&d: &c-40%")
             if (activeStreak() >= 300) info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
             if (activeStreak() >= 400) info.push("&d&lUBER400: No Longer Gain Health")
-        } if (megastreak == "Hermit") {
+        } if (mega[0] == "Hermit") {
             info.push("&9&lHERMIT Block Duration&9: &a+100%")
             if (Player.armor.getLeggings() && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) != NaN) info.push("&9&lHERMIT: &cMirrors Disabled")
         } if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
