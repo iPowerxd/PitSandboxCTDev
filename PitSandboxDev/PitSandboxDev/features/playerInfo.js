@@ -14,6 +14,10 @@ import { equipedUpgrades } from './perks'
 import { hasPerk } from './perks'
 import { hasKillstreak } from './perks'
 
+import { megastreak } from './perks'
+import { perks } from './perks'
+import { killstreaks } from './perks'
+
 import { getMega } from '../functions/playerInformation'
 import { getMegaFormatted } from '../functions/playerInformation'
 import { strengthLevel } from '../functions/strength'
@@ -194,7 +198,7 @@ register("renderOverlay", () => {
     if (!inSpawn(Player.asPlayerMP()) && onSandbox()) {
         hasPerk("Killaura") ? killaura = 1 - hasPerk("Killaura") * 0.15 : killaura = 1
         if (!mega[0].includes('[') && !inMid(Player.asPlayerMP())) {
-            info.push(`${mega[0]} &c(${Math.floor(activeStreak() * 100) / 100})`)
+            info.push(`${mega[0]} &7(&c${Math.floor(activeStreak() * 100) / 100}&7)`)
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
