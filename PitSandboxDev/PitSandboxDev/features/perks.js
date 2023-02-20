@@ -29,7 +29,7 @@ export const equipedUpgrades = () => {
 
 export const hasPerk = (perk) => {
     for (let i = 0; i < equPerks.length; i++) {
-        if (equPerks[i].includes(perk)) return perks[i][1]
+        if (equPerks[i].includes(perk)) return equPerks[i][1]
     } return 0
 }
 
@@ -59,7 +59,7 @@ export const getMegaColor = (mega) => {
     else if (mega == "Grand Finale") return '§eFinale'
     else if (mega == "Nightmare") return '§1Nightmare'
     else if (mega == "Hermit") return '§9Hermit'
-    else return '§7No Megastgreak'
+    else return '§7No Megastreak'
 }
 
 export const firstSync = () => {

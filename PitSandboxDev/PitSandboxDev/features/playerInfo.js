@@ -24,6 +24,8 @@ import { strengthLevel } from '../functions/strength'
 import { strengthTime } from '../functions/strength'
 import { activeStreak } from '../functions/streak'
 
+import { bbDamage } from '../functions/strength'
+
 import { generalInfoHud } from './gui'
 import { playerInfoHud } from "./gui"
 
@@ -202,7 +204,7 @@ register("renderOverlay", () => {
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
-            info.push("&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
+            info.push("&4&lBody Builder&4: &c+" + bbDamage() + "%")
         } if (getMega(Player.getName()) == "overdrive" && activeStreak() >= 55) {
             info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * Math.floor((activeStreak() - 50) / 5) * 10) / 10}&c❤`)
         } if (getMega(Player.getName()) == "highlander" && activeStreak() >= 55) {

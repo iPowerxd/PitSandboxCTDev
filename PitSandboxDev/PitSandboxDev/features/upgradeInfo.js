@@ -19,11 +19,11 @@ import { upgradesInfoHud } from "./gui"
 
 new Thread(() => {
     register("renderOverlay", () => {
-        if (!onSandbox()) return
+        if (!onSandbox() || !firstSync()) return
         let info = [`${Settings.hudGroupColor}§nUpgrades`]
         info.push(getMegaColor(megastreak()))
         for (let i = 0; i < perks().length; i++) {
-            info.push(`§c${perks()[i][0]} §7${getRoman(perks()[i][1])}`)
+            if (perks()[i][0] !== 'Nothing') info.push(`§c${perks()[i][0]} §7${getRoman(perks()[i][1])}`)
         }
         for (let i = 0; i < killstreaks().length; i++) {
             info.push(`§6${killstreaks()[i]}`)
