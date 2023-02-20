@@ -13,7 +13,7 @@ Color,
     } from 'Vigilance';
 @Vigilant('PitSandboxDev', '§dPitSandbox Dev', {
     getCategoryComparator: () => (a, b) => {
-        const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
+        const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding', 'DEV']
         return categories.indexOf(a.name) - categories.indexOf(b.name)
     },
 })
@@ -430,7 +430,7 @@ class Settings {
     @SwitchProperty({
         name: "§cAuto LS Swap",
         description: "Swap to bill lifesteal when low health if you have one in your hotbar",
-        category: "General",
+        category: "DEV",
         subcategory: 'DEV'
     })
     toggleAutoLS = true;
@@ -438,7 +438,7 @@ class Settings {
     @SliderProperty({
         name: "§cLow Health Threshold",
         description: "Set the health you want to be at before swapping to bill lifesteal",
-        category: "General",
+        category: "DEV",
         subcategory: 'DEV',
         min: 1,
         max: 12
