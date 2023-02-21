@@ -9,13 +9,37 @@ let autoSyncCooldown
 let spawn
 let firstTimeSync = false
 let autoSyncperks = true
-let perks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
+let lperks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
+
+export const megastreak = () => {
+    return equMegastreak
+}
+
+export const perks = () => {
+    return equPerks
+}
+
+export const killstreaks = () => {
+    return equKillstreaks
+}
 
 export const equipedUpgrades = () => {
-    return perks
+    return lperks
 }
 
 export const hasPerk = (perk) => {
+    for (let i = 0; i < equPerks.length; i++) {
+        if (equPerks[i].includes(perk)) return equPerks[i][1]
+    } return 0
+}
+
+export const hasKillstreak = (ks) => {
+    for (let i = 0; i < equKillstreaks.length; i++) {
+        if (equKillstreaks[i].includes(ks)) return true
+    } return false
+}
+
+/* export const hasPerk = (perk) => {
     for (let i = 0; i < 3; i++) {
         if (equipedUpgrades()[0][i].includes(perk)) return equipedUpgrades()[0][i][1]
     } return 0
@@ -26,16 +50,16 @@ export const hasKillstreak = (killstreak) => {
         if (equipedUpgrades()[1][i].includes(killstreak)) return true
     } return false
 }
-
+ */
 export const getMegaColor = (mega) => {
-    if (mega == "Overdrive") return '§c'
-    else if (mega == "Highlander") return '§6'
-    else if (mega == "To the Moon") return '§b'
-    else if (mega == "Uberstreak") return '§d'
-    else if (mega == "Grand Finale") return '§e'
-    else if (mega == "Nightmare") return '§1'
-    else if (mega == "Hermit") return '§9'
-    else return '§7'
+    if (mega == "Overdrive") return '§cOverdrive'
+    else if (mega == "Highlander") return '§6Highlander'
+    else if (mega == "To the Moon") return '§bTo the Moon'
+    else if (mega == "Uberstreak") return '§dUberstreak'
+    else if (mega == "Grand Finale") return '§eFinale'
+    else if (mega == "Nightmare") return '§1Nightmare'
+    else if (mega == "Hermit") return '§9Hermit'
+    else return '§7No Megastreak'
 }
 
 export const firstSync = () => {
@@ -62,35 +86,32 @@ const getPerk = (nbt) => {
     } else return false
 }
 
-const getKillStreaks = () => {
-    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
-    let killstreak1
-    let killstreak2
-    let killstreak3
-    if (ChatLib.removeFormatting(NBT.split("Killstreak #1:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #1: ")[1].split('",2:'))) {
-            killstreak1 = ChatLib.removeFormatting(NBT.split("Killstreak #1: ")[1].split('",2:"')[0])
+const getKillStreaks = (nbt) => {
+    let killstreaks = []
+    if (ChatLib.removeFormatting(nbt.split("Killstreak #1:")[1])) {
+        if (ChatLib.removeFormatting(nbt.split("Killstreak #1: ")[1].split('",2:'))) {
+            let info = ChatLib.removeFormatting(nbt.split("Killstreak #1: ")[1].split('",2:"')[0])
+            info !== 'Nothing' ? killstreaks.push(info) : ''
         }
-    } if (ChatLib.removeFormatting(NBT.split("Killstreak #2:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #2: ")[1].split('",3:'))) {
-            killstreak2 = ChatLib.removeFormatting(NBT.split("Killstreak #2: ")[1].split('",3:"')[0])
+    } if (ChatLib.removeFormatting(nbt.split("Killstreak #2:")[1])) {
+        if (ChatLib.removeFormatting(nbt.split("Killstreak #2: ")[1].split('",3:'))) {
+            let info = ChatLib.removeFormatting(nbt.split("Killstreak #2: ")[1].split('",3:"')[0])
+            info !== 'Nothing' ? killstreaks.push(info) : ''
         }
-    } if (ChatLib.removeFormatting(NBT.split("Killstreak #3:")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Killstreak #3: ")[1].split('",2:'))) {
-            killstreak3 = ChatLib.removeFormatting(NBT.split("Killstreak #3: ")[1].split('"],')[0])
-            return ([killstreak1, killstreak2, killstreak3])
+    } if (ChatLib.removeFormatting(nbt.split("Killstreak #3:")[1])) {
+        if (ChatLib.removeFormatting(nbt.split("Killstreak #3: ")[1].split('",2:'))) {
+            let info = ChatLib.removeFormatting(nbt.split("Killstreak #3: ")[1].split('"],')[0])
+            info !== 'Nothing' ? killstreaks.push(info) : ''
         }
-    }
-    return undefined
+    } return killstreaks === undefined ? [] : killstreaks
 }
 
-const megastreak = () => {
-    let NBT = Player.getContainer().getStackInSlot(23).getNBT().toString()
-    if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1])) {
-        if (ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')) {
-            return ChatLib.removeFormatting(NBT.split("Megastreak: ")[1]).split('",1:"')[0]
+const getMegastreak = (nbt) => {
+    if (ChatLib.removeFormatting(nbt.split("Megastreak: ")[1])) {
+        if (ChatLib.removeFormatting(nbt.split("Megastreak: ")[1]).split('",1:"')) {
+            return ChatLib.removeFormatting(nbt.split("Megastreak: ")[1]).split('",1:"')[0]
         }
-    }
+    } return false
 }
 
 /* const getBlessing = () => {
@@ -129,13 +150,15 @@ register("guiOpened", event => {
                 if (perk !== 'Nothing') equPerks.push(perk)
             }
 
-            ChatLib.chat(equPerks.join(', '))
+            equKillstreaks = getKillStreaks(Player.getContainer().getStackInSlot(23).getNBT().toString())
 
-            let killstreaks = getKillStreaks()
-            let mega = megastreak()
+            equMegastreak = getMegastreak(Player.getContainer().getStackInSlot(23).getNBT().toString())
+
+            let killstreaks = getKillStreaks(Player.getContainer().getStackInSlot(23).getNBT().toString())
+            let mega = getMegastreak(Player.getContainer().getStackInSlot(23).getNBT().toString())
             /* let blessing = getBlessing() */
-            perks = [[perk1, perk2, perk3], killstreaks, [mega]]//, blessing
-            FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(perks))
+            lperks = [[perk1, perk2, perk3], killstreaks, [mega]]//, blessing
+            FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(lperks))
             Client.scheduleTask(0, () => {
                 Client.getCurrentGui().close()
             })
@@ -183,6 +206,6 @@ register("command", () => {
 register("command", () => {
     ChatLib.command("syncperks", true)
     setTimeout(() => {
-        ChatLib.chat(`\n§c§lMegastreak:§b ${perks[2][0]} \n\n§cPerks:§b ${perks[0][0][0]} ${perks[0][0][1]}, ${perks[0][1][0]} ${perks[0][1][1]}, ${perks[0][2][0]} ${perks[0][2][1]} \n\n§cKillstreaks:§b ${perks[1][0]}, ${perks[1][1]}, ${perks[1][2]}\n`)
+        ChatLib.chat(`\n§c§lMegastreak:§b ${equMegastreak} \n\n§cPerks:§b ${equPerks.join(', ')} \n\n§cKillstreaks:§b ${equKillstreaks.join(', ')}\n`)
     }, 400)
 }).setName("perks")

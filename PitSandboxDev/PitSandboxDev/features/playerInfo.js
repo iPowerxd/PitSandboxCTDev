@@ -14,11 +14,17 @@ import { equipedUpgrades } from './perks'
 import { hasPerk } from './perks'
 import { hasKillstreak } from './perks'
 
+import { megastreak } from './perks'
+import { perks } from './perks'
+import { killstreaks } from './perks'
+
 import { getMega } from '../functions/playerInformation'
 import { getMegaFormatted } from '../functions/playerInformation'
 import { strengthLevel } from '../functions/strength'
 import { strengthTime } from '../functions/strength'
 import { activeStreak } from '../functions/streak'
+
+import { bbDamage } from '../functions/strength'
 
 import { generalInfoHud } from './gui'
 import { playerInfoHud } from "./gui"
@@ -184,31 +190,31 @@ register("renderOverlay", () => {
     if (!onSandbox()) return
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
-    let megastreak
-    let mega = Player.getDisplayName().getText().split(' ')
+    //let megastreak
+    let mega = Player.getDisplayName().getText().split(' ')[0]
     let killaura
-    if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
+    //if (onSandbox()) megastreak = scoreboard.find(l => l.startsWith("Status: ")).split("Status: ")[1]
     let ubermilestone = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let teamdestroyteam = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     let strength = strengthLevel() * 8
     if (!inSpawn(Player.asPlayerMP()) && onSandbox()) {
         hasPerk("Killaura") ? killaura = 1 - hasPerk("Killaura") * 0.15 : killaura = 1
-        if (!mega[0].includes('[') && !inMid(Player.asPlayerMP())) {
-            info.push(`${mega[0]} &c(${Math.floor(activeStreak() * 100) / 100})`)
+        if (!mega.includes('[') && !inMid(Player.asPlayerMP())) {
+            info.push(`${mega} &c(${Math.floor(activeStreak() * 100) / 100})`)
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
-            info.push("&4&lBody Builder&4: &c+" + bodybuilderDamage + "%")
-        } if (getMega(Player.getName()) == "overdrive" && activeStreak() >= 55) {
+            info.push("&4&lBody Builder&4: &c+" + bbDamage() + "%")
+        } if (mega.includes("OVRDRV") && activeStreak() >= 55) {
             info.push(`&c&lOverdrive True Damage: &e+${Math.round(0.2 * Math.floor((activeStreak() - 50) / 5) * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "highlander" && activeStreak() >= 55) {
+        } if (mega.includes("HIGH") && activeStreak() >= 55) {
             info.push(`&6&lHighlander Damage: &b+${Math.floor(3 * Math.floor((activeStreak() - 50) / 5))}%`)
-        } if (getMega(Player.getName()) == "moon" && activeStreak() >= 105) {
+        } if (mega.includes("MOON") && activeStreak() >= 105) {
             info.push(`&b&lTo The Moon Damage: &b+${Math.floor(3 * Math.floor((activeStreak() - 100) / 5))}%`)
             if (activeStreak() >= 220) info.push(`&b&lTo The Moon True Damage: &e+${Math.round(0.1 * Math.floor((activeStreak() - 200) / 20) * 10) / 10}&c❤`)
-        } if (getMega(Player.getName()) == "nightmare" && activeStreak() >= 55) {
+        } if (mega.includes("NGHTMR") && activeStreak() >= 55) {
             info.push(`&9&lNightmare Damage: &b+${Math.floor(5 * Math.floor((activeStreak() - 40) / 15))}%`)
-        } if (getMega(Player.getName()) == "hermit") {
+        } if (mega.includes("HERMIT")) {
             info.push(`&9&lHermit Damage: &b+${Math.floor(10 * Math.floor((activeStreak() - 100) / 15))}%`)
         } if (activeStreak() >= 6 * killaura) {
             if (hasKillstreak('Tough Skin')) 3 * Math.floor(activeStreak() / Math.floor(6 * killaura)) >= 24 ? info.push(`&9&lTough Skin: &b-24%`) : info.push(`&9&lTough Skin: &b-${3 * Math.floor(activeStreak() / Math.floor(6 * killaura))}%`)
@@ -224,14 +230,14 @@ register("renderOverlay", () => {
             if (activeStreak() >= 200) info.push("&d&lUBER200 Healing&d: &c-40%")
             if (activeStreak() >= 300) info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")
             if (activeStreak() >= 400) info.push("&d&lUBER400: No Longer Gain Health")
-        } if (megastreak == "Hermit") {
+        } if (mega[0] == "Hermit") {
             info.push("&9&lHERMIT Block Duration&9: &a+100%")
             if (Player.armor.getLeggings() && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) && hasEnchant("mirror", Player.armor.getLeggings().getNBT()) != NaN) info.push("&9&lHERMIT: &cMirrors Disabled")
         } if (Player.armor.getLeggings() && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) && hasEnchant("solitude", Player.armor.getLeggings().getNBT()) != NaN) {
             if (solisBroken) {
                 info.push(`&a&lSolitude: &cBroken &7(${soliPeople})`)
             } else {
-                info.push(`&a&lSolitude: &b-${soliLevel}% &7(${soliPeople})`)
+                info.push(`&a&lSolitude: &b-${soliLevel}% &7(${soliPeople !== 0 ? soliLevel : ''})`)
             }
         } if (notglad != 0) {
             info.push('&b&l"Not" Glad&b: -' + notglad + "%")
