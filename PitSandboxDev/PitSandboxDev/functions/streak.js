@@ -371,7 +371,7 @@ register("chat", event => {
     }
     if (Settings.eggEffectDisplay) {
         switch (umsg) {
-            case "SUPEREGG! +2.5x XP and coins (00:10)":
+            case "SUPEREGG! +2.5x coins and XP (00:10)":
                 if (Date.now() > sixtimescoins) sixtimescoins = Date.now() + 10000;
                 else sixtimescoins += 10000;
                 break;
