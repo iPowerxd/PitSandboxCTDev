@@ -5,10 +5,10 @@ import { onlinePlayers } from "./onlinePlayers";
 import { onlinePlayersFormatted } from "./onlinePlayers";
 
 export function playerInfo(player) {
-    for (let i = 0; i < onlinePlayers.length; i++) {
-        if (player == onlinePlayers[i]) {
-            if (onlinePlayersFormatted[i] == undefined) return ["§7" + onlinePlayers[i]];
-            else return onlinePlayersFormatted[i].split(" ");
+    for (let i = 0; i < onlinePlayers().length; i++) {
+        if (player == onlinePlayers()[i]) {
+            if (onlinePlayersFormatted()[i] == undefined) return ["§7" + onlinePlayers()[i]];
+            else return onlinePlayersFormatted()[i].split(" ");
         }
     }
 }

@@ -237,7 +237,7 @@ register("renderOverlay", () => {
             if (solisBroken) {
                 info.push(`&a&lSolitude: &cBroken &7(${soliPeople})`)
             } else {
-                info.push(`&a&lSolitude: &b-${soliLevel}% &7(${soliPeople !== 0 ? soliLevel : ''})`)
+                info.push(`&a&lSolitude: &b-${soliLevel}% ${soliPeople !== 0 ? '&7(' + soliPeople + ')' : ''}`)
             }
         } if (notglad != 0) {
             info.push('&b&l"Not" Glad&b: -' + notglad + "%")
