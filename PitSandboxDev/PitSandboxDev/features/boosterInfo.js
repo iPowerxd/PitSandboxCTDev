@@ -52,7 +52,7 @@ register("renderOverlay", () => {
     let y = boosterInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, boosterInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
-        if (((info.length > 1 && onSandbox()) || Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
+        if (((info.length > 1 && onSandbox()) && Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
     })
 })
