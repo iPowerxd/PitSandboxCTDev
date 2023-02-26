@@ -120,6 +120,7 @@ function formatEnchant(enchant) {
     else if (enchant === 'prick') return 'Prick'
     else if (enchant === 'protection') return 'Prot'
     else if (enchant === 'ringarmor') return 'Ring Armor'
+    else if (enchant === 'hiddenjewel') return '&6Hidden &cJewel'
     // Swords
     // Rare
     else if (enchant === 'billionaire') return '&dBillionaire'
