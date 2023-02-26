@@ -6,7 +6,7 @@ import Settings from '../config'
 import { onSandbox } from '../functions/onSandbox'
 import { inSpawn } from '../functions/inSpawn'
 import { inMid } from '../functions/inMid'
-
+import { isPre } from './antioof'
 import { goldreq } from '../functions/streak'
 import { goldreqmax } from '../functions/streak'
 import { greqrefresh } from '../functions/streak'
