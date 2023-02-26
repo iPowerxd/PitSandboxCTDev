@@ -109,7 +109,7 @@ export const location = entity => {
                 return
         }
     }
-    else if (actualMid(entity)) return '&cMiddle'
+    else if (actualMid(entity)) return '&4Middle'
     else if (mapLocation(entity)) return mapLocation(entity)
     else return '&6Outskirts'
 }

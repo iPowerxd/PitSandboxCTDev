@@ -20,6 +20,7 @@ import { targetInfoHud } from "./gui"
 
 let target = undefined
 let name = undefined
+let runes = []
 let targetexpire
 let lsticks = 0
 let allticks = 0
@@ -193,7 +194,17 @@ register("actionBar", event => {
         if (target != player) target = player, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = [];
 
         name = onlinePlayersFormatted().find(t => ChatLib.removeFormatting(t.split(" ")[1]) == target).split(" ")[1]
-        //ChatLib.chat(name)
+
+        runes = []
+        if (target) {
+            if (helmet(target)[0] != "None") {
+                runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
+            } if (chestplate(target)[0] != "None") {
+                runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
+            } if (boots(target)[0] != "None") {
+                runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+            }
+        }
 
         let health = parseFloat(msg.split(" ").find(m => m.endsWith("HP") && !m.includes("LS")).replace("HP", ""))
         tdamage.push(health)
@@ -260,19 +271,9 @@ register("renderOverlay", () => {
     if (!onSandbox() && !inMenu()) return; {
         if (Settings.targetInfo && target) {
             let lines = []
-            let runes = []
             const NetHandlerPlayClient = Client.getConnection()
             const PlayerMap = NetHandlerPlayClient.func_175106_d()
             const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-            if (target) {
-                if (helmet(target)[0] != "None") {
-                    runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
-                } if (chestplate(target)[0] != "None") {
-                    runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
-                } if (boots(target)[0] != "None") {
-                    runes.push(runeColour(boots(target)[1]) + boots(target)[0])
-                }
-            }
             first = true
             lines.push(`${Settings.hudTextColor}Name: ${name} &7Ping: ${pingColour(ping)}${ping}ms`)
             lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`)
