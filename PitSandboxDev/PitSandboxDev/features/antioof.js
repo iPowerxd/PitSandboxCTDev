@@ -11,3 +11,4 @@ export const isPre = () => {
 register("messageSent", (message, event) => {
     if (onSandbox() && message == "/oof" && isPre() && Settings.togglePreOOF) return cancel(event), ChatLib.chat("&c&lOOF!&7 You are premega!"), Client.getChatGUI().func_146239_a("/oof")
 })
+

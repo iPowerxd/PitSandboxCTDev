@@ -10,7 +10,7 @@ import { inMid } from '../functions/inMid'
 import { goldreq } from '../functions/streak'
 import { goldreqmax } from '../functions/streak'
 import { greqrefresh } from '../functions/streak'
-
+import { isPre } from './antioof'
 import { msToTime } from '../functions/msToTime'
 import { nomvp } from '../functions/nomvp'
 import { romanToInt } from "../functions/roman"

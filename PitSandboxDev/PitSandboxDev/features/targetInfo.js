@@ -97,7 +97,7 @@ function formatEnchant(enchant) {
     // Pants
     // Rare
     if (enchant === 'assassin') return '&dAssassin'
-    else if (enchant === 'attrative') return '&dAttractive'
+    else if (enchant === 'attractive') return '&dAttractive'
     else if (enchant === 'comboladder') return '&dCombo: Ladder'
     else if (enchant === 'divine') return '&dDivine'
     else if (enchant === 'leap') return '&dLeap'
@@ -120,6 +120,7 @@ function formatEnchant(enchant) {
     else if (enchant === 'prick') return 'Prick'
     else if (enchant === 'protection') return 'Prot'
     else if (enchant === 'ringarmor') return 'Ring Armor'
+    else if (enchant === 'hiddenjewel') return '&6Hidden &cJewel'
     // Swords
     // Rare
     else if (enchant === 'billionaire') return '&dBillionaire'
@@ -167,6 +168,7 @@ function formatEnchant(enchant) {
     else if (enchant === 'pindown') return 'Pin'
     else if (enchant === 'sprintdrain') return 'Sprint Drain'
     else if (enchant === 'wasp') return 'Wasp'
+    else if (enchant === 'parasite') return 'Parasite'
     // Resource
     else if (enchant === 'sweaty') return '&bSweaty'
     else if (enchant === 'gboost') return '&6Gold Boost'
