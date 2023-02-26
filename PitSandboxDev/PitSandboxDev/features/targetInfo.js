@@ -137,7 +137,7 @@ function formatEnchant(enchant) {
     else if (enchant === 'combodamage') return 'Combo: Damage'
     else if (enchant === 'comboheal') return 'Combo: Heal'
     else if (enchant === 'comboswift') return 'Combo: Swift'
-    else if (enchant === 'diamondstomp') return 'Diamond Stomp'
+    else if (enchant === 'diamondstomp') return 'Dia Stomp'
     else if (enchant === 'fancyraider') return 'Fancy Raider'
     else if (enchant === 'goldandboosted') return 'Gold and Boosted'
     else if (enchant === 'huntthehunter') return 'Hunt the Hunter'
@@ -186,7 +186,7 @@ register("actionBar", event => {
     if (!onSandbox()) return
     if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤")) {
         let player = msg.split(" ")[0]
-        if (player.startsWith("~")) return
+        if (Player.getName() === player || player.startsWith("~")) return
         targetexpire = Date.now() + 30000
         if (target != player) target = player, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = [];
 
