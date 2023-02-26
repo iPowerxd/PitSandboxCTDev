@@ -37,7 +37,7 @@ function sortEnchants(enchantment) {
 }
 
 const helmet = (info) => {
-    if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
+    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(4) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())
@@ -56,7 +56,7 @@ const helmet = (info) => {
 }
 
 const chestplate = (info) => {
-    if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
+    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(3) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())
@@ -75,7 +75,7 @@ const chestplate = (info) => {
 }
 
 const boots = (info) => {
-    if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
+    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(1) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())
@@ -264,12 +264,14 @@ register("renderOverlay", () => {
             const NetHandlerPlayClient = Client.getConnection()
             const PlayerMap = NetHandlerPlayClient.func_175106_d()
             const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-            if (helmet(target)[0] != "None") {
-                runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
-            } if (chestplate(target)[0] != "None") {
-                runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
-            } if (boots(target)[0] != "None") {
-                runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+            if (target) {
+                if (helmet(target)[0] != "None") {
+                    runes.push(runeColour(helmet(target)[1]) + helmet(target)[0])
+                } if (chestplate(target)[0] != "None") {
+                    runes.push(runeColour(chestplate(target)[1]) + chestplate(target)[0])
+                } if (boots(target)[0] != "None") {
+                    runes.push(runeColour(boots(target)[1]) + boots(target)[0])
+                }
             }
             first = true
             lines.push(`${Settings.hudTextColor}Name: ${name} &7Ping: ${pingColour(ping)}${ping}ms`)
