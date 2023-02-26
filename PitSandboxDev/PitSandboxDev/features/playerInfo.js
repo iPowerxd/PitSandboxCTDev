@@ -17,6 +17,8 @@ import { strengthLevel } from '../functions/strength'
 import { strengthTime } from '../functions/strength'
 import { activeStreak } from '../functions/streak'
 
+import { worldotherplayers } from '../functions/world'
+
 import { rngdam } from '../functions/streak'
 import { bbDamage } from '../functions/strength'
 
@@ -30,8 +32,6 @@ let notglad
 let solisBroken
 let soliLevel
 let soliPeople = 0
-
-let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
 
 const BossStatus = Java.type("net.minecraft.entity.boss.BossStatus")
 
@@ -120,7 +120,7 @@ register("step", () => {
             default:
                 break;
         }
-        worldotherplayers.forEach(e => {
+        worldotherplayers().forEach(e => {
             if (e.getUUID() != Player.getUUID() && e.distanceTo(Player.asPlayerMP()) < 7 && e.getHP() < 12) sharkpeople++;
         });
         shark = (sharkpeople * sharkmult > 56 ? 56 : sharkpeople * sharkmult);

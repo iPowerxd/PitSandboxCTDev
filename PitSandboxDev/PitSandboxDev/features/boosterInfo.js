@@ -16,12 +16,12 @@ let fishingBooster = 0
 let miningBooster = 0
 
 register("chat", (booster, event) => {
-    if (booster == "coin") coinBooster = 1800
-    else if (booster == "XP") xpBooster = 1800
-    else if (booster == "bots") botsBooster = 1800
-    else if (booster == "Overflow") overflowBooster = 1800
-    else if (booster == "fishing xp") fishingBooster = 1800
-    else if (booster == "Mining xp") miningBooster = 1800
+    if (booster === "coin") coinBooster = 1800
+    else if (booster === "XP") xpBooster = 1800
+    else if (booster === "bots") botsBooster = 1800
+    else if (booster === "Overflow") overflowBooster = 1800
+    else if (booster === "fishing xp") fishingBooster = 1800
+    else if (booster === "Mining xp") miningBooster = 1800
 }).setChatCriteria("WOAH! ${*} just activated a ${booster} booster! GG!")
 
 register("step", () => {
@@ -34,25 +34,25 @@ register("step", () => {
 }).setFps(1)
 
 register("renderOverlay", () => {
-    if (!onSandbox() || Client.isInTab() || !Settings.toggleSandboxHUD) return
+    if (!onSandbox() || !Settings.toggleSandboxHUD) return
     let info = [`${Settings.hudGroupColor}§nBoosters`]
-    if (coinBooster != 0) {
+    if (coinBooster !== 0) {
         info.push(`§6Coin Booster§7: ${msToTime(coinBooster * 1000)}`)
-    } if (xpBooster != 0) {
+    } if (xpBooster !== 0) {
         info.push(`§bXP Booster§7: ${msToTime(xpBooster * 1000)}`)
-    } if (botsBooster != 0) {
+    } if (botsBooster !== 0) {
         info.push("§3Bots Booster§7: " + msToTime(botsBooster * 1000))
-    } if (overflowBooster != 0) {
+    } if (overflowBooster !== 0) {
         info.push("§cOverflow Booster§7: " + msToTime(overflowBooster * 1000))
-    } if (fishingBooster != 0) {
+    } if (fishingBooster !== 0) {
         info.push("§dFishing Booster§7: " + msToTime(fishingBooster * 1000))
-    } if (miningBooster != 0) {
+    } if (miningBooster !== 0) {
         info.push("§8Mining Booster§7: " + msToTime(miningBooster * 1000))
     }
     let y = boosterInfoHud.textY
     info.forEach(line => {
         const text = new Text(line, boosterInfoHud.textX, y).setShadow(true).setScale(generalInfoHud.textScale)
-        if (((info.length > 1 && onSandbox()) || Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
         y += 12
+        if ((info.length > 1 && Settings.boostersInfo) || Settings.generalInfoHud.isOpen()) text.draw()
     })
 })

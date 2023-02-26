@@ -12,4 +12,12 @@ export const inMid = entity => {
         }
     }
     return false;
-};
+}
+
+export const actualMid = entity => {
+    if (entity && Math.sqrt(entity.getEntity().func_174831_c(new BlockPos1(0.5, entity.getY(), 0.5))) < 19) {
+        if (entity.getY() > 70 && entity.getY() < 95) {
+            return true
+        }
+    } return false
+}

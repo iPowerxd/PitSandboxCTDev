@@ -33,6 +33,7 @@ import './commands/setbal'
 import './commands/usefulbox'
 
 import './functions/onSandbox'
+import './functions/world'
 import './functions/inSpawn'
 import './functions/inMid'
 import './functions/enchant'

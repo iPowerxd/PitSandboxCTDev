@@ -1,7 +1,7 @@
 import Settings from '../config'
 import { onSandbox } from "../functions/onSandbox"
 
-const isPre = () => {
+export const isPre = () => {
     let nametag = ChatLib.removeFormatting(Player.getDisplayName().getText().split(" ")[0])
     if (nametag.includes("[")) return true
     else if (nametag.startsWith("UBER") && !nametag.endsWith("400")) return true

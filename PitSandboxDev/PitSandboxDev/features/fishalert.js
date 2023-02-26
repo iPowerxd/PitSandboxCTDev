@@ -6,9 +6,6 @@ let lastsplashsound = 0
 let lasthookmotion = 0
 let lastalert = 0
 
-let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
-let worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e)
-
 register("spawnParticle", (particle, type, event) => {
     if (!onSandbox() || !Settings.fishAlert) return
     if (particle.underlyingEntity instanceof Java.type("net.minecraft.client.particle.EntityBubbleFX")) {
@@ -26,9 +23,6 @@ register("spawnParticle", (particle, type, event) => {
 })
 
 register("tick", () => {
-    if (!onSandbox()) return worldentities = [], worldotherplayers = [];
-    worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e);
-    worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity));
     if (Settings.fishAlert) {
         if (Player.getPlayer().field_71104_cf instanceof Java.type("net.minecraft.entity.projectile.EntityFishHook")) {
             if (

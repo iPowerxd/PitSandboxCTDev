@@ -12,6 +12,9 @@ import { inMenu } from '../functions/inMenu'
 import { pingColour } from '../functions/pingcolour'
 import { runeColour } from '../functions/runecolour'
 
+import { worldotherplayers } from '../functions/world'
+import { worldentities } from '../functions/world'
+
 import { generalInfoHud } from './gui'
 import { targetInfoHud } from "./gui"
 
@@ -27,9 +30,6 @@ let tdamage = []
 
 let lasthealth = Player.getHP() || 0
 
-let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
-let worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e)
-
 function sortEnchants(enchantment) {
     const enchant = formatEnchant(enchantment.replace(/[0-9]/g, ""))
     const level = getRoman(parseInt(enchantment.split("")[enchantment.length - 1]))
@@ -38,7 +38,7 @@ function sortEnchants(enchantment) {
 
 const helmet = (info) => {
     if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
-    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(4) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())
     if (!(ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())).includes(':{rtype:"')) return ["None", "None"]
@@ -57,7 +57,7 @@ const helmet = (info) => {
 
 const chestplate = (info) => {
     if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
-    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(3) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())
     if (!(ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())).includes(':{rtype:"')) return ["None", "None"]
@@ -76,7 +76,7 @@ const chestplate = (info) => {
 
 const boots = (info) => {
     if (!onSandbox() || !inMenu() || info == undefined) return ["None", "None"]
-    let player = new EntityLivingBase(worldentities.find(e => e.getName() == info).entity)
+    let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(1) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())
     if (!(ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())).includes(':{rtype:"')) return ["None", "None"]
@@ -109,9 +109,9 @@ function formatEnchant(enchant) {
     else if (enchant === 'booboo') return 'Boo-boo'
     else if (enchant === 'critfunky') return 'Crit Funky'
     else if (enchant === 'dag') return 'DaG'
-    else if (enchant === 'electrolytes') return 'Electrolytes'
+    else if (enchant === 'electrolytes') return 'Electro'
     else if (enchant === 'frac') return 'Frac'
-    else if (enchant === 'goldenheart') return 'Golden Heart'
+    else if (enchant === 'goldenheart') return 'G-Heart'
     else if (enchant === 'laststand') return 'Last Stand'
     else if (enchant === 'mirror') return '&4Mirror'
     else if (enchant === 'notgladiator') return '"Not" Glad'
@@ -139,11 +139,11 @@ function formatEnchant(enchant) {
     else if (enchant === 'comboswift') return 'Combo: Swift'
     else if (enchant === 'diamondstomp') return 'Dia Stomp'
     else if (enchant === 'fancyraider') return 'Fancy Raider'
-    else if (enchant === 'goldandboosted') return 'Gold and Boosted'
-    else if (enchant === 'huntthehunter') return 'Hunt the Hunter'
+    else if (enchant === 'goldandboosted') return 'G&B'
+    else if (enchant === 'huntthehunter') return 'HtH'
     else if (enchant === 'kingbuster') return 'King Buster'
     else if (enchant === 'knockback') return 'Knockback'
-    else if (enchant === 'lifesteal') return 'Lifesteal'
+    else if (enchant === 'lifesteal') return '&4Lifesteal'
     else if (enchant === 'painfocus') return 'Pain Focus'
     else if (enchant === 'punisher') return 'Punisher'
     else if (enchant === 'shark') return 'Shark'
@@ -202,11 +202,6 @@ register("actionBar", event => {
 })
 
 register('tick', () => {
-    if (!onSandbox()) return worldentities = [], worldotherplayers = []
-
-    worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e)
-    worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
-
     if (lasthealth > Player.getHP() && target) {
         pdamage.push((Player.getHP() - lasthealth));
         if (pdamage.length > 5) pdamage.shift();
@@ -223,9 +218,9 @@ register('tick', () => {
 register('tick', () => {
     if (target && targetexpire && Date.now() >= targetexpire) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = []
 
-    if (!worldotherplayers.find(p => p.getName() == target)) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = []
+    if (!worldotherplayers().find(p => p.getName() == target)) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = []
 
-    let player = new EntityLivingBase(worldentities.find(e => e.getName() == target).entity);
+    let player = new EntityLivingBase(worldentities().find(e => e.getName() == target).entity);
     if (player.getItemInSlot(2) && player.getItemInSlot(2).getNBT() && player.getItemInSlot(2).getID() == 300 && getEnchants(player.getItemInSlot(2).getNBT())) {
         let pants = []
         for (let i = 0; i < getEnchants(player.getItemInSlot(2).getNBT()).length; i++) {

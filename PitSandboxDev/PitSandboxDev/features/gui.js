@@ -71,8 +71,8 @@ function resetdisplay() {
     upgradesInfoHud.textY = Renderer.screen.getHeight() / 9
     playerInfoHud.textX = Renderer.screen.getWidth() / 5
     playerInfoHud.textY = 4
-    boosterInfoHud.textX = Renderer.screen.getWidth() * 2
-    boosterInfoHud.textY = Renderer.screen.getHeight() * 8 / 10
+    boosterInfoHud.textX = Renderer.screen.getWidth() * 2 / 3
+    boosterInfoHud.textY = 4
     cooldownInfoHud.textX = 4
     cooldownInfoHud.textY = Renderer.screen.getHeight() / 3
     preInfoHud.textX = Renderer.screen.getWidth() / 2

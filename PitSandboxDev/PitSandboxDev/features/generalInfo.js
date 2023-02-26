@@ -18,6 +18,10 @@ import { getRoman } from "../functions/roman"
 import { formatNumber } from '../functions/formatNumber'
 import { getSidebar } from "../functions/sidebar"
 
+import { isPre } from './antioof'
+
+import { worldotherplayers } from '../functions/world'
+
 import { generalInfoHud } from "./gui"
 import { preInfoHud } from "./gui"
 
@@ -31,8 +35,6 @@ let megacoins = undefined
 let extradamage = Date.now()
 
 let generallines = []
-
-let worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
 
 const prestigeinfo = ["§7", "§9", "§9", "§9", "§9", "§e", "§e", "§e", "§e", "§e", "§6", "§6", "§6", "§6", "§6", "§c", "§c", "§c", "§c", "§c", "§5", "§5", "§5", "§5", "§5", "§d", "§d", "§d", "§d", "§d", "§f", "§f", "§f", "§f", "§f", "§b", "§b", "§b", "§b", "§b", "§a", "§a", "§a", "§a", "§a", "§4", "§4", "§4", "§4", "§4", "§3", "§3", "§3", "§3", "§3", "§2", "§2", "§2", "§2", "§2", "§1"]
 
@@ -81,6 +83,13 @@ const getBrackets = (lvl, pres, full = false) => {
 
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500]
 const totalxpnopres = 65950
+
+const yummyTime = () => {
+    const tab = TabList.getHeader().split('\n')
+    for (let i = 0; i < tab.length; i++) {
+        if (tab[i].includes('YUMMY BISCUIT:')) return tab[i].split('YUMMY BISCUIT: ')[1].split(' left')[0]
+    } return false
+}
 
 register("step", () => {
     if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
@@ -202,6 +211,8 @@ new Thread(() => {
             } if (scoreboard.find(l => l.startsWith("MVP+: "))) {
                 const mvpplus = scoreboard.find(l => l.startsWith("MVP+: ")).split("MVP+: ")[1]
                 general.push(Settings.hudTextColor + "MVP+: &6" + mvpplus)
+            } if (yummyTime()) {
+                general.push(`${Settings.hudTextColor}Yummy Cookie: ${yummyTime()}`)
             } if (scoreboard.find(l => l.startsWith("Bounty: "))) {
                 const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1]
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
@@ -218,7 +229,8 @@ new Thread(() => {
             }
             if (extradamage > Date.now()) {
                 general.push(Settings.hudTextColor + "Megastar: &c" + msToTime(extradamage - Date.now()));
-            } if (Settings.toggleSimpleHUD) {
+            }
+            if (Settings.toggleSimpleHUD) {
                 if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())}, ${majorname}`)
             } else {
                 if (nextmajor > Date.now()) {
@@ -229,7 +241,7 @@ new Thread(() => {
                     general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
                 }
             }
-            let streakers = worldotherplayers.filter(e => inMid(e) && (!e.getName().startsWith("§7") && !e.getName().startsWith("CIT-"))).length;
+            let streakers = worldotherplayers().filter(e => inMid(e) && (!e.getName().startsWith("§7") && !e.getName().startsWith("CIT-"))).length;
             if (streakers != 0) {
                 general.push(Settings.hudTextColor + "Streakers: &c" + streakers);
             }
