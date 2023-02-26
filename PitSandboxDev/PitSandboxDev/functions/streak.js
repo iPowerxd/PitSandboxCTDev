@@ -19,6 +19,10 @@ import { hasEnchant } from './enchant'
 import { generalInfoHud } from '../features/gui'
 import { streakInfoHud } from '../features/gui'
 
+export const rngdam = () => {
+    return rngdamage
+}
+
 let laststreakchange = Date.now()
 let streaking = false
 let streak = 0
@@ -29,7 +33,7 @@ let lastendstreak = 0
 
 let streakinglines = []
 
-let rngdamage = Date.now()
+let rngdamage
 
 let goldrequire = undefined
 let goldrequiremax = undefined
@@ -340,7 +344,7 @@ register("chat", event => {
                         });
                         break;
                     case "➜ +25% damage (0:30)":
-                        rngdamage = Date.now() + 30000;
+                        rngdamage = 30
                         break;
                     case "➜ +2 Night Shards":
                         if (currentstreak.other.find(o => o.id == "NS")) currentstreak.other[currentstreak.other.indexOf(currentstreak.other.find(o => o.id == "NS"))].amount += 2;
@@ -457,8 +461,6 @@ new Thread(() => {
                 } if (currentstreak.other.length > 0) {
                     let other = currentstreak.other.map(o => o.color + o.amount + " " + o.id).join(" ");
                     streakinfo.push(Settings.hudTextColor + "Other: " + other);
-                } if (Date.now() < rngdamage) {
-                    streakinfo.push(Settings.hudTextColor + "RNGesus DMG: &c" + msToTime(rngdamage - Date.now(), true));
                 }
                 streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
                 streakinglines = streakinfo
@@ -466,6 +468,11 @@ new Thread(() => {
         })
     }, 0)
 }).start()
+
+register("step", () => {
+    if (!onSandbox()) return
+    rngdamage > 0 ? rngdamage-- : rngdamage = 0
+}).setFps(1)
 
 register("renderOverlay", () => {
     if (streakinglines.length > 0) {

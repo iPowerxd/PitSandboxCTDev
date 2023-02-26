@@ -6,7 +6,6 @@ import Settings from '../config'
 import { onSandbox } from '../functions/onSandbox'
 import { inSpawn } from '../functions/inSpawn'
 import { inMid } from '../functions/inMid'
-import { inMenu } from '../functions/inMenu'
 import { getSidebar } from '../functions/sidebar'
 import { hasEnchant } from "../functions/enchant"
 
@@ -14,16 +13,11 @@ import { equipedUpgrades } from './perks'
 import { hasPerk } from './perks'
 import { hasKillstreak } from './perks'
 
-import { megastreak } from './perks'
-import { perks } from './perks'
-import { killstreaks } from './perks'
-
-import { getMega } from '../functions/playerInformation'
-import { getMegaFormatted } from '../functions/playerInformation'
 import { strengthLevel } from '../functions/strength'
 import { strengthTime } from '../functions/strength'
 import { activeStreak } from '../functions/streak'
 
+import { rngdam } from '../functions/streak'
 import { bbDamage } from '../functions/strength'
 
 import { generalInfoHud } from './gui'
@@ -203,6 +197,8 @@ register("renderOverlay", () => {
             info.push(`${mega} &c(${Math.floor(activeStreak() * 100) / 100})`)
         } if (strengthLevel() != 0) {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
+        } if (rngdam()) {
+            info.push("&d&lRNGesus DMG: &c+25%&r&7 (" + rngdam() + "s)");
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
             info.push("&4&lBody Builder&4: &c+" + bbDamage() + "%")
         } if (mega.includes("OVRDRV") && activeStreak() >= 55) {

@@ -1058,7 +1058,7 @@ let setBalCMD = register("command", (p, bal) => {
 
 new Thread(() => {
     register("tick", () => {
-        if (!pitsandbox) return worldentities = [], worldotherplayers = [];
+        if (!pitsandbox) return worldentities = [], worldotherplayers = []
         if (lasthealth > Player.getHP() && target) {
             pdamage.push((Player.getHP() - lasthealth));
             if (pdamage.length > 5) pdamage.shift();
@@ -1069,8 +1069,8 @@ new Thread(() => {
         } else {
             lasthealth = Player.getHP();
         }
-        worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e);
-        worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity));
+        worldentities = World.getAllEntities().map(e => e.entity instanceof Java.type("net.minecraft.entity.EntityLivingBase") ? new EntityLivingBase(e.entity) : e)
+        worldotherplayers = World.getAllEntitiesOfType(Java.type("net.minecraft.client.entity.EntityOtherPlayerMP")).map(e => new EntityLivingBase(e.entity))
         if (Settings.fishAlert) {
             if (Player.getPlayer().field_71104_cf instanceof Java.type("net.minecraft.entity.projectile.EntityFishHook")) {
                 if (
