@@ -94,7 +94,7 @@ register("renderOverlay", () => {
             text.setX(huntInfoHud.textX + (Renderer.screen.getWidth() / 10) - Renderer.getStringWidth(text.getString()) * generalInfoHud.textScale)
             text.setScale(generalInfoHud.textScale)
             text.setShadow(true)
-            if (huntinfo.length > 1 || Settings.generalInfoHud.isOpen()) text.draw()
+            if (huntinfo.length > 1 && onSandbox() || Settings.generalInfoHud.isOpen()) text.draw()
             y += 12 * generalInfoHud.textScale
         })
     }
