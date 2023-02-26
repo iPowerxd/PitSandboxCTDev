@@ -4,7 +4,8 @@ import { onSandbox } from "../functions/onSandbox"
 import { hasEnchant } from '../functions/enchant'
 import { onlinePlayers } from '../functions/onlinePlayers'
 import { onlinePlayersFormatted } from '../functions/onlinePlayers'
-
+import { inMid } from '../functions/inMid'
+import { inSpawn } from '../functions/inSpawn'
 import { generalInfoHud } from "../features/gui"
 import { huntInfoHud } from "../features/gui"
 

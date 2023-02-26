@@ -6,11 +6,11 @@ import Settings from '../config'
 import { onSandbox } from '../functions/onSandbox'
 import { inSpawn } from '../functions/inSpawn'
 import { inMid } from '../functions/inMid'
-import { isPre } from './antioof'
+
 import { goldreq } from '../functions/streak'
 import { goldreqmax } from '../functions/streak'
 import { greqrefresh } from '../functions/streak'
-
+import { isPre } from './antioof'
 import { msToTime } from '../functions/msToTime'
 import { nomvp } from '../functions/nomvp'
 import { romanToInt } from "../functions/roman"
@@ -81,6 +81,13 @@ const getBrackets = (lvl, pres, full = false) => {
 
 const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500]
 const totalxpnopres = 65950
+
+const yummyTime = () => {
+    const tab = TabList.getHeader().split('\n')
+    for (let i = 0; i < tab.length; i++) {
+        if (tab[i].includes('YUMMY BISCUIT:')) return tab[i].split('YUMMY BISCUIT: ')[1]
+    }
+}
 
 register("step", () => {
     if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
@@ -202,6 +209,8 @@ new Thread(() => {
             } if (scoreboard.find(l => l.startsWith("MVP+: "))) {
                 const mvpplus = scoreboard.find(l => l.startsWith("MVP+: ")).split("MVP+: ")[1]
                 general.push(Settings.hudTextColor + "MVP+: &6" + mvpplus)
+            } if (yummyTime() !== undefined) {
+                general.push(Settings.hudTextColor + "Cookie Buff: &6" + yummyTime())
             } if (scoreboard.find(l => l.startsWith("Bounty: "))) {
                 const bounty = scoreboard.find(l => l.startsWith("Bounty: ")).split("Bounty: ")[1]
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
