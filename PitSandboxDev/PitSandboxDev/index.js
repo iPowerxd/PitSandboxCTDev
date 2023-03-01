@@ -57,6 +57,8 @@ import './dev/autols'
 import './dev/hunt'
 import './dev/stackbread'
 import './dev/autosupperegg'
+import './dev/autoquickmaths'
+import './dev/autounscramble'
 
 import { prestigeinfo } from './features/generalInfo'
 import { prestigexp } from './features/generalInfo'

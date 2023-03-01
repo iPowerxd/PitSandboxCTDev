@@ -275,7 +275,7 @@ register("renderOverlay", () => {
             const PlayerMap = NetHandlerPlayClient.func_175106_d()
             const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
             first = true
-            lines.push(`${Settings.hudTextColor}Name: ${name} &7Ping: ${pingColour(ping)}${ping}ms`)
+            lines.push(`${Settings.hudTextColor}Name: ${name} ${Settings.hudTextColor}Ping: ${pingColour(ping)}ms`)
             lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`)
             lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`)
             lines.push(`${Settings.hudTextColor}Runes: ${runes.length == 0 ? "&cNone" : runes.join("&7, ")}`)

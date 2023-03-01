@@ -436,24 +436,6 @@ class Settings {
     toggleBossBar = false;
 
     @SwitchProperty({
-        name: "§cAuto LS Swap",
-        description: "Swap to bill lifesteal when low health if you have one in your hotbar",
-        category: "DEV",
-        subcategory: 'DEV'
-    })
-    toggleAutoLS = true;
-
-    @SliderProperty({
-        name: "§cLow Health Threshold",
-        description: "Set the health you want to be at before swapping to bill lifesteal",
-        category: "DEV",
-        subcategory: 'DEV',
-        min: 1,
-        max: 12
-    })
-    autoLSHealth = 8;
-
-    @SwitchProperty({
         name: "§cCustom Auto OOF",
         description: "Customizable auto oof for every megastreak.",
         category: "Auto OOF",
@@ -516,6 +498,56 @@ class Settings {
         subcategory: "Auto OOF"
     })
     autoOOFHermit = false;
+
+    @SwitchProperty({
+        name: "§cAuto LS Swap",
+        description: "Swap to bill lifesteal when low health if you have one in your hotbar",
+        category: "DEV",
+        subcategory: 'Auto LS'
+    })
+    toggleAutoLS = true;
+
+    @SliderProperty({
+        name: "§cLow Health Threshold",
+        description: "Set the health you want to be at before swapping to bill lifesteal",
+        category: "DEV",
+        subcategory: 'Auto LS',
+        min: 1,
+        max: 12
+    })
+    autoLSHealth = 8;
+
+    @SwitchProperty({
+        name: "§dAuto Quick Maths",
+        description: "Tells you the answer of quick maths in chat.\n&eCopies answer to your clipboard",
+        category: "DEV",
+        subcategory: 'Quick Maths / Unscramble'
+    })
+    autoquickmaths = true
+
+    @SwitchProperty({
+        name: "§eAuto Unscramble",
+        description: "Tells you the answer of unscramble in chat.\n&eCopies answer to your clipboard",
+        category: "DEV",
+        subcategory: 'Quick Maths / Unscramble'
+    })
+    autounscramble = true
+
+    @SwitchProperty({
+        name: "§aSay Answer in Guild Chat",
+        description: "Says the answer of quick maths & unscramble in guild chat",
+        category: "DEV",
+        subcategory: 'Quick Maths / Unscramble'
+    })
+    aqmGuild = true
+
+    @SwitchProperty({
+        name: "§aSay Answer if AFK",
+        description: "You will automatticaly say the asnwer of quick maths & unscramble in a random time.\n&e5.55 - 11.1 seconds",
+        category: "DEV",
+        subcategory: 'Quick Maths / Unscramble'
+    })
+    aqmAFK = true
 
     constructor() {
         this.initialize(this);
