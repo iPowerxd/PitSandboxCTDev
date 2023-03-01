@@ -58,6 +58,15 @@ import './dev/hunt'
 import './dev/stackbread'
 import './dev/autosupperegg'
 
+import { prestigeinfo } from './features/generalInfo'
+import { prestigexp } from './features/generalInfo'
+import { formatNumber } from './functions/formatNumber'
+import { inMid } from './functions/inMid'
+import { inSpawn } from './functions/inSpawn'
+import { msToTime } from './functions/msToTime'
+import { romanToInt } from './functions/roman'
+import { getRoman } from './functions/roman'
+
 ///////////////////////////////////////////////////////////
 
 register("messageSent", (message, event) => {
