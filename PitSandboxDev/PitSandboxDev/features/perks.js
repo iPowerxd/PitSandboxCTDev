@@ -9,7 +9,6 @@ let autoSyncCooldown
 let spawn
 let firstTimeSync = false
 let autoSyncperks = true
-let lperks = JSON.parse(FileLib.read("PitSandboxDev", "perks.json")).sort()
 
 export const megastreak = () => {
     return equMegastreak
@@ -21,10 +20,6 @@ export const perks = () => {
 
 export const killstreaks = () => {
     return equKillstreaks
-}
-
-export const equipedUpgrades = () => {
-    return lperks
 }
 
 export const hasPerk = (perk) => {
@@ -39,18 +34,6 @@ export const hasKillstreak = (ks) => {
     } return false
 }
 
-/* export const hasPerk = (perk) => {
-    for (let i = 0; i < 3; i++) {
-        if (equipedUpgrades()[0][i].includes(perk)) return equipedUpgrades()[0][i][1]
-    } return 0
-}
-
-export const hasKillstreak = (killstreak) => {
-    for (let i = 0; i < 3; i++) {
-        if (equipedUpgrades()[1][i].includes(killstreak)) return true
-    } return false
-}
- */
 export const getMegaColor = (mega) => {
     if (mega == "Overdrive") return '§cOverdrive'
     else if (mega == "Highlander") return '§6Highlander'
@@ -139,9 +122,6 @@ register("guiOpened", event => {
     if (!onSandbox() || !syncperks) return
     setTimeout(() => {
         if (ChatLib.removeFormatting(Player.getContainer().getName()).startsWith("Viewing " + Player.getName())) {
-            let perk1 = getPerk(Player.getContainer().getStackInSlot(13).getNBT().toString())
-            let perk2 = getPerk(Player.getContainer().getStackInSlot(14).getNBT().toString())
-            let perk3 = getPerk(Player.getContainer().getStackInSlot(15).getNBT().toString())
 
             equPerks = []
 
@@ -156,9 +136,9 @@ register("guiOpened", event => {
 
             let killstreaks = getKillStreaks(Player.getContainer().getStackInSlot(23).getNBT().toString())
             let mega = getMegastreak(Player.getContainer().getStackInSlot(23).getNBT().toString())
-            /* let blessing = getBlessing() */
-            lperks = [[perk1, perk2, perk3], killstreaks, [mega]]//, blessing
-            FileLib.write("PitSandboxDev", "perks.json", JSON.stringify(lperks))
+
+            // let blessing = getBlessing() 
+
             Client.scheduleTask(0, () => {
                 Client.getCurrentGui().close()
             })

@@ -39,6 +39,8 @@ let goldrequire = undefined
 let goldrequiremax = undefined
 let goldreqrefresh = 5
 
+let firstshot = 0
+
 let sixtimescoins = 0
 let onetapbots = 0
 let halfhitdelay = 0
@@ -408,6 +410,16 @@ register("tick", () => {
     }
 })
 
+register("actionBar", event => {
+    let msg = ChatLib.removeFormatting(ChatLib.getChatMessage(event));
+    if (!onSandbox()) return
+    if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤")) firstshot = 10
+})
+
+register('step', () => {
+    firstshot > 0 ? firstshot-- : firstshot = 0
+}).setFps(10)
+
 new Thread(() => {
     setTimeout(() => {
         register("tick", () => {
@@ -488,8 +500,12 @@ register("renderOverlay", () => {
 })
 
 register('renderOverlay', () => {
+    let lines = []
+    if (firstshot && inMid(Player.asPlayerMP())) {
+        lines.push(`&eFirst Shot: ${firstshot / 10}`)
+    }
+
     if (Settings.eggEffectDisplay) {
-        let lines = [];
         if (Date.now() < sixtimescoins) {
             lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
         }
@@ -499,13 +515,15 @@ register('renderOverlay', () => {
         if (Date.now() < halfhitdelay) {
             lines.push("&eHalf hit delay &7" + msToTime(halfhitdelay - Date.now()));
         }
-        let y = Renderer.screen.getHeight() / 2.2;
-        lines.forEach(line => {
-            let text = new Text(line, 0, y);
-            text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2);
-            text.setShadow(true);
-            text.draw();
-            y -= 12;
-        });
     }
+
+    let y = Renderer.screen.getHeight() / 2.2
+
+    lines.forEach(line => {
+        let text = new Text(line, 0, y)
+        text.setX(Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(text.getString()) / 2).setShadow(true)
+        text.draw()
+        y -= 12
+    })
+
 })

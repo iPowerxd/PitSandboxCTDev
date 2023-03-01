@@ -59,7 +59,7 @@ class Settings {
 
 
     @SwitchProperty({
-        name: "§eToggle HUD",
+        name: "§eGeneral Info",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
         subcategory: "!General Info",
@@ -67,15 +67,15 @@ class Settings {
     toggleSandboxHUD = true;
 
     @SwitchProperty({
-        name: "§eToggle Simple HUD",
-        description: "Toggle the HUD to show less",
+        name: "§eEnable Simple HUD",
+        description: "Makes general info show less information",
         category: "General",
         subcategory: "!General Info",
     })
     toggleSimpleHUD = false;
 
     @SwitchProperty({
-        name: "§eToggle Major and Minor Events",
+        name: "§eShow Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
         subcategory: "!General Info",
@@ -187,7 +187,7 @@ class Settings {
     toggleBDAlert = true;
 
     @SwitchProperty({
-        name: "§bShow Ping in Experience Bar",
+        name: "§bPing in Experience Bar",
         description: "Set your experience level to your ping",
         category: "General",
         subcategory: 'Quality of Life'
@@ -301,6 +301,14 @@ class Settings {
     chatColor = "";
 
     @SwitchProperty({
+        name: "§eRandom chat §cc§6o§el§9o§5r",
+        description: "Gives you a random chat color every message\n&eBypasses auto chat color",
+        category: "Customization",
+        subcategory: "Chat"
+    })
+    randomChatColour = false
+
+    @SwitchProperty({
         name: "§2Guild Passive Sound",
         description: "Play a sound when trying to hit someone in /g passive",
         category: "General",
@@ -333,7 +341,7 @@ class Settings {
     toggleGNotification = true;
 
     @SwitchProperty({
-        name: "§cToggle Low Health Indicator",
+        name: "§cLow Health Indicator",
         description: "Makes your screen red when you are low on health",
         category: "General",
         subcategory: 'Quality of Life'
@@ -396,7 +404,7 @@ class Settings {
     fishAlert = true;
 
     @SwitchProperty({
-        name: "§bToggle Hunger Bar Display",
+        name: "§bHide Hunger Bar Display",
         description: "Toggle seeing the hunger bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -404,7 +412,7 @@ class Settings {
     toggleHungerBar = false;
 
     @SwitchProperty({
-        name: "§bToggle Armor Bar Display",
+        name: "§bHide Armor Bar Display",
         description: "Toggle seeing the armor bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -412,7 +420,7 @@ class Settings {
     toggleArmorBar = false;
 
     @SwitchProperty({
-        name: "§bToggle XP Bar Display",
+        name: "§bHide XP Bar Display",
         description: "Toggle seeing the xp bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -420,7 +428,7 @@ class Settings {
     toggleXPBar = true;
 
     @SwitchProperty({
-        name: "§bToggle Boss Bar Display",
+        name: "§bHide Boss Bar Display",
         description: "Toggle seeing the Boss bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"

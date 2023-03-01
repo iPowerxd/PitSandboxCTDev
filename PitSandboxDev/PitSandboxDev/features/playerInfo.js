@@ -9,7 +9,8 @@ import { inMid } from '../functions/inMid'
 import { getSidebar } from '../functions/sidebar'
 import { hasEnchant } from "../functions/enchant"
 
-import { equipedUpgrades } from './perks'
+import { perks } from './perks'
+import { megastreak } from './perks'
 import { hasPerk } from './perks'
 import { hasKillstreak } from './perks'
 
@@ -221,7 +222,7 @@ register("renderOverlay", () => {
         } if (hasPerk("Berserker Brew") != 0 && scoreboard.find(l => l.startsWith("Bers Brew: "))) {
             const bersLevel = scoreboard.find(l => l.startsWith("Bers Brew: ")).split("Bers Brew: ")[1]
             info.push("&f&lBers Brew&r: &c" + bersLevel)
-        } if (equipedUpgrades()[2][0] == 'Uberstreak') {
+        } if (megastreak() == 'Uberstreak') {
             if (activeStreak() >= 100) info.push("&d&lUBER100 Bot Damage&d: &c-30%")
             if (activeStreak() >= 200) info.push("&d&lUBER200 Healing&d: &c-40%")
             if (activeStreak() >= 300) info.push("&d&lUBER300 Dirty Duration & Spongesteve&d: &c-50%")

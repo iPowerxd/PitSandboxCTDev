@@ -85,6 +85,7 @@ const xpneeded = [15, 30, 50, 75, 125, 300, 600, 800, 900, 1000, 1200, 1500]
 const totalxpnopres = 65950
 
 const yummyTime = () => {
+    if (!onSandbox()) return
     const tab = TabList.getHeader().split('\n')
     for (let i = 0; i < tab.length; i++) {
         if (tab[i].includes('YUMMY BISCUIT:')) return tab[i].split('YUMMY BISCUIT: ')[1].split(' left')[0]
@@ -226,19 +227,19 @@ new Thread(() => {
                 general[general.indexOf(Settings.hudTextColor + "Megacoins: &cUnknown")] = Settings.hudTextColor + "Megacoins: &6" + formatNumber(megacoins);
             } if (gems) {
                 general[general.indexOf(Settings.hudTextColor + "Gems: &cUnknown")] = Settings.hudTextColor + "Gems: &a" + formatNumber(gems);
-            }
-            if (extradamage > Date.now()) {
+            } if (extradamage > Date.now()) {
                 general.push(Settings.hudTextColor + "Megastar: &c" + msToTime(extradamage - Date.now()));
-            }
-            if (Settings.toggleSimpleHUD) {
-                if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())}, ${majorname}`)
-            } else {
-                if (nextmajor > Date.now()) {
-                    general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
-                } if (nextminor > Date.now()) {
-                    general.push(Settings.hudTextColor + "Next Minor: &e" + msToTime(nextminor - Date.now()));
-                } if (majorname) {
-                    general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
+            } if (Settings.toggleMajorandMinorEventHUD) {
+                if (Settings.toggleSimpleHUD) {
+                    if (nextmajor > Date.now() && majorname) general.push(`${Settings.hudTextColor}Next Major: &e${msToTime(nextmajor - Date.now())}, ${majorname}`)
+                } else {
+                    if (nextmajor > Date.now()) {
+                        general.push(Settings.hudTextColor + "Next Major: &e" + msToTime(nextmajor - Date.now()));
+                    } if (nextminor > Date.now()) {
+                        general.push(Settings.hudTextColor + "Next Minor: &e" + msToTime(nextminor - Date.now()));
+                    } if (majorname) {
+                        general.push(Settings.hudTextColor + "Major Name: &e" + majorname);
+                    }
                 }
             }
             let streakers = worldotherplayers().filter(e => inMid(e) && (!e.getName().startsWith("§7") && !e.getName().startsWith("CIT-"))).length;
