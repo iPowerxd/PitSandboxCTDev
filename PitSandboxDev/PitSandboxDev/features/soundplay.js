@@ -30,6 +30,6 @@ register("soundPlay", (pos, name, vol, pitch, cat, event) => {
         if (Settings.removePerunSounds && name.toLowerCase().includes("random.explode")) return cancel(event)
         if (Settings.removeStunSounds && name.toLowerCase().includes("random.anvil_land")) return cancel(event)
     }
-    if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.8" && !Settings.toggleBountyBumps) cancel(event)
+    if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.8" && Settings.toggleBountyBumps) cancel(event)
     if (name.toLowerCase().includes("mob.wither.spawn") && pitch.toFixed(1) == "1.6" && !Settings.toggleMegastreakSounds) cancel(event)
 })

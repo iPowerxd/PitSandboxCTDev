@@ -227,12 +227,12 @@ class Settings {
     personalClaims = true;
 
     @SwitchProperty({
-        name: "§6Bounty Bumps",
-        description: "See bounty bump messages and sounds",
+        name: "§6Hide Bounty Bumps",
+        description: "Hide bounty bump messages and sounds",
         category: "General",
         subcategory: "Messages"
     })
-    toggleBountyBumps = false;
+    toggleBountyBumps = true
 
     @SwitchProperty({
         name: "§aRemove player damage sounds in middle",
@@ -379,7 +379,7 @@ class Settings {
         category: "General",
         subcategory: 'Quality of Life',
         min: 1,
-        max: 50000
+        max: 100000
     })
     minPay = 5000;
 
@@ -498,6 +498,10 @@ class Settings {
         subcategory: "Auto OOF"
     })
     autoOOFHermit = false;
+
+
+    // DEV
+
 
     @SwitchProperty({
         name: "§cAuto LS Swap",

@@ -70,7 +70,13 @@ export let currentstreak = {
     killxp: 0,
     assxp: 0,
     otherxp: 0,
-    other: []
+    other: [],
+    magma: 0,
+    coinsandxp: 0,
+    onetap: 0,
+    halfhitdelay: 0,
+    regenten: 0,
+    totaleggs: 0,
 }
 
 const recapStreak = () => {
@@ -148,7 +154,13 @@ const recapStreak = () => {
         killxp: 0,
         assxp: 0,
         otherxp: 0,
-        other: []
+        other: [],
+        magma: 0,
+        coinsandxp: 0,
+        onetap: 0,
+        halfhitdelay: 0,
+        regenten: 0,
+        totaleggs: 0,
     };
 };
 
@@ -329,7 +341,7 @@ register("chat", event => {
                             amount: 1
                         });
                         break;
-                    case "➜ +10 emeralds":
+                    case "➜ +10 Emeralds":
                         if (currentstreak.other.find(o => o.id == "E")) currentstreak.other[currentstreak.other.indexOf(currentstreak.other.find(o => o.id == "E"))].amount += 10;
                         else currentstreak.other.push({
                             color: "&a",
@@ -373,11 +385,11 @@ register("chat", event => {
     if (umsg.includes("/cf") && Settings.antiCF) cancel(event);
     if (umsg.startsWith("There's an active Blitz tournament")) cancel(event);
     if (umsg.startsWith("BOUNTY! of") || umsg.startsWith("BOUNTY! bump")) {
-        if (!Settings.toggleBountyBumps) cancel(event);
+        if (Settings.toggleBountyBumps) cancel(event);
     }
     if (Settings.eggEffectDisplay) {
         switch (umsg) {
-            case "SUPEREGG! +2x coins and XP (00:10)":
+            case "SUPEREGG! +2x coins and 2.5x XP (00:10)":
                 if (Date.now() > coinsandxp) coinsandxp = Date.now() + 10000;
                 else coinsandxp += 10000;
                 break;
@@ -527,3 +539,43 @@ register('renderOverlay', () => {
     })
 
 })
+
+/*
+
+magma
+coinsandxp
+onetap
+halfhitdelay
+regenten
+
+totaleggs
+
+*/
+
+register('chat', (type, event) => {
+    currentstreak.totaleggs++
+    switch (type) {
+        case 'Spawned Magma Cubes':
+            currentstreak.magma++
+            break
+
+        case '+2x coins and 2.5x XP (00:10)':
+            currentstreak.coinsandxp++
+            break
+
+        case 'One tap bots (00:10)':
+            currentstreak.onetap++
+            break
+
+        case 'Half the hit delay on bots (00:10)':
+            currentstreak.halfhitdelay
+            break
+
+        case 'Applied Regeneration X (00:15)':
+            currentstreak.regenten
+            break
+
+        default:
+            break
+    }
+}).setChatCriteria('SUPEREGG! ${type}')
