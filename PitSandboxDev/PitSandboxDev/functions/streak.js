@@ -329,7 +329,7 @@ register("chat", event => {
                             amount: 1
                         });
                         break;
-                    case "➜ +10 emeralds":
+                    case "➜ +10 Emeralds":
                         if (currentstreak.other.find(o => o.id == "E")) currentstreak.other[currentstreak.other.indexOf(currentstreak.other.find(o => o.id == "E"))].amount += 10;
                         else currentstreak.other.push({
                             color: "&a",
@@ -377,7 +377,7 @@ register("chat", event => {
     }
     if (Settings.eggEffectDisplay) {
         switch (umsg) {
-            case "SUPEREGG! +2x coins and XP (00:10)":
+            case "SUPEREGG! +2x coins and 2.5x XP (00:10)":
                 if (Date.now() > coinsandxp) coinsandxp = Date.now() + 10000;
                 else coinsandxp += 10000;
                 break;
@@ -507,7 +507,7 @@ register('renderOverlay', () => {
 
     if (Settings.eggEffectDisplay) {
         if (Date.now() < coinsandxp) {
-            lines.push("&6+2x coins &b2.5x XP &7" + msToTime(coinsandxp - Date.now()));
+            lines.push("&6+2.5x coins &b2x XP &7" + msToTime(coinsandxp - Date.now()));
         }
         if (Date.now() < onetapbots) {
             lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
