@@ -519,7 +519,7 @@ register('renderOverlay', () => {
 
     if (Settings.eggEffectDisplay) {
         if (Date.now() < coinsandxp) {
-            lines.push("&6+2x coins &b2.5x XP &7" + msToTime(coinsandxp - Date.now()));
+            lines.push("&6+2.5x coins &b2x XP &7" + msToTime(coinsandxp - Date.now()));
         }
         if (Date.now() < onetapbots) {
             lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));

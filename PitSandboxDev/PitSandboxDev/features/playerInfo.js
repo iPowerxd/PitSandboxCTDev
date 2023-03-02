@@ -200,6 +200,8 @@ register("renderOverlay", () => {
             info.push("&c&lStrength&c: +" + strength + "%" + " &7(" + strengthTime() + "s)")
         } if (rngdam()) {
             info.push("&d&lRNGesus DMG: &c+25%&r&7 (" + rngdam() + "s)");
+        } if (shark) {
+            info.push("&c&lShark: &c+" + shark + "%")
         } if (hasPerk("Bodybuilder") != 0 && strengthLevel() == 5) {
             info.push("&4&lBody Builder&4: &c+" + bbDamage() + "%")
         } if (mega.includes("OVRDRV") && activeStreak() >= 55) {
@@ -253,8 +255,6 @@ register("renderOverlay", () => {
                     break
             }
             info.push(`&9&lFractional Reserve: &b-${frac}%`)
-        } if (shark) {
-            info.push("&c&lShark: &c+" + shark + "%")
         } if (inEvent() == "bloodbath") {
             info.push("&4&lBlood Bath: &c+30% Damage")
             info.push("&4&lBlood Bath: &d+20% Healing")
