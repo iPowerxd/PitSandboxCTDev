@@ -41,7 +41,7 @@ let goldreqrefresh = 5
 
 let firstshot = 0
 
-let sixtimescoins = 0
+let coinsandxp = 0
 let onetapbots = 0
 let halfhitdelay = 0
 
@@ -377,9 +377,9 @@ register("chat", event => {
     }
     if (Settings.eggEffectDisplay) {
         switch (umsg) {
-            case "SUPEREGG! +2.5x coins and XP (00:10)":
-                if (Date.now() > sixtimescoins) sixtimescoins = Date.now() + 10000;
-                else sixtimescoins += 10000;
+            case "SUPEREGG! +2x coins and XP (00:10)":
+                if (Date.now() > coinsandxp) coinsandxp = Date.now() + 10000;
+                else coinsandxp += 10000;
                 break;
             case "SUPEREGG! One tap bots (00:10)":
                 if (Date.now() > onetapbots) onetapbots = Date.now() + 10000;
@@ -506,8 +506,8 @@ register('renderOverlay', () => {
     }
 
     if (Settings.eggEffectDisplay) {
-        if (Date.now() < sixtimescoins) {
-            lines.push("&6+2.5x coins &b2.5x XP &7" + msToTime(sixtimescoins - Date.now()));
+        if (Date.now() < coinsandxp) {
+            lines.push("&6+2x coins &b2.5x XP &7" + msToTime(coinsandxp - Date.now()));
         }
         if (Date.now() < onetapbots) {
             lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
