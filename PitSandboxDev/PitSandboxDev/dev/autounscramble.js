@@ -1,6 +1,8 @@
 import Settings from '../config'
 import { onSandbox } from "../functions/onSandbox"
 
+let pesronalList = true
+
 const dicwords = JSON.parse(FileLib.read('words', 'dicwords.json')).sort()
 let unscrambleList = JSON.parse(FileLib.read("words", "unscramble.json")).sort()
 
@@ -62,7 +64,7 @@ register('chat', (word, event) => {
     if (unscrambledWord.length > 0) {
         ChatLib.chat("&aAnswer copied to clipboard.")
         net.minecraft.client.gui.GuiScreen.func_146275_d(unscrambledWord)
-        if (Settings.aqmGuild) command(`gc Answer is: ${unscrambledWord}`)
+        if (Settings.aqmGuild) ChatLib.command(`gc Answer is: ${unscrambledWord}`)
     } else if (unscrambledWord.length <= 0 && Settings.aqmGuild) ChatLib.command(`gc I don't know the fucking answer!`)
 
     setTimeout(() => {

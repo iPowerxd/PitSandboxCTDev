@@ -38,7 +38,6 @@ function sortEnchants(enchantment) {
 }
 
 const helmet = (info) => {
-    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(4) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(4).getNBT())
@@ -50,14 +49,14 @@ const helmet = (info) => {
                     const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
                     const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
                     return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                } else return ["None", "None"]
-            } else return ["None", "None"]
-        } else return ["None", "None"]
-    } else return ["None", "None"]
+                }
+            }
+        }
+    } return ["None", "None"]
 }
 
 const chestplate = (info) => {
-    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
+
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(3) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(3).getNBT())
@@ -69,14 +68,13 @@ const chestplate = (info) => {
                     const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
                     const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
                     return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                } else return ["None", "None"]
-            } else return ["None", "None"]
-        } else return ["None", "None"]
-    } else return ["None", "None"]
+                }
+            }
+        }
+    } return ["None", "None"]
 }
 
 const boots = (info) => {
-    if (!onSandbox() || !inMenu() || !target) return ["None", "None"]
     let player = new EntityLivingBase(worldentities().find(e => e.getName() == info).entity)
     if (player.getItemInSlot(1) == null) return ["None", "None"]
     const NBT = ChatLib.removeFormatting(player.getItemInSlot(1).getNBT())
@@ -88,10 +86,10 @@ const boots = (info) => {
                     const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
                     const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
                     return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
-                } else return ["None", "None"]
-            } else return ["None", "None"]
-        } else return ["None", "None"]
-    } else return ["None", "None"]
+                }
+            }
+        }
+    } return ["None", "None"]
 }
 
 function formatEnchant(enchant) {
@@ -274,7 +272,6 @@ register("renderOverlay", () => {
             const NetHandlerPlayClient = Client.getConnection()
             const PlayerMap = NetHandlerPlayClient.func_175106_d()
             const ping = (PlayerMap.find(p => p.func_178845_a().name == target) ? PlayerMap.find(p => p.func_178845_a().name == target).func_178853_c() : "?");
-            first = true
             lines.push(`${Settings.hudTextColor}Name: ${name} ${Settings.hudTextColor}Ping: ${pingColour(ping)}ms`)
             lines.push(`${Settings.hudTextColor}Held Item: ${swordenchants}`)
             lines.push(`${Settings.hudTextColor}Pants: ${pantenchants}`)
