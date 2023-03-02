@@ -185,14 +185,15 @@ new Thread(() => {
             } else if (scoreboard.find(l => l.startsWith("Skill: "))) {
                 const skill = scoreboard.find(l => l.startsWith("Skill: ")).split("Skill: ")[1]
                 const level = scoreboard.find(l => l.startsWith("Level: ")).split("Level: ")[1]
-                const xp = scoreboard.find(l => l.startsWith("XP: ")).split("XP: ")[1]
+                const xp = getSidebar().find(l => l.startsWith("§fXP: ")).split("XP: ")[1]
                 general[0] = `${Settings.hudTextColor} Skill: ` + (ChatLib.removeFormatting(skill).toString() == "Mining" ? `&8&l${skill}` : `&d&l${skill}`)
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &e${getRoman(level)}`)
+                general.splice(2, 0, `${Settings.hudTextColor}XP: ${xp}`)
             } else if (scoreboard.find(l => l.startsWith("WATER: "))) {
-                const water = scoreboard.find(l => l.startsWith("WATER: ")).split("WATER: ")[1]
-                const fire = scoreboard.find(l => l.startsWith("FIRE: ")).split("FIRE: ")[1]
-                const nature = scoreboard.find(l => l.startsWith("NATURE: ")).split("NATURE: ")[1]
-                const elemental = scoreboard.find(l => l.startsWith("ELEM: ")).split("ELEM: ")[1]
+                const water = getSidebar().find(l => l.startsWith("§bWATER: ")).split("§bWATER: ")[1]
+                const fire = getSidebar().find(l => l.startsWith("§cFIRE: ")).split("§cFIRE: ")[1]
+                const nature = getSidebar().find(l => l.startsWith("§aNATURE: ")).split("§aNATURE: ")[1]
+                const elemental = getSidebar().find(l => l.startsWith("§2ELEM: ")).split("§2ELEM: ")[1]
                 general[0] = `&eTeam Destroy`
                 general.splice(1, 0, `&bWater: &7${water}`)
                 general.splice(2, 0, `&cFire: &7${fire}`)

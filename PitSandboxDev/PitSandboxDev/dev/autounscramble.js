@@ -1,5 +1,6 @@
 import Settings from '../config'
 import { onSandbox } from "../functions/onSandbox"
+import { isAFK } from '../functions/playerInformation'
 
 let pesronalList = true
 
