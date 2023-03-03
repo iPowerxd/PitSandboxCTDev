@@ -63,6 +63,18 @@ export const isStreaking = () => {
     return streaking
 }
 
+export let streaksession = {
+    kills: 0,
+    coins: 0,
+    xp: 0,
+    magma: 0,
+    coinsandxp: 0,
+    onetap: 0,
+    halfhitdelay: 0,
+    regenten: 0,
+    totaleggs: 0,
+}
+
 export let currentstreak = {
     killgold: 0,
     assgold: 0,
@@ -78,6 +90,90 @@ export let currentstreak = {
     regenten: 0,
     totaleggs: 0,
 }
+
+register('chat', (type, event) => {
+    currentstreak.totaleggs++
+    streaksession.totaleggs++
+    switch (type) {
+        case 'Spawned Magma Cubes':
+            currentstreak.magma++
+            streaksession.magma++
+            break
+
+        case '+2x coins and 2.5x XP (00:10)':
+            currentstreak.coinsandxp++
+            streaksession.coinsandxp++
+            break
+
+        case 'One tap bots (00:10)':
+            currentstreak.onetap++
+            streaksession.onetap++
+            break
+
+        case 'Half the hit delay on bots (00:10)':
+            currentstreak.halfhitdelay++
+            streaksession.halfhitdelay++
+            break
+
+        case 'Applied Regeneration X (00:15)':
+            currentstreak.regenten++
+            streaksession.regenten++
+            break
+
+        default:
+            break
+    }
+}).setChatCriteria('SUPEREGG! ${type}')
+
+register('command', (arg1) => {
+    if (!onSandbox()) return
+
+    switch (arg1) {
+        case 'show':
+            let info = []
+            info.push('\n')
+            info.push(`${Settings.hudGroupColor}§nCurrent Session`)
+            info.push('\n')
+
+            info.push(`§cKills: ${formatNumber(Math.floor(streaksession.kills))}`)
+            info.push(`§6Coins: $${formatNumber(Math.round(streaksession.coins * 10) / 10)}`)
+            info.push(`§bXP: ${formatNumber(Math.round(streaksession.xp * 10) / 10)}XP`)
+            info.push('\n')
+
+            if (streaksession.totaleggs > 0) {
+                info.push(`§4Magma: ${streaksession.magma}/${streaksession.totaleggs} §7(${Math.round(streaksession.magma / streaksession.totaleggs * 100)}%)`)
+                info.push(`§6Coins §7& §bXP: §6${streaksession.coinsandxp}§b/§6${streaksession.totaleggs} §7(${Math.round(streaksession.coinsandxp / streaksession.totaleggs * 100)}%)`)
+                info.push(`§cOne Tap Bots: ${streaksession.onetap}/${streaksession.totaleggs} §7(${Math.round(streaksession.onetap / streaksession.totaleggs * 100)}%)`)
+                info.push(`§eHalf Hit Delay: ${streaksession.halfhitdelay}/${streaksession.totaleggs} §7(${Math.round(streaksession.halfhitdelay / streaksession.totaleggs * 100)}%)`)
+                info.push(`§dRegen X: ${streaksession.regenten}/${streaksession.totaleggs} §7(${Math.round(streaksession.regenten / streaksession.totaleggs * 100)}%)`)
+                info.push('\n')
+            }
+
+            ChatLib.chat(info.join('\n'))
+
+            break
+
+        case 'clear':
+            streaksession = {
+                kills: 0,
+                coins: 0,
+                xp: 0,
+                magma: 0,
+                coinsandxp: 0,
+                onetap: 0,
+                halfhitdelay: 0,
+                regenten: 0,
+                totaleggs: 0,
+            }
+            ChatLib.chat(`§aSession cleared.`)
+            break
+
+        default:
+
+            break
+    }
+
+}).setName('session')
 
 const recapStreak = () => {
     if (!Settings.toggleSandboxHUD) return;
@@ -140,7 +236,18 @@ const recapStreak = () => {
         streakinfo.push("Other: " + other);
     }
 
-    streakinfo.push("\n");
+    streakinfo.push("\n")
+
+    if (currentstreak.totaleggs > 0) {
+
+        streakinfo.push(`Magma: §4${currentstreak.magma}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.magma / currentstreak.totaleggs * 100)}%)`)
+        streakinfo.push(`Coins & XP: §6${currentstreak.coinsandxp}§b/§6${currentstreak.totaleggs} §7(${Math.round(currentstreak.coinsandxp / currentstreak.totaleggs * 100)}%)`)
+        streakinfo.push(`One Tap Bots: §c${currentstreak.onetap}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.onetap / currentstreak.totaleggs * 100)}%)`)
+        streakinfo.push(`Half Hit Delay: §e${currentstreak.halfhitdelay}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.halfhitdelay / currentstreak.totaleggs * 100)}%)`)
+        streakinfo.push(`Regen X: §d${currentstreak.regenten}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.regenten / currentstreak.totaleggs * 100)}%)`)
+
+        streakinfo.push("\n")
+    }
 
     streakinfo.map(l => ChatLib.chat(l));
     streak = 0;
@@ -210,8 +317,15 @@ register("chat", (percent, player, xp, gold, event) => {
     xp = xp.replace(/[,]/g, "");
     gold = gold.replace(/[,]/g, "");
     if (parseInt(percent) != NaN) streak += parseInt(percent) / 100, laststreakchange = Date.now();
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.assxp += parseFloat(xp);
-    if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.assgold += parseFloat(gold), goldrequire += parseFloat(gold);
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.assxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
+    if (parseFloat(gold) != NaN && parseFloat(gold)) {
+        currentstreak.assgold += parseFloat(gold)
+        goldrequire += parseFloat(gold)
+        streaksession.coins += parseFloat(gold)
+    }
 }).setChatCriteria("ASSIST! of ${percent}% on ${player} +${xp} +$${gold}");
 
 register("chat", (player, xp, gold, event) => {
@@ -227,8 +341,16 @@ register("chat", (player, xp, gold, event) => {
     streak += str;
     laststreakchange = Date.now();
     streakkills += str;
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp);
-    if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold);
+    streaksession.kills++
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.killxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
+    if (parseFloat(gold) != NaN && parseFloat(gold)) {
+        currentstreak.killgold += parseFloat(gold)
+        goldrequire += parseFloat(gold)
+        streaksession.coins += parseFloat(gold)
+    }
 }).setChatCriteria("KILL! on ${player} +${xp} +$${gold}");
 
 register("chat", (mult, player, xp, gold, event) => {
@@ -245,8 +367,16 @@ register("chat", (mult, player, xp, gold, event) => {
     streak += str
     laststreakchange = Date.now()
     streakkills += str
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp)
-    if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold)
+    streaksession.kills++
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.killxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
+    if (parseFloat(gold) != NaN && parseFloat(gold)) {
+        currentstreak.killgold += parseFloat(gold)
+        goldrequire += parseFloat(gold)
+        streaksession.coins += parseFloat(gold)
+    }
 }).setChatCriteria("${mult} KILL! on ${player} +${xp} +$${gold}")
 
 register("chat", (mult, player, xp, gold, event) => {
@@ -262,8 +392,16 @@ register("chat", (mult, player, xp, gold, event) => {
     streak += str
     laststreakchange = Date.now()
     streakkills += str
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.killxp += parseFloat(xp)
-    if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.killgold += parseFloat(gold), goldrequire += parseFloat(gold)
+    streaksession.kills++
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.killxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
+    if (parseFloat(gold) != NaN && parseFloat(gold)) {
+        currentstreak.killgold += parseFloat(gold)
+        goldrequire += parseFloat(gold)
+        streaksession.coins += parseFloat(gold)
+    }
 }).setChatCriteria("MULTI KILL! (${mult}) on ${player} +${xp} +$${gold}")
 
 register("chat", (xp, event) => {
@@ -272,7 +410,10 @@ register("chat", (xp, event) => {
     cancel(event)
     if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.otherxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
 }).setChatCriteria("PLETHORA! +${xp}XP")
 
 register("chat", (event) => {
@@ -284,7 +425,10 @@ register("chat", (xp, event) => {
     if (!Settings.toggleSandboxHUD) return
     if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.otherxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
 }).setChatCriteria("SHARING IS CARING! +${xp}XP!")
 
 register("chat", (xp, event) => {
@@ -292,7 +436,10 @@ register("chat", (xp, event) => {
     if (!Settings.toggleSandboxHUD) return
     if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.otherxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
 }).setChatCriteria("TO THE MOON! Earned +${xp}XP from megastreak (${*}x multiplier)")
 
 register("chat", (gold, event) => {
@@ -301,7 +448,11 @@ register("chat", (gold, event) => {
     cancel(event)
     if (Date.now() - lastendstreak < 2000) return
     gold = gold.replace(/[,]/g, "")
-    if (parseFloat(gold) != NaN && parseFloat(gold)) currentstreak.othergold += parseFloat(gold), goldrequire += parseFloat(gold)
+    if (parseFloat(gold) != NaN && parseFloat(gold)) {
+        currentstreak.othergold += parseFloat(gold)
+        goldrequire += parseFloat(gold)
+        streaksession.coins += parseFloat(gold)
+    }
 }).setChatCriteria("➜ +$${gold}")
 
 register("chat", (xp, event) => {
@@ -310,7 +461,10 @@ register("chat", (xp, event) => {
     cancel(event)
     if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "")
-    if (parseFloat(xp) != NaN && parseFloat(xp)) currentstreak.otherxp += parseFloat(xp)
+    if (parseFloat(xp) != NaN && parseFloat(xp)) {
+        currentstreak.otherxp += parseFloat(xp)
+        streaksession.xp += parseFloat(xp)
+    }
 }).setChatCriteria("➜ ${xp} XP")
 
 register("chat", event => {
@@ -485,6 +639,9 @@ new Thread(() => {
                 } if (currentstreak.other.length > 0) {
                     let other = currentstreak.other.map(o => o.color + o.amount + " " + o.id).join(" ");
                     streakinfo.push(Settings.hudTextColor + "Other: " + other);
+                } if (currentstreak.totaleggs > 0) {
+                    streakinfo.push(`${Settings.hudTextColor}Egg Avg: §4${Math.round(currentstreak.magma / currentstreak.totaleggs * 100)}% §6${Math.round(currentstreak.coinsandxp / currentstreak.totaleggs * 100)}§b% §c${Math.round(currentstreak.onetap / currentstreak.totaleggs * 100)}% §e${Math.round(currentstreak.halfhitdelay / currentstreak.totaleggs * 100)}% §d${Math.round(currentstreak.regenten / currentstreak.totaleggs * 100)}%`)
+                    streakinfo.push(`${Settings.hudTextColor}Total Eggs: §a${currentstreak.totaleggs}`)
                 }
                 streakinfo.splice(0, 0, [Settings.hudGroupColor + "&nStreaking Info"])
                 streakinglines = streakinfo
@@ -513,13 +670,13 @@ register("renderOverlay", () => {
 
 register('renderOverlay', () => {
     let lines = []
-    if (firstshot && inMid(Player.asPlayerMP())) {
+    if (Settings.freeshotDisplay && firstshot && inMid(Player.asPlayerMP())) {
         lines.push(`&eFirst Shot: ${firstshot / 10}`)
     }
 
     if (Settings.eggEffectDisplay) {
         if (Date.now() < coinsandxp) {
-            lines.push("&6+2.5x coins &b2x XP &7" + msToTime(coinsandxp - Date.now()));
+            lines.push("&6+2x coins &b2.5x XP &7" + msToTime(coinsandxp - Date.now()));
         }
         if (Date.now() < onetapbots) {
             lines.push("&cOne tap bots &7" + msToTime(onetapbots - Date.now()));
@@ -539,43 +696,3 @@ register('renderOverlay', () => {
     })
 
 })
-
-/*
-
-magma
-coinsandxp
-onetap
-halfhitdelay
-regenten
-
-totaleggs
-
-*/
-
-register('chat', (type, event) => {
-    currentstreak.totaleggs++
-    switch (type) {
-        case 'Spawned Magma Cubes':
-            currentstreak.magma++
-            break
-
-        case '+2x coins and 2.5x XP (00:10)':
-            currentstreak.coinsandxp++
-            break
-
-        case 'One tap bots (00:10)':
-            currentstreak.onetap++
-            break
-
-        case 'Half the hit delay on bots (00:10)':
-            currentstreak.halfhitdelay
-            break
-
-        case 'Applied Regeneration X (00:15)':
-            currentstreak.regenten
-            break
-
-        default:
-            break
-    }
-}).setChatCriteria('SUPEREGG! ${type}')

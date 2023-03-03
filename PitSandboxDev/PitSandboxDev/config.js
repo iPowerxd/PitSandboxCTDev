@@ -139,6 +139,14 @@ class Settings {
     combatLog = false;
 
     @SwitchProperty({
+        name: "§bFree Shot Display",
+        description: "Shows the length of free shot disabled.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    freeshotDisplay = true;
+
+    @SwitchProperty({
         name: "§bEgg Effect Display",
         description: "Display the active egg effects and how long until they expire.",
         category: "General",

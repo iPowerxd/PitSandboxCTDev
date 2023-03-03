@@ -5,5 +5,5 @@
 	"description": "§5Pitsandbox Mod Edited Moment",
 	"entry": "index.js",
 	"version": "69.69.69",
-	"requires": ["Vigilance", "PogData", "ChangelogLib", "Lore"]
+	"requires": ["Vigilance", "PogData", "ChangelogLib"]
 }

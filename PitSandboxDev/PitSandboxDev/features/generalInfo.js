@@ -190,10 +190,10 @@ new Thread(() => {
                 general.splice(1, 0, `${Settings.hudTextColor}Level: &e${getRoman(level)}`)
                 general.splice(2, 0, `${Settings.hudTextColor}XP: ${xp}`)
             } else if (scoreboard.find(l => l.startsWith("WATER: "))) {
-                const water = getSidebar().find(l => l.startsWith("§bWATER: ")).split("§bWATER: ")[1]
-                const fire = getSidebar().find(l => l.startsWith("§cFIRE: ")).split("§cFIRE: ")[1]
-                const nature = getSidebar().find(l => l.startsWith("§aNATURE: ")).split("§aNATURE: ")[1]
-                const elemental = getSidebar().find(l => l.startsWith("§2ELEM: ")).split("§2ELEM: ")[1]
+                const water = getSidebar().find(l => l.startsWith("§b§lWATER: ")).split("§b§lWATER: ")[1]
+                const fire = getSidebar().find(l => l.startsWith("§c§lFIRE: ")).split("§c§lFIRE: ")[1]
+                const nature = getSidebar().find(l => l.startsWith("§a§lNATURE: ")).split("§a§lNATURE: ")[1]
+                const elemental = getSidebar().find(l => l.startsWith("§2§lELEM: ")).split("§2§lELEM: ")[1]
                 general[0] = `&eTeam Destroy`
                 general.splice(1, 0, `&bWater: &7${water}`)
                 general.splice(2, 0, `&cFire: &7${fire}`)
