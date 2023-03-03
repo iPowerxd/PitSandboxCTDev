@@ -11,7 +11,7 @@ Color,
 @TextProperty,
 @Vigilant,
     } from 'Vigilance';
-@Vigilant('PitSandboxPublic', '§dPit Sandbox §5v2.0.1', {
+@Vigilant('PitSandboxPublic', '§dv2.1.0', {
     getCategoryComparator: () => (a, b) => {
         const categories = ['General', 'Customization', 'Auto OOF', 'Vanilla HUD Hiding']
         return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -59,26 +59,26 @@ class Settings {
 
 
     @SwitchProperty({
-        name: "§eToggle HUD",
+        name: "§eGeneral Info",
         description: "Toggle the HUD at the right side of the screen and streak recap (relog to see changes)",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSandboxHUD = true;
 
     @SwitchProperty({
-        name: "§eToggle Simple HUD",
-        description: "Toggle the HUD to show less",
+        name: "§eEnable Simple HUD",
+        description: "Makes general info show less information",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleSimpleHUD = false;
 
     @SwitchProperty({
-        name: "§eToggle Major and Minor Events",
+        name: "§eShow Major and Minor Events",
         description: "Toggle Major and Minor Event's from showing in \nthe HUD at the right side of the screen",
         category: "General",
-        subcategory: "General Info",
+        subcategory: "!General Info",
     })
     toggleMajorandMinorEventHUD = true;
 
@@ -99,6 +99,22 @@ class Settings {
     upgradeInfo = true;
 
     @SwitchProperty({
+        name: "§bCooldown Info",
+        description: "See a HUD that shows your cooldowns.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    cooldownInfo = true;
+
+    @SwitchProperty({
+        name: "§bBooster Info",
+        description: "See a HUD that shows active boosters.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    boostersInfo = true;
+
+    @SwitchProperty({
         name: "§bPre Alert",
         description: "Alerts you when you are not on a megastreak",
         category: "General",
@@ -113,6 +129,22 @@ class Settings {
         subcategory: 'Display'
     })
     targetInfo = true;
+
+    @SwitchProperty({
+        name: "§bCombat Log",
+        description: "See a HUD that shows damage you have taken and healed.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    combatLog = false;
+
+    @SwitchProperty({
+        name: "§bFree Shot Display",
+        description: "Shows the length of free shot disabled.",
+        category: "General",
+        subcategory: 'Display'
+    })
+    freeshotDisplay = true;
 
     @SwitchProperty({
         name: "§bEgg Effect Display",
@@ -163,7 +195,7 @@ class Settings {
     toggleBDAlert = true;
 
     @SwitchProperty({
-        name: "§bShow Ping in Experience Bar",
+        name: "§bPing in Experience Bar",
         description: "Set your experience level to your ping",
         category: "General",
         subcategory: 'Quality of Life'
@@ -203,12 +235,12 @@ class Settings {
     personalClaims = true;
 
     @SwitchProperty({
-        name: "§6Bounty Bumps",
-        description: "See bounty bump messages and sounds",
+        name: "§6Hide Bounty Bumps",
+        description: "Hide bounty bump messages and sounds",
         category: "General",
         subcategory: "Messages"
     })
-    toggleBountyBumps = false;
+    toggleBountyBumps = true
 
     @SwitchProperty({
         name: "§aRemove player damage sounds in middle",
@@ -277,6 +309,14 @@ class Settings {
     chatColor = "";
 
     @SwitchProperty({
+        name: "§eRandom chat §cc§6o§el§9o§5r",
+        description: "Gives you a random chat color every message\n&eBypasses auto chat color",
+        category: "Customization",
+        subcategory: "Chat"
+    })
+    randomChatColour = false
+
+    @SwitchProperty({
         name: "§2Guild Passive Sound",
         description: "Play a sound when trying to hit someone in /g passive",
         category: "General",
@@ -309,7 +349,7 @@ class Settings {
     toggleGNotification = true;
 
     @SwitchProperty({
-        name: "§cToggle Low Health Indicator",
+        name: "§cLow Health Indicator",
         description: "Makes your screen red when you are low on health",
         category: "General",
         subcategory: 'Quality of Life'
@@ -347,7 +387,7 @@ class Settings {
         category: "General",
         subcategory: 'Quality of Life',
         min: 1,
-        max: 50000
+        max: 100000
     })
     minPay = 5000;
 
@@ -372,7 +412,7 @@ class Settings {
     fishAlert = true;
 
     @SwitchProperty({
-        name: "§bToggle Hunger Bar Display",
+        name: "§bHide Hunger Bar Display",
         description: "Toggle seeing the hunger bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -380,7 +420,7 @@ class Settings {
     toggleHungerBar = false;
 
     @SwitchProperty({
-        name: "§bToggle Armor Bar Display",
+        name: "§bHide Armor Bar Display",
         description: "Toggle seeing the armor bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -388,7 +428,7 @@ class Settings {
     toggleArmorBar = false;
 
     @SwitchProperty({
-        name: "§bToggle XP Bar Display",
+        name: "§bHide XP Bar Display",
         description: "Toggle seeing the xp bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
@@ -396,7 +436,7 @@ class Settings {
     toggleXPBar = true;
 
     @SwitchProperty({
-        name: "§bToggle Boss Bar Display",
+        name: "§bHide Boss Bar Display",
         description: "Toggle seeing the Boss bar",
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
