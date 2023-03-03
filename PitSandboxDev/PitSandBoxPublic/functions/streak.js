@@ -169,7 +169,10 @@ register('command', (arg1) => {
             break
 
         default:
-
+            let command = []
+            command.push(`§d➜ /session show - §eShows the session`)
+            command.push(`§d➜ /session clear - §eClears the session`)
+            ChatLib.chat(command.join('\n'))
             break
     }
 
