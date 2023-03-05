@@ -417,7 +417,7 @@ class Settings {
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
     })
-    toggleHungerBar = false;
+    toggleHungerBar = true;
 
     @SwitchProperty({
         name: "§bHide Armor Bar Display",
@@ -425,7 +425,7 @@ class Settings {
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
     })
-    toggleArmorBar = false;
+    toggleArmorBar = true;
 
     @SwitchProperty({
         name: "§bHide XP Bar Display",
@@ -433,7 +433,7 @@ class Settings {
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
     })
-    toggleXPBar = true;
+    toggleXPBar = false;
 
     @SwitchProperty({
         name: "§bHide Boss Bar Display",
@@ -441,7 +441,7 @@ class Settings {
         category: "Vanilla HUD Hiding",
         subcategory: "Render"
     })
-    toggleBossBar = false;
+    toggleBossBar = true;
 
     @SwitchProperty({
         name: "§cCustom Auto OOF",

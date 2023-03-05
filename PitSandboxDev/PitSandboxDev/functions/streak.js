@@ -659,7 +659,7 @@ register("step", () => {
 }).setFps(1)
 
 register("renderOverlay", () => {
-    if (streakinglines.length > 0) {
+    if (streakinglines.length > 0 && Settings.toggleSandboxHUD) {
         y = streakInfoHud.textY
         let streakinfo = streakinglines
         streakinfo.forEach(line => {

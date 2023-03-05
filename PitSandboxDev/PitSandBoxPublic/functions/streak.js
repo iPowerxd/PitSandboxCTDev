@@ -202,12 +202,12 @@ const recapStreak = () => {
 
     if (currentstreak.assgold || currentstreak.killgold || currentstreak.othergold) {
         let gold = 0;
-        if (currentstreak.killgold) gold += currentstreak.killgold;
-        if (currentstreak.assgold) gold += currentstreak.assgold;
-        if (currentstreak.othergold) gold += currentstreak.othergold;
-        let gps = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000)));
-        let gpm = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60)));
-        let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)));
+        if (currentstreak.killgold) gold += currentstreak.killgold
+        if (currentstreak.assgold) gold += currentstreak.assgold
+        if (currentstreak.othergold) gold += currentstreak.othergold
+        let gps = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000)))
+        let gpm = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60)))
+        let gph = formatNumber(Math.floor(gold / ((Date.now() - startstreaktime) / 1000 / 60 / 60)))
         streakinfo.push("Coins Per S/M/H: &6" + gps + "&r/&6" + gpm + "&r/&6" + gph);
     }
 
@@ -248,8 +248,6 @@ const recapStreak = () => {
         streakinfo.push(`One Tap Bots: §c${currentstreak.onetap}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.onetap / currentstreak.totaleggs * 100)}%)`)
         streakinfo.push(`Half Hit Delay: §e${currentstreak.halfhitdelay}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.halfhitdelay / currentstreak.totaleggs * 100)}%)`)
         streakinfo.push(`Regen X: §d${currentstreak.regenten}/${currentstreak.totaleggs} §7(${Math.round(currentstreak.regenten / currentstreak.totaleggs * 100)}%)`)
-
-        streakinfo.push("\n")
     }
 
     streakinfo.map(l => ChatLib.chat(l));
@@ -336,13 +334,13 @@ register("chat", (player, xp, gold, event) => {
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
     strength()
-    if (Date.now() - lastendstreak < 2000) return;
-    xp = xp.replace(/[,]/g, "");
+    if (Date.now() - lastendstreak < 2000) return
+    xp = xp.replace(/[,]/g, "")
     let str = 1;
-    if (gold.split(" ").length > 1) str = parseFloat(gold.split(" ")[1]), gold = gold.split(" ")[0];
-    gold = gold.replace(/[,]/g, "");
-    streak += str;
-    laststreakchange = Date.now();
+    if (gold.split(" ").length > 1) str = parseFloat(gold.split(" ")[1]), gold = gold.split(" ")[0]
+    gold = gold.replace(/[,]/g, "")
+    streak += str
+    laststreakchange = Date.now()
     streakkills += str;
     streaksession.kills++
     if (parseFloat(xp) != NaN && parseFloat(xp)) {
@@ -659,7 +657,7 @@ register("step", () => {
 }).setFps(1)
 
 register("renderOverlay", () => {
-    if (streakinglines.length > 0) {
+    if (streakinglines.length > 0 && Settings.toggleSandboxHUD) {
         y = streakInfoHud.textY
         let streakinfo = streakinglines
         streakinfo.forEach(line => {

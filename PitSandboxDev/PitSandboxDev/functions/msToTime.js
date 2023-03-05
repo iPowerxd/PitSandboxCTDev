@@ -10,4 +10,4 @@ export const msToTime = (s, showms = false) => {
     var hrs = (s - mins) / 60;
     if (!ms || !showms) return (hrs != 0 ? hrs + 'h ' : "") + (mins != 0 ? mins + 'm ' : "") + secs.toFixed(0) + "s";
     else if (showms) return (hrs != 0 ? hrs + 'h ' : "") + (mins != 0 ? mins + 'm ' : "") + secs.toFixed(0) + '.' + Math.floor(ms / 10) + "s";
-} //import { msToTime } from '../functions/msToTime'
+}
