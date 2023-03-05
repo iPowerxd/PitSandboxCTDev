@@ -17,7 +17,7 @@ import { generalInfoHud } from './gui'
 import { upgradesInfoHud } from "./gui"
 
 register("renderOverlay", () => {
-    if (!onSandbox() || !firstSync()) return
+    if (!onSandbox() || !firstSync() || !Settings.toggleSandboxHUD) return
     let info = [`${Settings.hudGroupColor}§nUpgrades`]
     info.push(getMegaColor(megastreak()))
     for (let i = 0; i < perks().length; i++) if (perks()[i][0] !== 'Nothing') info.push(`§c${perks()[i][0]} §7${getRoman(perks()[i][1])}`)

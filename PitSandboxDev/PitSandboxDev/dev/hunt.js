@@ -34,7 +34,7 @@ register("renderEntity", (entity, pos, ticks, event) => {
 })
 
 register("tick", () => {
-    if (!onSandbox()) return
+    if (!onSandbox() || !Settings.toggleSandboxHUD) return
 
     onlineHunt = huntedPlayers.filter(n => onlinePlayers().includes(n))
     onlineHuntGuild = onlinePlayersFormatted().filter(n => n.split(" ")[2] && huntedGuilds.includes(ChatLib.removeFormatting(n.split(" ")[2].replace(/[\[\]]/g, "")).toUpperCase())).map(n => ChatLib.removeFormatting(n.split(" ")[1])).filter(n => !ignoredPlayers.includes(n))
