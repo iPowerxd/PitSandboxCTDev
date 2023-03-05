@@ -182,7 +182,7 @@ register("step", () => {
 })
 
 register("renderOverlay", () => {
-    if (!onSandbox()) return
+    if (!onSandbox() || !Settings.toggleSandboxHUD) return
     let info = [`${Settings.hudGroupColor}&nPlayer Info`]
     let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
     //let megastreak

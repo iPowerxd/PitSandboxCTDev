@@ -592,6 +592,7 @@ register('step', () => {
 new Thread(() => {
     setTimeout(() => {
         register("tick", () => {
+            if (!Settings.toggleSandboxHUD) return
             let scoreboard = getSidebar().map(l => ChatLib.removeFormatting(l))
             if (!streaking || !inMid(Player.asPlayerMP())) streakinglines = [`${Settings.hudGroupColor}&nStreaking Info`]
             else {
