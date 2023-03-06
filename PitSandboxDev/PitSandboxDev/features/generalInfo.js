@@ -93,9 +93,10 @@ const yummyTime = () => {
 }
 
 register("step", () => {
-    if (!Server.getIP().toLocaleLowerCase().includes("harrys.network") || !Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || !Server.getIP().toLocaleLowerCase().includes("harrys.gg")) return
-    if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
-    else Scoreboard.setShouldRender(true);
+    if (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) {
+        if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
+        else Scoreboard.setShouldRender(true);
+    }
 })
 
 register("command", (arg1, arg2) => {
