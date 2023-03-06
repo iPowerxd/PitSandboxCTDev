@@ -314,7 +314,7 @@ register("chat", (percent, player, xp, gold, event) => {
     if (!onSandbox()) return;
     if (!Settings.toggleSandboxHUD) return;
     cancel(event);
-    if (Date.now() - lastendstreak < 2000) return;
+    if (Date.now() - lastendstreak < 2000) return
     xp = xp.replace(/[,]/g, "");
     gold = gold.replace(/[,]/g, "");
     if (parseInt(percent) != NaN) streak += parseInt(percent) / 100, laststreakchange = Date.now();
