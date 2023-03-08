@@ -4,12 +4,11 @@
 import Settings from '../config'
 import { onSandbox } from './onSandbox'
 import { inMid } from './inMid'
-
 import { strength } from './strength'
 import { bbDamage } from './strength'
 import { strengthLevel } from './strength'
 import { strengthTime } from './strength'
-
+import { getMega } from './playerInformation'
 import { formatNumber } from './formatNumber'
 import { msToTime } from './msToTime'
 import { getSidebar } from './sidebar'
