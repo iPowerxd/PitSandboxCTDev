@@ -4,7 +4,7 @@
 import Settings from '../config'
 import { onSandbox } from './onSandbox'
 import { inMid } from './inMid'
-
+import { getMega } from '../functions/playerInformation'
 import { strength } from './strength'
 import { bbDamage } from './strength'
 import { strengthLevel } from './strength'
