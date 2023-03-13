@@ -17,14 +17,15 @@ const isInMainServer = () => {
 let pitsandbox = (Server.getIP().toLowerCase().includes("harrys.network") || Server.getIP().toLowerCase().includes("pitsandbox.io") || Server.getIP().toLowerCase().includes("harrys.gg")) && isInMainServer()
 
 register("worldLoad", () => {
-    if (!Server.getIP().toLocaleLowerCase().includes("harrys.network") || !Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || !Server.getIP().toLocaleLowerCase().includes("harrys.gg")) return
-    if (!Settings.toggleSandboxHUD) return Scoreboard.setShouldRender(true)
-    setTimeout(() => {
-        nomvp = false
-        pitsandbox = (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) && isInMainServer()
-        if (pitsandbox) Scoreboard.setShouldRender(false)
-        else Scoreboard.setShouldRender(true)
-    }, 1500)
+    if (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) {
+        if (!Settings.toggleSandboxHUD) return Scoreboard.setShouldRender(true)
+        setTimeout(() => {
+            nomvp = false
+            pitsandbox = (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) && isInMainServer()
+            if (pitsandbox) Scoreboard.setShouldRender(false)
+            else Scoreboard.setShouldRender(true)
+        }, 1500)
+    }
 })
 
 register("worldUnload", () => {
