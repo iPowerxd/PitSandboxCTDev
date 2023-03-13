@@ -126,7 +126,7 @@ register("step", () => {
         });
         shark = (sharkpeople * sharkmult > 56 ? 56 : sharkpeople * sharkmult);
     } else shark = 0;
-}).setFps(1);
+}).setFps(1)
 
 register("tick", () => {
     if (!onSandbox()) return

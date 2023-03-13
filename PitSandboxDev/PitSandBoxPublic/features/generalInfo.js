@@ -93,8 +93,10 @@ const yummyTime = () => {
 }
 
 register("step", () => {
-    if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
-    else Scoreboard.setShouldRender(true);
+    if (Server.getIP().toLocaleLowerCase().includes("harrys.network") || Server.getIP().toLocaleLowerCase().includes("pitsandbox.io") || Server.getIP().toLocaleLowerCase().includes("harrys.gg")) {
+        if (onSandbox() && Settings.toggleSandboxHUD) Scoreboard.setShouldRender(false);
+        else Scoreboard.setShouldRender(true);
+    }
 })
 
 register("command", (arg1, arg2) => {
@@ -220,7 +222,7 @@ new Thread(() => {
                 general.push(Settings.hudTextColor + "Bounty: &6" + bounty)
             } if (goldreq()) {
                 if (Settings.toggleSimpleHUD) {
-                    general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh() + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq())) + "&r/&6" + formatNumber(Math.floor(goldreqmax()))
+                    general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh() + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq())) + Settings.hudTextColor + "/&6" + formatNumber(Math.floor(goldreqmax()))
                 } else {
                     general[general.indexOf("GoldReq: &cUnknown &7(" + greqrefresh() + ")")] = Settings.hudTextColor + "GoldReq: &6" + formatNumber(Math.floor(goldreq())) + "&r/&6" + formatNumber(Math.floor(goldreqmax())) + (goldreqmax() == 0 ? "" : " &7(" + (goldreq() / goldreqmax() * 100).toFixed(1) + "%)") + " &7(" + greqrefresh() + ")"
                 }

@@ -92,7 +92,7 @@ const boots = (info) => {
     } return ["None", "None"]
 }
 
-function formatEnchant(enchant) {
+const formatEnchant = (enchant) => {
     // Pants
     // Rare
     if (enchant === 'assassin') return '&dAssassin'
@@ -231,7 +231,7 @@ register('tick', () => {
 
     if (!worldotherplayers().find(p => p.getName() == target)) return target = undefined, targetexpire = undefined, allticks = 0, lsticks = 0, swordenchants = "", pantenchants = "", tdamage = [], pdamage = []
 
-    let player = new EntityLivingBase(worldentities().find(e => e.getName() == target).entity);
+    let player = new EntityLivingBase(worldentities().find(e => e.getName() == target).entity)
     if (player.getItemInSlot(2) && player.getItemInSlot(2).getNBT() && player.getItemInSlot(2).getID() == 300 && getEnchants(player.getItemInSlot(2).getNBT())) {
         let pants = []
         for (let i = 0; i < getEnchants(player.getItemInSlot(2).getNBT()).length; i++) {
