@@ -4,56 +4,56 @@
 import PogObject from "../../PogData"
 import Settings from '../config'
 
-export let generalInfoHud = new PogObject("PitSandboxPublic", {
+export let generalInfoHud = new PogObject("PitSandbox", {
     "firstTime": true,
     "textX": Renderer.screen.getWidth() * 0.895,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/generalInfo.json")
 
-export let streakInfoHud = new PogObject("PitSandboxPublic", {
+export let streakInfoHud = new PogObject("PitSandbox", {
     "textX": Renderer.screen.getWidth() * 0.895,
     "textY": Renderer.screen.getHeight() * 2 / 5,
     "textScale": 1
 }, "guiLocations/streakInfo.json")
 
-export let huntInfoHud = new PogObject("PitSandboxPublic", {
+export let huntInfoHud = new PogObject("PitSandbox", {
     "firstTime": true,
     "textX": Renderer.screen.getWidth() * 0.895,
     "textY": Renderer.screen.getHeight() * 3 / 5,
     "textScale": 1
 }, "guiLocations/huntInfo.json")
 
-export let upgradesInfoHud = new PogObject("PitSandboxPublic", {
+export let upgradesInfoHud = new PogObject("PitSandbox", {
     "textX": 4,
     "textY": Renderer.screen.getHeight() / 9,
     "textScale": 1
 }, "guiLocations/upgradesInfo.json")
 
-export let playerInfoHud = new PogObject("PitSandboxPublic", {
+export let playerInfoHud = new PogObject("PitSandbox", {
     "textX": Renderer.screen.getWidth() / 5,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/playerInfo.json")
 
-export let boosterInfoHud = new PogObject("PitSandboxPublic", {
+export let boosterInfoHud = new PogObject("PitSandbox", {
     "textX": Renderer.screen.getWidth() * 2 / 3,
     "textY": 4,
     "textScale": 1
 }, "guiLocations/boosterInfo.json")
 
-export let cooldownInfoHud = new PogObject("PitSandboxPublic", {
+export let cooldownInfoHud = new PogObject("PitSandbox", {
     "textX": 4,
     "textY": Renderer.screen.getHeight() / 3
 }, "guiLocations/cooldownInfo.json")
 
-export let preInfoHud = new PogObject("PitSandboxPublic", {
+export let preInfoHud = new PogObject("PitSandbox", {
     "textX": Renderer.screen.getWidth() / 2,
     "textY": Renderer.screen.getHeight() * 8 / 10,
     "textScale": 1
 }, "guiLocations/preInfo.json")
 
-export let targetInfoHud = new PogObject("PitSandboxPublic", {
+export let targetInfoHud = new PogObject("PitSandbox", {
     "textX": Renderer.screen.getWidth() * 2 / 3,
     "textY": Renderer.screen.getHeight() * 8.8 / 10,
     "textScale": 1
