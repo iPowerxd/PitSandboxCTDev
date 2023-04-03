@@ -60,7 +60,7 @@ register('worldUnload', () => {
 register("messageSent", (message, event) => {
     if (!onSandbox()) return
     if (nomvp()) return
-    if (message.startsWith("!") || message.startsWith("@") || message.startsWith("#")) return
+    if (message.startsWith("!") || message.startsWith("@") || message.startsWith("#") || message.startsWith('&')) return
     if (quickMaths || unscramble) return
     if (!message.startsWith("/")) {
         if (Settings.randomChatColour) {
