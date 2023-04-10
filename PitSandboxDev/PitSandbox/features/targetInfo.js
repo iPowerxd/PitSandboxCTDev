@@ -185,7 +185,7 @@ function formatEnchant(enchant) {
 register("actionBar", event => {
     let msg = ChatLib.removeFormatting(ChatLib.getChatMessage(event));
     if (!onSandbox()) return
-    if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤")) {
+    if (msg.includes("❤❤❤❤❤❤❤❤❤❤❤❤") && !msg.includes('Tryhard Bot')) {
         let player = msg.split(" ")[0]
         if (Player.getName() === player || player.startsWith("~")) return
         targetexpire = Date.now() + 30000

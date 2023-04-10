@@ -5,7 +5,7 @@ const BlockPos1 = Java.type("net.minecraft.util.BlockPos")
 
 register("tick", () => {
     if (airBlock.isKeyDown()) {
-        if (Date.now() - airblockcd > 50) {
+        if (Date.now() - airblockcd > 5) {
             try {
                 World.getWorld().func_175698_g(new BlockPos1(Player.lookingAt().x, Player.lookingAt().y, Player.lookingAt().z));
             } catch (err) {
