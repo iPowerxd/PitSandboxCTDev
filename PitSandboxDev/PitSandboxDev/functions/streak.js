@@ -543,7 +543,7 @@ register("chat", event => {
     if (umsg.startsWith("BOUNTY! of") || umsg.startsWith("BOUNTY! bump")) {
         if (Settings.toggleBountyBumps) cancel(event);
     }
-    if (Settings.eggEffectDisplay) {
+    if (Settings.eggEffectDisplay && onSandbox()) {
         switch (umsg) {
             case "SUPEREGG! +2x coins and 2.5x XP (00:10)":
                 if (Date.now() > coinsandxp) coinsandxp = Date.now() + 10000;

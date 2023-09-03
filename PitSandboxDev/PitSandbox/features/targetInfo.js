@@ -67,7 +67,7 @@ const chestplate = (info) => {
                 if (ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"'))) {
                     const rune = ChatLib.removeFormatting(NBT.split(`rtype:"`)[1].split('"')[0])
                     const runeFormatted = rune.charAt(0).toUpperCase() + rune.slice(1)
-                    return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0])]
+                    return [runeFormatted, ChatLib.removeFormatting(NBT.split(`rrarity:"`)[1].split('"')[0].replace('_', ' '))]
                 }
             }
         }
