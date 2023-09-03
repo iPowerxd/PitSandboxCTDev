@@ -1,0 +1,9 @@
+{
+	"$schema": "../ctautocomplete/schema.json",
+	"name": "Pitsandbox",
+	"author": "§1Powie §7& §dJMBB",
+	"description": "§5Pitsandbox Mod Edited Moment",
+	"entry": "index.js",
+	"version": "69.69.69",
+	"requires": ["Vigilance", "PogData", "ChangelogLib"]
+}
